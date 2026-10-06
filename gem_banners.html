@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Prompts GEM</title>
+    
+    <!-- Tipografía Exclusiva Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        roboto: ['Roboto', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            purple: '#863b84',
+                            peach: '#FFDFCD',
+                            lilac: '#e5d3e2',
+                            dark: '#333333',
+                            bg: '#f7f8fa',
+                            card: '#ffffff',
+                            border: '#e5e7eb',
+                            textPrimary: '#1f2937',
+                            textSecondary: '#6b7280'
+                        }
+                    },
+                    boxShadow: {
+                        'enterprise': '0 4px 20px rgba(0, 0, 0, 0.03)',
+                        'enterprise-hover': '0 10px 30px rgba(0, 0, 0, 0.06)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Roboto', sans-serif; }
+        /* Scrollbar minimalista */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+    </style>
+</head>
+<body class="bg-brand-bg text-brand-textPrimary min-h-screen p-4 md:p-8 flex justify-center pb-20">
+
+    <main class="w-full max-w-6xl space-y-10">
+        
+        <!-- 1. Encabezado (Solo Imagen) -->
+        <header class="w-full bg-brand-card rounded-2xl shadow-enterprise border border-brand-border p-2">
+            <img src="https://casandra-abreu.github.io/ux/infobanners.png" alt="Guia de Diseño Banners" class="w-full h-auto rounded-xl block object-cover">
+        </header>
+
+        <!-- 2. Sección de Reglas -->
+        <section>
+            <h2 class="text-xl font-bold mb-6 text-brand-dark uppercase tracking-wide text-sm border-b border-gray-200 pb-2">Manual de Diseño GEM</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Tarjeta 1: Formato -->
+                <div class="bg-brand-card rounded-2xl p-6 shadow-enterprise border border-brand-border border-t-4 border-t-brand-purple flex flex-col transition-shadow hover:shadow-enterprise-hover">
+                    <h3 class="font-bold text-sm text-brand-dark uppercase tracking-wider mb-2">Formato</h3>
+                    <p class="text-sm text-brand-textSecondary leading-relaxed">Dimensiones <strong>16:2 (1920x240 px)</strong>. Formato ultra-panorámico horizontal requerido para exportación.</p>
+                </div>
+
+                <!-- Tarjeta 2: Composición y Márgenes -->
+                <div class="bg-brand-card rounded-2xl p-6 shadow-enterprise border border-brand-border border-t-4 border-t-brand-peach flex flex-col transition-shadow hover:shadow-enterprise-hover">
+                    <h3 class="font-bold text-sm text-brand-dark uppercase tracking-wider mb-2">Composición y Márgenes</h3>
+                    <p class="text-sm text-brand-textSecondary leading-relaxed">Texto izquierda. Márgenes de texto: <strong>40px izquierdo, 20px superior/inferior</strong>. Ilustración en espacio restante. Cero textos extra.</p>
+                </div>
+
+                <!-- Tarjeta 3: Tipografía -->
+                <div class="bg-brand-card rounded-2xl p-6 shadow-enterprise border border-brand-border border-t-4 border-t-brand-lilac flex flex-col transition-shadow hover:shadow-enterprise-hover">
+                    <h3 class="font-bold text-sm text-brand-dark uppercase tracking-wider mb-2">Tipografía Roboto</h3>
+                    <ul class="text-sm text-brand-textSecondary space-y-1 mt-1">
+                        <li><span class="font-medium text-brand-dark">Nivel 1:</span> Chip UI</li>
+                        <li><span class="font-medium text-brand-dark">Nivel 2:</span> Título Principal (Bold)</li>
+                        <li><span class="font-medium text-brand-dark">Nivel 3:</span> Subtítulo (Regular)</li>
+                    </ul>
+                </div>
+
+                <!-- Tarjeta 4: Estilo y Color -->
+                <div class="bg-brand-card rounded-2xl p-6 shadow-enterprise border border-brand-border border-t-4 border-t-brand-dark flex flex-col transition-shadow hover:shadow-enterprise-hover">
+                    <h3 class="font-bold text-sm text-brand-dark uppercase tracking-wider mb-2">Estilo y Color</h3>
+                    <p class="text-sm text-brand-textSecondary leading-relaxed">Trazo lineal negro, entramado, manchas orgánicas. Colores permitidos: Blanco, Durazno, Lila. Fondo estrictamente blanco.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 3. Sección del Generador de Prompt -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            
+            <!-- Columna Izquierda: Formulario -->
+            <div class="bg-brand-card rounded-2xl shadow-enterprise border border-brand-border p-6 md:p-8">
+                <h3 class="text-lg font-bold text-brand-dark mb-6 uppercase tracking-wide text-sm border-b border-gray-100 pb-3">
+                    Configurar Contenido
+                </h3>
+                
+                <div class="space-y-6">
+                    <!-- Dropdown Sección -->
+                    <div>
+                        <label class="block text-sm font-bold text-brand-dark mb-2">Sección del banner</label>
+                        <select id="chipSelect" class="w-full bg-[#fcfcfc] border border-gray-200 text-brand-textPrimary rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-purple focus:border-transparent transition-all shadow-sm">
+                            <option value="">Seleccione una opción</option>
+                            <option value="Marketplace">Marketplace</option>
+                            <option value="Comercial">Comercial</option>
+                            <option value="Obra">Obra</option>
+                            <option value="Abastecimiento">Abastecimiento</option>
+                            <option value="Facturación">Facturación</option>
+                            <option value="Catalogación">Catalogación</option>
+                            <option value="Servicios">Servicios</option>
+                            <option value="Logística">Logística</option>
+                            <option value="Tickets">Tickets</option>
+                            <option value="Manuales">Manuales</option>
+                            <option value="Capacitación">Capacitación</option>
+                            <option value="Ayuda">Ayuda</option>
+                            <option value="Curso">Curso</option>
+                            <option value="Otro">Otro (especificar cual)</option>
+                        </select>
+                    </div>
+
+                    <!-- Input Otra Sección (Condicional) -->
+                    <div id="otroContainer" class="hidden">
+                        <div class="flex justify-between items-end mb-2">
+                            <label class="block text-sm font-bold text-brand-dark">Especificar otra sección</label>
+                            <span id="otroCount" class="text-xs font-medium text-brand-textSecondary bg-gray-100 px-2 py-0.5 rounded-full">0/20</span>
+                        </div>
+                        <input type="text" id="otroInput" maxlength="20" class="w-full bg-[#fcfcfc] border border-gray-200 text-brand-textPrimary rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-purple focus:border-transparent transition-all shadow-sm">
+                    </div>
+
+                    <!-- Título -->
+                    <div>
+                        <div class="flex justify-between items-end mb-2">
+                            <label class="block text-sm font-bold text-brand-dark">Título</label>
+                            <span id="tituloCount" class="text-xs font-medium text-brand-textSecondary bg-gray-100 px-2 py-0.5 rounded-full">0/25</span>
+                        </div>
+                        <input type="text" id="tituloInput" maxlength="25" class="w-full bg-[#fcfcfc] border border-gray-200 text-brand-textPrimary rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-purple focus:border-transparent transition-all shadow-sm font-bold">
+                    </div>
+
+                    <!-- Subtítulo -->
+                    <div>
+                        <div class="flex justify-between items-end mb-2">
+                            <label class="block text-sm font-bold text-brand-dark">Subtítulo</label>
+                            <span id="subtituloCount" class="text-xs font-medium text-brand-textSecondary bg-gray-100 px-2 py-0.5 rounded-full">0/25</span>
+                        </div>
+                        <input type="text" id="subtituloInput" maxlength="25" class="w-full bg-[#fcfcfc] border border-gray-200 text-brand-textPrimary rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-purple focus:border-transparent transition-all shadow-sm">
+                    </div>
+
+                    <!-- Elementos de la Imagen -->
+                    <div>
+                        <div class="flex justify-between items-end mb-2">
+                            <label class="block text-sm font-bold text-brand-dark">Elementos de la imagen</label>
+                            <span id="imagenCount" class="text-xs font-medium text-brand-textSecondary bg-gray-100 px-2 py-0.5 rounded-full">0/100</span>
+                        </div>
+                        <textarea id="imagenInput" maxlength="100" rows="3" class="w-full bg-[#fcfcfc] border border-gray-200 text-brand-textPrimary rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-brand-purple focus:border-transparent transition-all shadow-sm resize-none"></textarea>
+                    </div>
+
+                    <!-- Botón Generar -->
+                    <div class="pt-2">
+                        <button id="btnGenerate" class="w-full bg-brand-purple text-white hover:bg-[#6c2f6a] rounded-xl px-6 py-4 font-bold text-sm uppercase tracking-wide transition-colors shadow-md">
+                            Generar Prompt
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Resultado -->
+            <div class="bg-brand-card rounded-2xl shadow-enterprise border border-brand-border p-6 md:p-8 flex flex-col h-full">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 border-b border-gray-100 pb-3">
+                    <h3 class="text-lg font-bold text-brand-dark uppercase tracking-wide text-sm">
+                        Resultado para GEM
+                    </h3>
+                    <button id="btnCopy" class="bg-gray-100 hover:bg-gray-200 text-brand-textPrimary rounded-lg px-4 py-2 text-sm font-bold transition-colors shadow-sm uppercase tracking-wide">
+                        Copiar Texto
+                    </button>
+                </div>
+                
+                <!-- Área de Salida -->
+                <div class="flex-1 relative w-full h-full min-h-[350px] lg:min-h-0">
+                    <textarea id="outputPrompt" readonly class="w-full h-full min-h-[350px] bg-brand-bg border border-gray-200 text-brand-dark rounded-xl p-5 text-sm focus:outline-none resize-none font-mono leading-relaxed" placeholder="Complete el formulario y presione 'Generar Prompt' para obtener el texto estructurado."></textarea>
+                </div>
+                
+                <!-- Feedback Copiado -->
+                <div id="copyFeedback" class="text-sm font-bold text-green-600 mt-4 opacity-0 transition-opacity text-center sm:text-right h-5">
+                    Texto copiado al portapapeles.
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Referencias del DOM
+            const chipSelect = document.getElementById('chipSelect');
+            const otroContainer = document.getElementById('otroContainer');
+            const otroInput = document.getElementById('otroInput');
+            const tituloInput = document.getElementById('tituloInput');
+            const subtituloInput = document.getElementById('subtituloInput');
+            const imagenInput = document.getElementById('imagenInput');
+            
+            const btnGenerate = document.getElementById('btnGenerate');
+            const outputPrompt = document.getElementById('outputPrompt');
+            const btnCopy = document.getElementById('btnCopy');
+            const copyFeedback = document.getElementById('copyFeedback');
+            
+            // Mapeo para contadores de caracteres
+            const inputsData = [
+                { el: otroInput, countId: 'otroCount' },
+                { el: tituloInput, countId: 'tituloCount' },
+                { el: subtituloInput, countId: 'subtituloCount' },
+                { el: imagenInput, countId: 'imagenCount' }
+            ];
+
+            // Lógica mostrar/ocultar "Otro"
+            chipSelect.addEventListener('change', (e) => {
+                if (e.target.value === 'Otro') {
+                    otroContainer.classList.remove('hidden');
+                } else {
+                    otroContainer.classList.add('hidden');
+                    otroInput.value = '';
+                    updateCounter(inputsData[0]);
+                }
+            });
+
+            // Lógica contadores
+            const updateCounter = (item) => {
+                const length = item.el.value.length;
+                const max = item.el.getAttribute('maxlength');
+                const counter = document.getElementById(item.countId);
+                
+                counter.textContent = `${length}/${max}`;
+                
+                if (length >= max) {
+                    counter.classList.add('text-white', 'bg-red-500');
+                    counter.classList.remove('text-brand-textSecondary', 'bg-gray-100');
+                } else {
+                    counter.classList.add('text-brand-textSecondary', 'bg-gray-100');
+                    counter.classList.remove('text-white', 'bg-red-500');
+                }
+            };
+
+            inputsData.forEach(item => {
+                item.el.addEventListener('input', () => updateCounter(item));
+            });
+
+            // Lógica Generar Prompt
+            btnGenerate.addEventListener('click', () => {
+                
+                // Determinar valor sección
+                let seccionFinal = chipSelect.value;
+                if (seccionFinal === 'Otro') {
+                    seccionFinal = otroInput.value.trim() || "[No especificada]";
+                } else if (!seccionFinal) {
+                    seccionFinal = "[No especificada]";
+                }
+
+                // Obtener valores restantes
+                const tituloFinal = tituloInput.value.trim() || "[Sin título]";
+                const subtituloFinal = subtituloInput.value.trim() || "[Sin subtítulo]";
+                const imagenFinal = imagenInput.value.trim() || "[Sin descripción]";
+
+                // Estructura estricta de salida detallada para el GEM
+                const textoPlano = 
+`Genera un banner informativo horizontal 16:2 siguiendo estrictamente tu manual de diseño configurado.
+
+Datos exactos para la generación:
+- Chip UI (Nivel 1): ${seccionFinal}
+- Título Principal (Nivel 2, Bold): ${tituloFinal}
+- Subtítulo Descriptivo (Nivel 3, Regular): ${subtituloFinal}
+- Elementos de la ilustración (Estilo GEM, a la derecha): ${imagenFinal}
+
+Recordatorio de reglas críticas:
+- Aplica el margen estricto para el texto: 40px a la izquierda, 20px arriba y abajo.
+- La ilustración debe abarcar el espacio restante a la derecha sin encimarse al texto.
+- Fondo 100% blanco. Ningún texto extra, sin prefijos (como Title: o Subtitle:) y sin marcas de agua.`;
+
+                outputPrompt.value = textoPlano;
+                
+                // Efecto visual sutil al generar
+                outputPrompt.classList.add('ring-2', 'ring-brand-purple', 'ring-opacity-40');
+                setTimeout(() => {
+                    outputPrompt.classList.remove('ring-2', 'ring-brand-purple', 'ring-opacity-40');
+                }, 300);
+            });
+
+            // Lógica Copiar Portapapeles
+            btnCopy.addEventListener('click', () => {
+                if (!outputPrompt.value) return;
+
+                outputPrompt.select();
+                try {
+                    if (navigator.clipboard && window.isSecureContext) {
+                        navigator.clipboard.writeText(outputPrompt.value).then(mostrarFeedback);
+                    } else {
+                        document.execCommand('copy');
+                        mostrarFeedback();
+                    }
+                } catch (err) {
+                    console.error('Error al copiar: ', err);
+                }
+                
+                window.getSelection().removeAllRanges();
+            });
+
+            // Función feedback visual de copiado
+            const mostrarFeedback = () => {
+                copyFeedback.classList.remove('opacity-0');
+                setTimeout(() => {
+                    copyFeedback.classList.add('opacity-0');
+                }, 2000);
+            };
+        });
+    </script>
+</body>
+</html>

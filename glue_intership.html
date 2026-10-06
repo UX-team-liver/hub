@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLUE Internship 2026 — UI Kits de Crédito & Seguros</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Lato:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --brand-pink: #e10098;
+            --brand-pink-dark: #b8007d;
+            --brand-pink-soft: #fff1f9;
+            --brand-pink-border: #fbcfe8;
+            --brand-puerto: #833177;
+            --light-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --slate-border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--light-bg);
+            color: #1e293b;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .gradient-text-pink {
+            background: linear-gradient(135deg, #1e293b 0%, #833177 45%, #e10098 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-border-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .gradient-border-card:hover {
+            border-color: rgba(225, 0, 152, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 16px 30px -8px rgba(225, 0, 152, 0.12), 0 8px 16px -6px rgba(0, 0, 0, 0.04);
+        }
+
+        .timeline-step {
+            position: relative;
+        }
+
+        .timeline-step::after {
+            content: '';
+            position: absolute;
+            top: 28px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: 0;
+        }
+
+        .timeline-step:last-child::after {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .timeline-step::after {
+                display: none;
+            }
+        }
+
+        .badge-live {
+            box-shadow: 0 2px 10px rgba(225, 0, 152, 0.15);
+        }
+
+        #toast {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-[#e10098] selection:text-white">
+
+    <nav class="border-b border-slate-200 bg-white/90 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#833177] to-[#e10098] flex items-center justify-center text-white font-black text-xl shadow-md shadow-pink-500/20">
+                    G
+                </div>
+                <div>
+                    <span class="text-xs font-bold tracking-widest text-[#e10098] uppercase block">GLUE Design System</span>
+                    <h1 class="text-sm font-bold text-slate-900 tracking-tight">Liverpool UX/UI • Convocatoria Internship 2026</h1>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 sm:gap-3">
+                <a href="index.html" class="px-3.5 py-2 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-50 text-xs font-semibold flex items-center gap-2 transition">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span class="hidden sm:inline">Volver al inicio</span>
+                </a>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 border border-emerald-200 text-emerald-700">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Presencial en Oficinas (Nov 2026)
+                </span>
+                <button onclick="copyJobDescription()" class="bg-[#e10098] hover:bg-[#b8007d] text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center gap-2 shadow-md shadow-pink-500/20 active:scale-95">
+                    <i class="fa-regular fa-copy"></i> Copiar Vacante para RRHH
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-12 flex-grow">
+        
+        <!-- Hero Section -->
+        <header class="text-center max-w-4xl mx-auto space-y-4">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-50 border border-pink-200 text-[#e10098] text-xs font-bold uppercase tracking-wider badge-live">
+                <i class="fa-solid fa-briefcase"></i> Convocatoria de Talento Joven • Dirección de UX
+            </div>
+            
+            <h2 class="text-3xl sm:text-5xl font-extrabold font-heading tracking-tight leading-tight gradient-text-pink">
+                UI Kits de Crédito & Seguros
+            </h2>
+            
+            <p class="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
+                Guía técnica y requerimientos para el equipo de <strong class="text-slate-900">Atracción de Talento (RRHH)</strong>. Buscamos perfiles junior de diseño con mentalidad sistemática para crear e integrar los componentes financieros de Liverpool sobre la librería principal <strong class="text-[#e10098]">GLUE</strong>.
+            </p>
+
+            <div class="pt-2 flex flex-wrap justify-center gap-3 text-xs">
+                <div class="px-4 py-2 rounded-xl bg-white border border-slate-200 shadow-sm text-slate-700">
+                    <strong class="text-slate-900 block font-bold">Ubicación:</strong> Oficinas Corporativas Liverpool
+                </div>
+                <div class="px-4 py-2 rounded-xl bg-white border border-slate-200 shadow-sm text-slate-700">
+                    <strong class="text-slate-900 block font-bold">Arranque Operativo:</strong> Noviembre 2026
+                </div>
+                <div class="px-4 py-2 rounded-xl bg-white border border-slate-200 shadow-sm text-slate-700">
+                    <strong class="text-slate-900 block font-bold">Mentoría:</strong> Liderazgo GLUE Design System
+                </div>
+            </div>
+        </header>
+
+        <!-- Timeline Cronograma para RRHH -->
+        <section class="space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-slate-200 pb-4 gap-2">
+                <div>
+                    <span class="text-xs font-bold text-[#e10098] uppercase tracking-widest block">Fechas Clave del Proceso</span>
+                    <h3 class="text-xl sm:text-2xl font-bold text-slate-900 font-heading">Cronograma de Reclutamiento & Selección</h3>
+                </div>
+                <span class="text-xs text-slate-500 font-medium">
+                    <i class="fa-regular fa-clock text-[#e10098]"></i> Convocatoria activa durante Septiembre - Octubre 2026
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
+                
+                <!-- Hito 1 -->
+                <div class="timeline-step gradient-border-card p-5 rounded-2xl flex flex-col justify-between relative z-10">
+                    <div>
+                        <div class="w-10 h-10 rounded-full bg-pink-50 border-2 border-[#e10098] flex items-center justify-center text-[#e10098] font-bold text-sm mb-3 shadow-sm">
+                            1
+                        </div>
+                        <span class="text-[11px] font-extrabold uppercase tracking-wider text-[#e10098] block mb-1">02 de Septiembre</span>
+                        <h4 class="text-sm font-bold text-slate-900 font-heading">Inicio de Convocatoria</h4>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            Publicación oficial de la vacante en bolsas universitarias, LinkedIn y redes de talento.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-400 font-mono">
+                        Responsable: RRHH
+                    </div>
+                </div>
+
+                <!-- Hito 2 -->
+                <div class="timeline-step gradient-border-card p-5 rounded-2xl flex flex-col justify-between relative z-10">
+                    <div>
+                        <div class="w-10 h-10 rounded-full bg-pink-50 border-2 border-[#833177] flex items-center justify-center text-[#833177] font-bold text-sm mb-3 shadow-sm">
+                            2
+                        </div>
+                        <span class="text-[11px] font-extrabold uppercase tracking-wider text-[#833177] block mb-1">30 de Septiembre</span>
+                        <h4 class="text-sm font-bold text-slate-900 font-heading">Presentación de Candidatos</h4>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            Entrega de ternas y carpetas de portafolios prefiltrados al equipo de liderazgo GLUE.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-400 font-mono">
+                        Entrega: Shortlist RRHH
+                    </div>
+                </div>
+
+                <!-- Hito 3 -->
+                <div class="timeline-step gradient-border-card p-5 rounded-2xl flex flex-col justify-between relative z-10">
+                    <div>
+                        <div class="w-10 h-10 rounded-full bg-purple-50 border-2 border-purple-600 flex items-center justify-center text-purple-700 font-bold text-sm mb-3 shadow-sm">
+                            3
+                        </div>
+                        <span class="text-[11px] font-extrabold uppercase tracking-wider text-purple-700 block mb-1">01 al 08 de Octubre</span>
+                        <h4 class="text-sm font-bold text-slate-900 font-heading">Entrevistas & Evaluación</h4>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            Entrevista técnica con Líderes UX y prueba práctica de Figma (solo en caso de aplicar).
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-400 font-mono">
+                        Evaluación: GLUE Team
+                    </div>
+                </div>
+
+                <!-- Hito 4 -->
+                <div class="timeline-step gradient-border-card p-5 rounded-2xl flex flex-col justify-between relative z-10">
+                    <div>
+                        <div class="w-10 h-10 rounded-full bg-amber-50 border-2 border-amber-500 flex items-center justify-center text-amber-600 font-bold text-sm mb-3 shadow-sm">
+                            4
+                        </div>
+                        <span class="text-[11px] font-extrabold uppercase tracking-wider text-amber-600 block mb-1">09 de Octubre</span>
+                        <h4 class="text-sm font-bold text-slate-900 font-heading">Fecha Máxima de Selección</h4>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            Cierre de elección de los seleccionados, cartas de oferta y acuerdos institucionales.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] text-slate-400 font-mono">
+                        Hito: Oferta Aceptada
+                    </div>
+                </div>
+
+                <!-- Hito 5 -->
+                <div class="timeline-step gradient-border-card p-5 rounded-2xl flex flex-col justify-between relative z-10 border-emerald-300 bg-emerald-50/50">
+                    <div>
+                        <div class="w-10 h-10 rounded-full bg-emerald-100 border-2 border-emerald-500 flex items-center justify-center text-emerald-700 font-bold text-sm mb-3 shadow-sm">
+                            <i class="fa-solid fa-flag-checkered"></i>
+                        </div>
+                        <span class="text-[11px] font-extrabold uppercase tracking-wider text-emerald-700 block mb-1">26 de Octubre</span>
+                        <h4 class="text-sm font-bold text-slate-900 font-heading">Ingreso & Onboarding</h4>
+                        <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                            Bienvenida en corporativo, entrega de accesos y arranque presencial para noviembre.
+                        </p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-emerald-200 text-[11px] text-emerald-700 font-mono">
+                        Arranque: Presencial
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- El Reto: UI Kits de Crédito y Seguros -->
+        <section class="space-y-6">
+            <div class="border-b border-slate-200 pb-4">
+                <span class="text-xs font-bold text-[#e10098] uppercase tracking-widest block">Objetivo del Programa</span>
+                <h3 class="text-xl sm:text-2xl font-bold text-slate-900 font-heading">El Reto de Negocio: Crédito & Seguros Liverpool</h3>
+                <p class="text-slate-600 text-xs sm:text-sm mt-1">
+                    Los interns se sumarán a resolver dos de las verticales de mayor crecimiento Fintech y servicios financieros de la compañía.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Card Crédito -->
+                <div class="gradient-border-card rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-pink-500/5 rounded-full blur-2xl pointer-events-none"></div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-pink-50 border border-pink-200 flex items-center justify-center text-[#e10098] text-xl shadow-sm">
+                            <i class="fa-solid fa-credit-card"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-[#e10098]">Vertical Financiera</span>
+                            <h4 class="text-lg font-bold text-slate-900 font-heading">UI Kit de Crédito (Liverpool & Suburbia)</h4>
+                        </div>
+                    </div>
+
+                    <p class="text-xs text-slate-600 leading-relaxed mb-5">
+                        Estructuración de componentes para la gestión y solicitud de tarjetas departamentales, visualización de estados de cuenta, simuladores de préstamos y pagos en línea.
+                    </p>
+
+                    <div class="space-y-2.5">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-700 block">Componentes Clave a Crear:</span>
+                        <ul class="text-xs text-slate-600 space-y-2.5">
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-[#e10098] mt-0.5"></i>
+                                <span><strong class="text-slate-800">Simuladores de Crédito:</strong> Sliders de mensualidades, tasas y desgloses de CAT.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-[#e10098] mt-0.5"></i>
+                                <span><strong class="text-slate-800">Cards de Estado de Cuenta:</strong> Línea de crédito disponible, saldo al corte y fechas límite.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-[#e10098] mt-0.5"></i>
+                                <span><strong class="text-slate-800">Funnels de Aprobación:</strong> Pasos de validación biométrica, KYC y firma de contrato.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Card Seguros -->
+                <div class="gradient-border-card rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+                    <div class="absolute -right-8 -top-8 w-32 h-32 bg-purple-500/5 rounded-full blur-2xl pointer-events-none"></div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-700 text-xl shadow-sm">
+                            <i class="fa-solid fa-shield-heart"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-widest text-purple-700">Vertical Protección</span>
+                            <h4 class="text-lg font-bold text-slate-900 font-heading">UI Kit de Seguros (Salud, Auto & Vida)</h4>
+                        </div>
+                    </div>
+
+                    <p class="text-xs text-slate-600 leading-relaxed mb-5">
+                        Diseño del catálogo modular para la cotización de pólizas, comparativas de coberturas, seguimiento de siniestros y asistencia 24/7.
+                    </p>
+
+                    <div class="space-y-2.5">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-700 block">Componentes Clave a Crear:</span>
+                        <ul class="text-xs text-slate-600 space-y-2.5">
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-purple-600 mt-0.5"></i>
+                                <span><strong class="text-slate-800">Comparador de Pólizas:</strong> Matrices de características, deducibles y coberturas.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-purple-600 mt-0.5"></i>
+                                <span><strong class="text-slate-800">Dashboard de Asegurado:</strong> Resumen de pólizas vigentes, vencimientos y asistencias.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-purple-600 mt-0.5"></i>
+                                <span><strong class="text-slate-800">Módulo de Siniestros:</strong> Carga de evidencias, stepper de reporte y geo-asistencia.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Regla Mandatoria de Arquitectura -->
+            <div class="p-5 rounded-2xl bg-gradient-to-r from-pink-50 via-purple-50 to-white border border-pink-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-pink-100 text-[#e10098] flex items-center justify-center text-lg flex-shrink-0">
+                        <i class="fa-solid fa-cubes"></i>
+                    </div>
+                    <div>
+                        <strong class="text-slate-900 text-sm block">Regla de Oro Arquitectónica: Consumo Mandatorio de GLUE</strong>
+                        <p class="text-xs text-slate-600">
+                            Ningún componente de Crédito o Seguros inventará tokens ni estilos aislados. Ambos UI Kits consumirán al 100% las variables semánticas, colores de superficie, iconografía (24x24) y tipografía de nuestra librería base.
+                        </p>
+                    </div>
+                </div>
+                <span class="px-3.5 py-1.5 rounded-xl bg-white border border-pink-300 text-xs font-mono font-bold text-[#e10098] shadow-sm whitespace-nowrap">
+                    100% Tokenized
+                </span>
+            </div>
+        </section>
+
+        <!-- Perfil del Candidato Ideal (Guía para RRHH) -->
+        <section class="space-y-6">
+            <div class="border-b border-slate-200 pb-4">
+                <span class="text-xs font-bold text-[#e10098] uppercase tracking-widest block">Screening & Perfil Requerido</span>
+                <h3 class="text-xl sm:text-2xl font-bold text-slate-900 font-heading">Perfil del Becario / Intern Ideal</h3>
+                <p class="text-slate-600 text-xs sm:text-sm mt-1">
+                    Criterios específicos que el equipo de Atracción de Talento debe validar al evaluar perfiles y portafolios.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Hard Skills -->
+                <div class="gradient-border-card p-6 rounded-2xl space-y-4">
+                    <div class="flex items-center gap-2 text-[#e10098]">
+                        <i class="fa-solid fa-laptop-code text-lg"></i>
+                        <h4 class="font-bold text-sm uppercase tracking-wider text-slate-900">Habilidades Técnicas (Hard Skills)</h4>
+                    </div>
+                    <ul class="text-xs text-slate-600 space-y-3">
+                        <li class="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                            <strong class="text-slate-900 block mb-0.5">Auto Layout & Component Properties:</strong>
+                            Dominio estricto de estructuras responsivas, booleanos y variantes complejas en Figma.
+                        </li>
+                        <li class="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                            <strong class="text-slate-900 block mb-0.5">Variables & Design Tokens:</strong>
+                            Comprensión de modos claro/oscuro, alias de variables y herencia de estilos semánticos.
+                        </li>
+                        <li class="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                            <strong class="text-slate-900 block mb-0.5">Higiene Digital:</strong>
+                            Nomenclatura limpia y estructurada de capas (cero "Frame 129" o estilos desvinculados).
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Soft Skills & Carrera -->
+                <div class="gradient-border-card p-6 rounded-2xl space-y-4">
+                    <div class="flex items-center gap-2 text-purple-700">
+                        <i class="fa-solid fa-user-gear text-lg"></i>
+                        <h4 class="font-bold text-sm uppercase tracking-wider text-slate-900">Perfil Académico & Competencias</h4>
+                    </div>
+                    <ul class="text-xs text-slate-600 space-y-3">
+                        <li class="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                            <strong class="text-slate-900 block mb-0.5">Formación Académica:</strong>
+                            Estudiantes de últimos semestres o recién egresados de Diseño Digital, Interacción, Sistemas o afines.
+                        </li>
+                        <li class="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                            <strong class="text-slate-900 block mb-0.5">Mentalidad de Sistema:</strong>
+                            Capacidad de pensar en módulos reusables y escalables, no solo en "pantallas sueltas".
+                        </li>
+                        <li class="p-3 rounded-xl bg-slate-50 border border-slate-200/80">
+                            <strong class="text-slate-900 block mb-0.5">Comunicación & Presencialidad:</strong>
+                            Disponibilidad para trabajar en oficinas corporativas y colaborar con desarrolladores y POs.
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Requisitos del Portafolio -->
+                <div class="gradient-border-card p-6 rounded-2xl space-y-4">
+                    <div class="flex items-center gap-2 text-emerald-700">
+                        <i class="fa-solid fa-folder-open text-lg"></i>
+                        <h4 class="font-bold text-sm uppercase tracking-wider text-slate-900">Revisión de Portafolio (Figma)</h4>
+                    </div>
+                    <div class="text-xs text-slate-600 space-y-2">
+                        <p class="text-slate-600">
+                            <strong class="text-slate-800">Filtro obligatorio para RRHH:</strong> Solicitar acceso a un archivo nativo de Figma (no solo capturas en PDF o Behance).
+                        </p>
+                        <div class="bg-emerald-50 border border-emerald-200 p-3.5 rounded-xl space-y-2">
+                            <span class="text-[11px] font-bold text-emerald-800 uppercase tracking-wider block">Verificar en el archivo:</span>
+                            <div class="flex items-center gap-2 text-slate-700">
+                                <i class="fa-regular fa-circle-check text-emerald-600"></i>
+                                <span>¿Usa Auto Layout en los botones y tarjetas?</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-slate-700">
+                                <i class="fa-regular fa-circle-check text-emerald-600"></i>
+                                <span>¿Tiene variantes de estados (Hover, Disabled)?</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-slate-700">
+                                <i class="fa-regular fa-circle-check text-emerald-600"></i>
+                                <span>¿Tiene nombres ordenados en las capas?</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Calculadora Interactiva de Filtrado para RRHH -->
+        <section class="gradient-border-card rounded-2xl p-6 sm:p-8 space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+                <div>
+                    <span class="text-xs font-bold text-[#e10098] uppercase tracking-widest block">Herramienta de Selección Rápida</span>
+                    <h3 class="text-xl font-bold text-slate-900 font-heading">Rúbrica de Filtrado para Reclutadores</h3>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-xs text-slate-600 font-semibold">Puntaje del Candidato:</span>
+                    <span id="scoreDisplay" class="px-3 py-1 rounded-lg bg-pink-50 text-[#e10098] font-black font-mono text-base border border-pink-200">0 / 100</span>
+                    <span id="statusBadge" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-600">Pendiente</span>
+                </div>
+            </div>
+
+            <p class="text-xs text-slate-600">
+                Marca los requisitos que cumple el candidato durante la revisión inicial de CV y portafolio para determinar si califica a la terna final:
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3" id="rubricContainer">
+                <!-- Items loaded dynamically -->
+            </div>
+        </section>
+
+        <!-- Resumen Listo para Publicar (Job Posting) -->
+        <section class="space-y-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-bold text-[#e10098] uppercase tracking-widest block">Herramienta para Atracción de Talento</span>
+                    <h3 class="text-lg font-bold text-slate-900 font-heading">Plantilla de Publicación para LinkedIn & Bolsas de Trabajo</h3>
+                </div>
+                <button onclick="copyJobDescription()" class="text-xs text-[#e10098] hover:text-[#b8007d] font-bold flex items-center gap-1.5 transition">
+                    <i class="fa-regular fa-copy"></i> Copiar texto
+                </button>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 text-xs text-slate-200 font-mono leading-relaxed relative shadow-md">
+                <pre id="jobText" class="whitespace-pre-wrap font-mono">
+🚀 ¡Buscamos Becario / Intern de UX/UI Design para GLUE Design System en Liverpool!
+
+¿Te apasiona la arquitectura de componentes, las variables en Figma y la higiene digital? Súmate a la Dirección de UX de Liverpool México en oficinas corporativas a partir de noviembre 2026.
+
+🎯 El Reto:
+Diseñar y estandarizar los UI Kits de Crédito (Liverpool/Suburbia) y Seguros, consumiendo directamente las variables semánticas, componentes e iconografía de nuestra librería principal GLUE.
+
+✨ Lo que buscamos:
+• Dominio de Figma (Auto Layout avanzado, Component Properties, Variables).
+• Conocimiento en sistemas de diseño y buenas prácticas atómicas.
+• Estudiantes de últimos semestres o recién egresados con disponibilidad para acudir a oficinas corporativas.
+• Portafolio con ejemplos editables en Figma.
+
+📅 Fechas del Proceso:
+• Cierre de postulaciones: 30 de septiembre de 2026
+• Selección final: 09 de octubre de 2026
+• Fecha de ingreso: 26 de octubre de 2026
+
+📍 Modalidad: Presencial en Oficinas Corporativas Liverpool (CDMX).
+                </pre>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-200 bg-white py-6 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span class="uppercase tracking-widest text-[11px] font-semibold text-slate-600">GLUE Design System 2026 • Liverpool Digital</span>
+            <span class="text-[11px]">El Puerto de Liverpool • Dirección de Experiencia de Usuario (UX)</span>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 transform translate-y-20 opacity-0 bg-slate-900 border border-pink-500 text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 z-50 pointer-events-none">
+        <i class="fa-solid fa-check text-emerald-400 text-base"></i>
+        <span id="toastMessage">Texto copiado al portapapeles</span>
+    </div>
+
+    <script>
+        const rubricCriteria = [
+            { id: 'c1', label: 'Manejo impecable de Auto Layout en Figma (Padding, Gap, Fill/Hug)', weight: 20 },
+            { id: 'c2', label: 'Comprende el concepto de Variables semánticas y Tokens de color', weight: 20 },
+            { id: 'c3', label: 'Portafolio con componentes interactivos y variantes documentadas', weight: 20 },
+            { id: 'c4', label: 'Higiene de capas: nomenclatura clara y ordenada sin grupos sueltos', weight: 15 },
+            { id: 'c5', label: 'Disponibilidad para trabajar presencialmente en oficinas desde octubre/noviembre', weight: 15 },
+            { id: 'c6', label: 'Interés o afinidad demostrada en productos Fintech, Crédito o E-commerce', weight: 10 }
+        ];
+
+        let currentScore = 0;
+
+        function renderRubric() {
+            const container = document.getElementById('rubricContainer');
+            container.innerHTML = rubricCriteria.map(item => `
+                <label class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-pink-300 hover:bg-pink-50/30 cursor-pointer transition">
+                    <input type="checkbox" value="${item.weight}" onchange="updateRubricScore()" class="mt-0.5 h-4 w-4 rounded text-[#e10098] bg-white border-slate-300 focus:ring-[#e10098]">
+                    <span class="text-xs text-slate-700 leading-snug">
+                        ${item.label} <strong class="text-[#e10098] font-mono font-bold">(+${item.weight} pts)</strong>
+                    </span>
+                </label>
+            `).join('');
+        }
+
+        function updateRubricScore() {
+            const checked = document.querySelectorAll('#rubricContainer input[type="checkbox"]:checked');
+            let score = 0;
+            checked.forEach(box => {
+                score += parseInt(box.value);
+            });
+
+            currentScore = score;
+            document.getElementById('scoreDisplay').textContent = `${score} / 100`;
+
+            const badge = document.getElementById('statusBadge');
+            if (score >= 80) {
+                badge.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200';
+                badge.textContent = 'Apto para Terna Directa ★';
+            } else if (score >= 60) {
+                badge.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200';
+                badge.textContent = 'En Evaluación Técnica';
+            } else {
+                badge.className = 'px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200';
+                badge.textContent = 'Por debajo del corte';
+            }
+        }
+
+        function copyJobDescription() {
+            const textToCopy = document.getElementById('jobText').innerText.trim();
+            
+            const tempInput = document.createElement('textarea');
+            tempInput.value = textToCopy;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            showToast('Texto de vacante copiado al portapapeles');
+        }
+
+        let toastTimer;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = msg;
+            
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        window.onload = function() {
+            renderRubric();
+        };
+    </script>
+</body>
+</html>

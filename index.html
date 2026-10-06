@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UX/UI Management — Hub Central</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Solo Poppins con múltiples grosores -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --brand-pink: #e10098;
+            --brand-pink-dark: #b8007d;
+            --brand-puerto: #833177;
+            --slate-bg: #f8fafc;
+            --card-border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--slate-bg);
+            color: #1e293b;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gradient-title {
+            background: linear-gradient(135deg, #0f172a 0%, #833177 50%, #e10098 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hub-card {
+            background: #ffffff;
+            border: 1px solid var(--card-border);
+            border-radius: 1.25rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hub-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--brand-puerto), var(--brand-pink));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .hub-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(225, 0, 152, 0.35);
+            box-shadow: 0 20px 25px -5px rgba(225, 0, 152, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+        }
+
+        .hub-card:hover::before {
+            opacity: 1;
+        }
+
+        .badge-tag {
+            font-size: 10px;
+            letter-spacing: 0.8px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        #toast {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body class="selection:bg-[#e10098] selection:text-white">
+
+    <nav class="border-b border-slate-200 bg-white/95 backdrop-blur-md sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <!-- Logo actualizado a UX -->
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#833177] to-[#e10098] flex items-center justify-center text-white font-black text-lg shadow-md shadow-pink-500/20 tracking-tighter">
+                    UX
+                </div>
+                <div>
+                    <!-- Texto GLUE removido, dejando solo el título con peso tipográfico -->
+                    <h1 class="text-sm font-extrabold text-slate-900 tracking-tight">Liverpool Digital</h1>
+                    <span class="text-[11px] font-medium text-slate-500 block">UX/UI Portfolio Hub</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-2 sm:gap-3">
+                <span id="cardCounterBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-pink-50 border border-pink-200 text-[#e10098]">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <!-- Contador actualizado a 7 -->
+                    <span id="activeCount">7 Activos</span>
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 flex-grow space-y-10">
+        
+        <!-- Header & Bienvenida -->
+        <header class="text-center max-w-3xl mx-auto space-y-5">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-50 border border-pink-200 text-[#e10098] text-xs font-bold uppercase tracking-wider shadow-sm">
+                <i class="fa-solid fa-compass-drafting"></i> Development Hub
+            </div>
+
+            <h2 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight gradient-title pb-2">
+                UX/UI Management
+            </h2>
+
+            <p class="text-slate-500 font-light text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
+                Bienvenido a este espacio centralizado de consulta, revisión y gobernanza. Aquí encontrarás los accesos directos a todas las presentaciones ejecutivas, herramientas interactivas, blueprints de talento y paneles de seguimiento generados para la <strong class="text-slate-800 font-semibold">Dirección de UX de Liverpool</strong>.
+            </p>
+        </header>
+
+        <section class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+            
+            <!-- Barra de búsqueda en tiempo real -->
+            <div class="relative w-full sm:max-w-md">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    oninput="filterCards()" 
+                    placeholder="Buscar por título, categoría o descripción..." 
+                    class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2 text-xs font-medium text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#e10098] focus:bg-white transition"
+                >
+            </div>
+
+            <!-- Filtro de categorías -->
+            <div class="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0 font-semibold" id="filterButtons">
+                <button onclick="setCategory('ALL')" class="category-btn active px-4 py-1.5 rounded-xl text-xs bg-[#e10098] text-white transition shadow-sm whitespace-nowrap tracking-wide" data-cat="ALL">
+                    Todos
+                </button>
+                <button onclick="setCategory('Herramienta')" class="category-btn px-4 py-1.5 rounded-xl text-xs bg-slate-100 text-slate-600 hover:bg-slate-200 transition whitespace-nowrap tracking-wide" data-cat="Herramienta">
+                    Herramientas
+                </button>
+                <button onclick="setCategory('Talento')" class="category-btn px-4 py-1.5 rounded-xl text-xs bg-slate-100 text-slate-600 hover:bg-slate-200 transition whitespace-nowrap tracking-wide" data-cat="Talento">
+                    Talento
+                </button>
+                <button onclick="setCategory('Presentación')" class="category-btn px-4 py-1.5 rounded-xl text-xs bg-slate-100 text-slate-600 hover:bg-slate-200 transition whitespace-nowrap tracking-wide" data-cat="Presentación">
+                    Presentaciones
+                </button>
+            </div>
+        </section>
+
+        <section>
+            <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Cards will be populated dynamically by JavaScript -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200">
+                <div class="w-12 h-12 rounded-2xl bg-pink-50 text-[#e10098] flex items-center justify-center mx-auto mb-3 text-lg">
+                    <i class="fa-solid fa-folder-open"></i>
+                </div>
+                <h4 class="text-sm font-bold text-slate-900">No se encontraron entregables</h4>
+                <p class="text-xs font-light text-slate-500 mt-1">Prueba con otro término de búsqueda o categoría.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-slate-200 bg-white py-6 text-center">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <span class="uppercase tracking-widest text-[10px] font-bold text-slate-400">Liverpool Digital 2026</span>
+            <span class="text-[11px] font-medium text-slate-500">UX/UI Management Hub • El Puerto de Liverpool</span>
+        </div>
+    </footer>
+
+    <div id="toast" class="fixed bottom-6 right-6 transform translate-y-20 opacity-0 bg-slate-900 border border-pink-500 text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 z-50 pointer-events-none tracking-wide">
+        <i class="fa-solid fa-check text-emerald-400 text-sm"></i>
+        <span id="toastMsg">Acción realizada con éxito</span>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDocs, collection, onSnapshot, writeBatch } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Tarjetas base actualizadas con Gem de Copy
+        const initialCards = [
+            {
+                id: 'card-1',
+                title: 'Auditoría Figma',
+                description: 'Este espacio ayudará a calificar y evaluar los documentos de Figma, colocando una calificación y comentarios para que los consultores sepan cómo mejorar.',
+                link: 'auditoria_figma.html',
+                category: 'Herramienta',
+                icon: 'fa-clipboard-check',
+                iconBg: 'bg-purple-50 text-[#833177]',
+                badgeColor: 'bg-purple-50 text-[#833177] border-purple-200',
+                createdAt: 1000
+            },
+            {
+                id: 'card-2',
+                title: 'Plan Intership',
+                description: 'Información y seguimiento al plan para mejorar los UI Kits de crédito y seguros.',
+                link: 'glue_intership.html',
+                category: 'Talento',
+                icon: 'fa-shield-heart',
+                iconBg: 'bg-pink-50 text-[#e10098]',
+                badgeColor: 'bg-pink-50 text-[#e10098] border-pink-200',
+                createdAt: 2000
+            },
+            {
+                id: 'card-3',
+                title: 'Correos de contrato',
+                description: 'Plantillas de correo para los 3 pasos del proceso de contratación: estimación, confirmación, solicitud de pago.',
+                link: 'contratos.html',
+                category: 'Talento',
+                icon: 'fa-file-signature',
+                iconBg: 'bg-blue-50 text-blue-600',
+                badgeColor: 'bg-blue-50 text-blue-700 border-blue-200',
+                createdAt: 3000
+            },
+            {
+                id: 'card-4',
+                title: 'Hackathon26',
+                description: 'Soluciones del Hackathon IT: descubriendo nuevas fronteras para el diseño de experiencias, interfaces adaptativas y flujos impulsados por IA.',
+                link: 'hackathon.html',
+                category: 'Presentación',
+                icon: 'fa-wand-magic-sparkles',
+                iconBg: 'bg-amber-50 text-amber-500',
+                badgeColor: 'bg-amber-50 text-amber-600 border-amber-200',
+                createdAt: 4000
+            },
+            {
+                id: 'card-5',
+                title: 'Ilustraciones El Puerto de Liverpool',
+                description: 'Crea imágenes a partir de IA con el mismo estilo y con los colores de cada marca.',
+                link: 'gem_ilustrator.html',
+                category: 'Herramienta',
+                icon: 'fa-palette',
+                iconBg: 'bg-indigo-50 text-indigo-500',
+                badgeColor: 'bg-indigo-50 text-indigo-600 border-indigo-200',
+                createdAt: 5000
+            },
+            {
+                id: 'card-6',
+                title: 'Gem para Banners Entrada Única',
+                description: 'Crea el pront para solicitar la creación de un banner y revisa las especificaciones gráficas.',
+                link: 'gem_banners.html',
+                category: 'Herramienta',
+                icon: 'fa-rectangle-ad',
+                iconBg: 'bg-teal-50 text-teal-600',
+                badgeColor: 'bg-teal-50 text-teal-700 border-teal-200',
+                createdAt: 6000
+            },
+            {
+                id: 'card-7',
+                title: 'Gem de Copy',
+                description: 'Explicación y guía de uso para generar copys utilizando el modelo Gem integrado en nuestro flujo.',
+                link: 'gem_copy.html',
+                category: 'Herramienta',
+                icon: 'fa-pen-nib',
+                iconBg: 'bg-sky-50 text-sky-600',
+                badgeColor: 'bg-sky-50 text-sky-700 border-sky-200',
+                createdAt: 7000
+            }
+        ];
+
+        let activeCategory = 'ALL';
+        let allCards = [];
+        let db = null;
+        let auth = null;
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'ux-hub';
+        const collectionName = 'hub_cards';
+
+        async function initStorage() {
+            if (typeof __firebase_config === 'undefined') {
+                const saved = localStorage.getItem('ux_hub_cards');
+                if (saved) {
+                    try { allCards = JSON.parse(saved); } catch(e) { allCards = [...initialCards]; }
+                } else {
+                    allCards = [...initialCards];
+                }
+                renderCards();
+                return;
+            }
+
+            try {
+                const firebaseConfig = JSON.parse(__firebase_config);
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                if (typeof __initial_auth_token !== 'undefined') {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                if (!auth.currentUser) return;
+
+                const hubColRef = collection(db, 'artifacts', appId, 'public', 'data', collectionName);
+                const snapshot = await getDocs(hubColRef);
+
+                if (snapshot.empty) {
+                    const batch = writeBatch(db);
+                    initialCards.forEach(card => {
+                        const cardRef = doc(db, 'artifacts', appId, 'public', 'data', collectionName, card.id);
+                        batch.set(cardRef, card);
+                    });
+                    await batch.commit();
+                }
+
+                onSnapshot(hubColRef, (qs) => {
+                    const loaded = [];
+                    qs.forEach(docSnap => loaded.push({ id: docSnap.id, ...docSnap.data() }));
+                    loaded.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                    allCards = loaded;
+                    renderCards();
+                }, (err) => {
+                    console.error("Error al sincronizar tarjetas:", err);
+                });
+            } catch (err) {
+                console.error("Error inicializando almacenamiento en la nube:", err);
+                allCards = [...initialCards];
+                renderCards();
+            }
+        }
+
+        window.renderCards = function() {
+            const grid = document.getElementById('cardsGrid');
+            const emptyState = document.getElementById('emptyState');
+            const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
+
+            const filtered = allCards.filter(card => {
+                const matchesSearch = 
+                    (card.title || '').toLowerCase().includes(searchVal) ||
+                    (card.description || '').toLowerCase().includes(searchVal) ||
+                    (card.category || '').toLowerCase().includes(searchVal);
+                
+                const matchesCategory = (activeCategory === 'ALL' || card.category === activeCategory);
+                return matchesSearch && matchesCategory;
+            });
+
+            document.getElementById('activeCount').textContent = `${filtered.length} Activos`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            grid.innerHTML = filtered.map(card => `
+                <article class="hub-card p-6 h-full" id="${card.id}">
+                    <div>
+                        <div class="flex items-start justify-between gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-2xl ${card.iconBg || 'bg-pink-50 text-[#e10098]'} flex items-center justify-center text-xl shadow-sm flex-shrink-0">
+                                <i class="fa-solid ${card.icon || 'fa-file-code'}"></i>
+                            </div>
+                            <span class="badge-tag px-3 py-1 rounded-lg border ${card.badgeColor || 'bg-slate-100 text-slate-700 border-slate-200'}">
+                                ${card.category}
+                            </span>
+                        </div>
+
+                        <h3 class="font-bold text-base text-slate-900 leading-snug mb-2 hover:text-[#e10098] transition tracking-tight">
+                            <a href="${card.link}" target="_blank" rel="noopener noreferrer">${card.title}</a>
+                        </h3>
+                        <p class="text-xs font-light text-slate-500 leading-relaxed line-clamp-3 mb-6">
+                            ${card.description}
+                        </p>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-100 flex items-center justify-between gap-3 mt-auto">
+                        <span class="text-[11px] font-medium text-slate-400 truncate max-w-[140px]" title="${card.link}">
+                            <i class="fa-regular fa-file text-[10px] mr-1"></i>${card.link}
+                        </span>
+
+                        <div class="flex items-center gap-2">
+                            <button onclick="copyCardLink('${card.link}')" title="Copiar enlace" class="w-8 h-8 rounded-xl border border-slate-200 text-slate-500 hover:text-[#e10098] hover:border-pink-300 hover:bg-pink-50/50 flex items-center justify-center transition active:scale-95 text-xs">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                            <a href="${card.link}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-[#e10098] hover:bg-[#b8007d] text-white text-xs font-bold px-4 py-2 rounded-xl transition shadow-md shadow-pink-500/15 active:scale-95 tracking-wide">
+                                <span>Abrir</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            `).join('');
+        };
+
+        window.filterCards = function() {
+            renderCards();
+        };
+
+        window.setCategory = function(cat) {
+            activeCategory = cat;
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                if (btn.getAttribute('data-cat') === cat) {
+                    btn.className = 'category-btn active px-4 py-1.5 rounded-xl text-xs font-semibold bg-[#e10098] text-white transition shadow-sm whitespace-nowrap tracking-wide';
+                } else {
+                    btn.className = 'category-btn px-4 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition whitespace-nowrap tracking-wide';
+                }
+            });
+            renderCards();
+        };
+
+        window.copyCardLink = function(link) {
+            const temp = document.createElement('input');
+            temp.value = window.location.href.replace(/index\.html.*/, '') + link;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast(`Enlace copiado: ${link}`);
+        };
+
+        let toastTimer;
+        window.showToast = function(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        };
+
+        window.onload = function() {
+            initStorage();
+        };
+    </script>
+</body>
+</html>

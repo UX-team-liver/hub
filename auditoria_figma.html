@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditoría Técnica de Archivos Figma • UX Operations</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandPurple: '#833177',
+                        brandPink: '#E10098',
+                        brandDark: '#191528',
+                        surface: '#F8FAFC',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Poppins', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-brand {
+            background: linear-gradient(135deg, #833177 0%, #E10098 100%);
+        }
+        .gradient-border-b {
+            border-bottom: 4px solid;
+            border-image: linear-gradient(90deg, #833177 0%, #E10098 100%) 1;
+        }
+        .slider-thumb::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #E10098;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+            transition: all 0.15s ease;
+        }
+        .slider-thumb::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            background: #833177;
+        }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; padding: 0 !important; }
+            .print-card { box-shadow: none !important; border: 1px solid #cbd5e1 !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col justify-between selection:bg-brandPink selection:text-white">
+
+    <!-- Top Navigation & Brand Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl gradient-brand flex items-center justify-center text-white shadow-md">
+                    <i class="fa-solid fa-pen-ruler text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-slate-900 font-display">Evaluador de Archivos Figma</h1>
+                </div>
+            </div>
+
+            <!-- Quick Action Buttons -->
+            <div class="flex items-center gap-2">
+                <a href="index.html" class="px-3.5 py-2 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-50 text-xs font-semibold flex items-center gap-2 transition">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span class="hidden sm:inline">Volver al inicio</span>
+                </a>
+                <button onclick="resetEvaluation()" class="px-3.5 py-2 rounded-lg border border-slate-300 text-slate-600 hover:bg-slate-50 text-xs font-semibold flex items-center gap-2 transition">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span class="hidden sm:inline">Reiniciar</span>
+                </button>
+                <button onclick="copyAuditReportHtml()" class="px-3.5 py-2 rounded-lg border border-slate-300 text-slate-700 bg-white hover:bg-slate-50 text-xs font-bold flex items-center gap-2 shadow-sm transition">
+                    <i class="fa-solid fa-code text-brandPurple"></i>
+                    <span>Copiar HTML</span>
+                </button>
+                <button onclick="copyEmailSummary()" class="px-4 py-2 rounded-lg gradient-brand text-white text-xs font-bold flex items-center gap-2 shadow-md hover:opacity-95 transition">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span>Copiar para correo</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow space-y-8">
+
+        <!-- Metadata Section Card -->
+        <section class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-5">
+                <div class="flex items-center gap-2 text-brandPurple font-display font-bold text-base">
+                    <i class="fa-solid fa-file-shield text-brandPink"></i>
+                    <span>Ficha de Identificación del Entregable</span>
+                </div>
+                <span class="text-xs text-slate-400 font-mono">El Puerto de Liverpool</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-600 mb-1">Consultor(a) Evaluado(a)</label>
+                    <input type="text" id="metaConsultant" placeholder="Nombre completo" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brandPink/30 focus:border-brandPink font-medium text-slate-800 transition">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-600 mb-1">Coordinador responsable</label>
+                    <input type="text" id="metaCoordinator" placeholder="Nombre del coordinador(a)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brandPink/30 focus:border-brandPink font-medium text-slate-800 transition">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-600 mb-1">Etapa de la Auditoría</label>
+                    <select id="metaStage" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brandPink/30 focus:border-brandPink font-medium text-slate-800 transition">
+                        <option value="En Desarrollo (WIP / Sprint)">En Desarrollo (WIP / Sprint)</option>
+                        <option value="Handoff Final (Ready for Dev)">Handoff Final (Ready for Dev)</option>
+                        <option value="Auditoría Post-Release">Auditoría Post-Release</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-600 mb-1">Fecha de auditoría</label>
+                    <input type="date" id="metaDate" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brandPink/30 focus:border-brandPink font-medium text-slate-800 transition">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-600 mb-1">Auditor(a) / Evaluador(a)</label>
+                    <input type="text" id="metaAuditor" value="Casandra Abreu (Gerencia UX)" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brandPink/30 focus:border-brandPink font-medium text-slate-800 transition">
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Sticky Summary Board -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            <!-- Score Card (Left) -->
+            <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-44 h-44 bg-brandPurple/5 rounded-full blur-2xl pointer-events-none"></div>
+                
+                <div>
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-extrabold uppercase font-mono tracking-wider text-slate-400">Score Técnico Figma</span>
+                        <span id="badgeStatus" class="px-2.5 py-1 rounded-full text-xs font-bold font-display bg-amber-100 text-amber-700">Calculando</span>
+                    </div>
+
+                    <div class="flex items-baseline gap-2 mt-2">
+                        <span id="finalScoreDisplay" class="text-6xl font-black font-display text-transparent bg-clip-text bg-gradient-to-r from-brandPurple to-brandPink">100</span>
+                        <span class="text-xl font-bold text-slate-400 font-display">/ 100 pts</span>
+                    </div>
+
+                    <p id="verdictText" class="text-xs text-slate-500 mt-2 font-medium leading-relaxed">
+                        Archivo con excelencia artesanal y listo para desarrollo.
+                    </p>
+                </div>
+
+                <!-- Weighted Category Pills -->
+                <div class="mt-6 pt-4 border-t border-slate-100 space-y-2 text-xs">
+                    <div class="flex justify-between text-slate-600">
+                        <span>Higiene & Nomenclatura (20%)</span>
+                        <span id="subscoreR1" class="font-bold text-slate-800">20.0 / 20</span>
+                    </div>
+                    <div class="flex justify-between text-slate-600">
+                        <span>Design System GLUE (25%)</span>
+                        <span id="subscoreR2" class="font-bold text-slate-800">25.0 / 25</span>
+                    </div>
+                    <div class="flex justify-between text-slate-600">
+                        <span>Auto Layout & Responsive (20%)</span>
+                        <span id="subscoreR3" class="font-bold text-slate-800">20.0 / 20</span>
+                    </div>
+                    <div class="flex justify-between text-slate-600">
+                        <span>Flujos & Edge Cases (20%)</span>
+                        <span id="subscoreR4" class="font-bold text-slate-800">20.0 / 20</span>
+                    </div>
+                    <div class="flex justify-between text-slate-600">
+                        <span>Handoff & Dev Mode (15%)</span>
+                        <span id="subscoreR5" class="font-bold text-slate-800">15.0 / 15</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Progress & Rubric Bars (Right) -->
+            <div class="lg:col-span-8 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between">
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900 font-display mb-1 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-simple text-brandPink"></i>
+                        <span>Desglose Ponderado por Rubro Evaluado</span>
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-6">Visualización del nivel de cumplimiento técnico por cada pilar de diseño.</p>
+
+                    <div class="space-y-4">
+                        <!-- Bar 1 -->
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold mb-1">
+                                <span class="text-slate-700">1. Estructura e Higiene del Archivo (20%)</span>
+                                <span id="barPctR1" class="text-brandPurple font-mono">100%</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                                <div id="barFillR1" class="h-full bg-brandPurple transition-all duration-300 rounded-full" style="width: 100%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Bar 2 -->
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold mb-1">
+                                <span class="text-slate-700">2. Adopción del Design System GLUE (25%)</span>
+                                <span id="barPctR2" class="text-brandPink font-mono">100%</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                                <div id="barFillR2" class="h-full bg-brandPink transition-all duration-300 rounded-full" style="width: 100%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Bar 3 -->
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold mb-1">
+                                <span class="text-slate-700">3. Interacción, Responsive y Auto Layout (20%)</span>
+                                <span id="barPctR3" class="text-blue-600 font-mono">100%</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                                <div id="barFillR3" class="h-full bg-blue-500 transition-all duration-300 rounded-full" style="width: 100%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Bar 4 -->
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold mb-1">
+                                <span class="text-slate-700">4. Flujos de Usuario y Casos Borde (20%)</span>
+                                <span id="barPctR4" class="text-emerald-600 font-mono">100%</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                                <div id="barFillR4" class="h-full bg-emerald-500 transition-all duration-300 rounded-full" style="width: 100%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Bar 5 -->
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold mb-1">
+                                <span class="text-slate-700">5. Preparación de Handoff y Dev Mode (15%)</span>
+                                <span id="barPctR5" class="text-amber-600 font-mono">100%</span>
+                            </div>
+                            <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
+                                <div id="barFillR5" class="h-full bg-amber-500 transition-all duration-300 rounded-full" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-4 mt-6 border-t border-slate-100 flex flex-wrap items-center justify-between text-xs text-slate-500 gap-2">
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Aprobado (≥85 pts)</span>
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Observaciones Menores (70-84 pts)</span>
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Retrabajo Requerido (&lt;70 pts)</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN: ¿QUÉ SIGNIFICA LA PUNTUACIÓN? (ESCALA 1 AL 5 & SCORE GLOBAL) -->
+        <section class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-slate-100 pb-4 gap-2">
+                <div>
+                    <span class="text-xs font-extrabold uppercase font-mono tracking-widest text-brandPink block mb-1">Rúbrica Oficial de Calificación</span>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 font-display">¿Qué significa cada puntuación y cómo se interpreta?</h2>
+                </div>
+                <span class="text-xs text-slate-600 font-medium bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-lg shrink-0">
+                    <i class="fa-solid fa-scale-balanced text-brandPurple mr-1"></i> Corte de aprobación para Handoff: <strong>≥ 85 pts</strong>
+                </span>
+            </div>
+
+            <!-- Explicación del Score Global -->
+            <div class="space-y-3">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
+                    <i class="fa-solid fa-trophy text-brandPurple"></i>
+                    <span>1. Dictamen según la Calificación Final (Escala 0 a 100 Puntos)</span>
+                </h3>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    La calificación final es la suma ponderada de los 5 rubros evaluados. Determina si el entregable pasa directamente a desarrollo Front-End (TI Ventas / Retail) o si requiere correcciones previas:
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
+                    <!-- Aprobado -->
+                    <div class="p-4 rounded-xl border border-emerald-200 bg-emerald-50/40 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 font-display">
+                                <i class="fa-solid fa-circle-check text-emerald-600"></i> 85 a 100 pts
+                            </span>
+                            <span class="text-[10px] font-mono font-bold text-emerald-700 uppercase">Certificado</span>
+                        </div>
+                        <h4 class="text-xs font-bold text-slate-900 font-display">Aprobado • Listo para Dev</h4>
+                        <p class="text-[11.5px] text-slate-600 leading-snug">
+                            Cumplimiento sobresaliente de los lineamientos GLUE. Higiene impecable, 100% tokens asociados, componentes con variantes completas y especificaciones claras para desarrollo sin bloqueos.
+                        </p>
+                    </div>
+
+                    <!-- Observaciones -->
+                    <div class="p-4 rounded-xl border border-amber-200 bg-amber-50/40 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 font-display">
+                                <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> 70 a 84 pts
+                            </span>
+                            <span class="text-[10px] font-mono font-bold text-amber-700 uppercase">Condicional</span>
+                        </div>
+                        <h4 class="text-xs font-bold text-slate-900 font-display">Aprobado con Observaciones</h4>
+                        <p class="text-[11.5px] text-slate-600 leading-snug">
+                            El diseño es viable y no detiene el sprint de desarrollo, pero presenta deuda técnica tolerable (ajustes en nomenclatura, paddings o estados hover secundarios) que debe solventarse antes del cierre.
+                        </p>
+                    </div>
+
+                    <!-- Retrabajo -->
+                    <div class="p-4 rounded-xl border border-rose-200 bg-rose-50/40 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-100 text-rose-800 font-display">
+                                <i class="fa-solid fa-ban text-rose-600"></i> Menor a 70 pts
+                            </span>
+                            <span class="text-[10px] font-mono font-bold text-rose-700 uppercase">No Apto</span>
+                        </div>
+                        <h4 class="text-xs font-bold text-slate-900 font-display">Alerta • Retrabajo Requerido</h4>
+                        <p class="text-[11.5px] text-slate-600 leading-snug">
+                            Deuda técnica crítica. Se detectaron componentes desvinculados (detached), colores #HEX hardcodeados, frames fijos sin Auto Layout o falta de casos de error. Bloquea paso a producción.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Explicación de la Escala del 1 al 5 en los Sliders -->
+            <div class="space-y-3 pt-4 border-t border-slate-100">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-brandPink"></i>
+                    <span>2. Significado del Nivel (1 al 5) Asignado en Cada Criterio Individual</span>
+                </h3>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Al ajustar los sliders de cada rubro, cada valor numérico del 1 al 5 describe el grado de adopción y calidad técnica del elemento evaluado:
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-1">
+                    <!-- Nivel 1 -->
+                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col justify-between space-y-2 border-t-2 border-t-rose-500">
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <span class="w-6 h-6 rounded-lg bg-rose-100 text-rose-700 font-black text-xs font-display flex items-center justify-center">1</span>
+                                <span class="text-[10px] font-bold font-mono text-rose-600">20% Valor</span>
+                            </div>
+                            <h5 class="text-xs font-bold text-slate-900 font-display mt-2">Crítico / Inexistente</h5>
+                            <p class="text-[11px] text-slate-500 leading-snug mt-1">
+                                No se aplica el lineamiento. Contiene capas genéricas (*"Frame 849"*), ausencia total de Auto Layout o estilos huérfanos.
+                            </p>
+                        </div>
+                        <span class="text-[10px] font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded border border-rose-200/80 block text-center">Requiere rehacer</span>
+                    </div>
+
+                    <!-- Nivel 2 -->
+                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col justify-between space-y-2 border-t-2 border-t-amber-500">
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <span class="w-6 h-6 rounded-lg bg-amber-100 text-amber-700 font-black text-xs font-display flex items-center justify-center">2</span>
+                                <span class="text-[10px] font-bold font-mono text-amber-600">40% Valor</span>
+                            </div>
+                            <h5 class="text-xs font-bold text-slate-900 font-display mt-2">Básico / En Riesgo</h5>
+                            <p class="text-[11px] text-slate-500 leading-snug mt-1">
+                                Implementación superficial con mezclas de estilos manuales, Auto Layout mal anidado (Fixed) o componentes desvinculados.
+                            </p>
+                        </div>
+                        <span class="text-[10px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200/80 block text-center">Alto riesgo de QA</span>
+                    </div>
+
+                    <!-- Nivel 3 -->
+                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col justify-between space-y-2 border-t-2 border-t-blue-500">
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <span class="w-6 h-6 rounded-lg bg-blue-100 text-blue-700 font-black text-xs font-display flex items-center justify-center">3</span>
+                                <span class="text-[10px] font-bold font-mono text-blue-600">60% Valor</span>
+                            </div>
+                            <h5 class="text-xs font-bold text-slate-900 font-display mt-2">Aceptable / Con Deuda</h5>
+                            <p class="text-[11px] text-slate-500 leading-snug mt-1">
+                                Estructura funcional con ~70% de tokens GLUE. Faltan estados interactivos (Hover/Disabled) o documentación detallada.
+                            </p>
+                        </div>
+                        <span class="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200/80 block text-center">Aprobado parcial</span>
+                    </div>
+
+                    <!-- Nivel 4 -->
+                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col justify-between space-y-2 border-t-2 border-t-purple-600">
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <span class="w-6 h-6 rounded-lg bg-purple-100 text-brandPurple font-black text-xs font-display flex items-center justify-center">4</span>
+                                <span class="text-[10px] font-bold font-mono text-brandPurple">80% Valor</span>
+                            </div>
+                            <h5 class="text-xs font-bold text-slate-900 font-display mt-2">Avanzado / Conforme</h5>
+                            <p class="text-[11px] text-slate-500 leading-snug mt-1">
+                                Excelente uso de Auto Layout responsivo, tokens semánticos vinculados (>90%) y nomenclatura ordenada conforme a GLUE.
+                            </p>
+                        </div>
+                        <span class="text-[10px] font-bold text-brandPurple bg-purple-50 px-2 py-0.5 rounded border border-purple-200/80 block text-center">Apto para Handoff</span>
+                    </div>
+
+                    <!-- Nivel 5 -->
+                    <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex flex-col justify-between space-y-2 border-t-2 border-t-brandPink">
+                        <div>
+                            <div class="flex items-center justify-between">
+                                <span class="w-6 h-6 rounded-lg bg-pink-100 text-brandPink font-black text-xs font-display flex items-center justify-center">5</span>
+                                <span class="text-[10px] font-bold font-mono text-brandPink">100% Valor</span>
+                            </div>
+                            <h5 class="text-xs font-bold text-slate-900 font-display mt-2">Excelente / Benchmark</h5>
+                            <p class="text-[11px] text-slate-500 leading-snug mt-1">
+                                Cero deuda técnica. 100% tokens oficiales, propiedades booleanas e icon swaps inteligentes, matriz de variantes y handoff sin dudas.
+                            </p>
+                        </div>
+                        <span class="text-[10px] font-bold text-brandPink bg-pink-50 px-2 py-0.5 rounded border border-pink-200/80 block text-center">Referente de Calidad</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TABBED RUBRICS CONTAINER (COMPACT WORKSPACE) -->
+        <section class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            <!-- Tabs Navigation Bar -->
+            <div class="bg-slate-50 border-b border-slate-200 p-2 sm:p-2.5 flex items-center gap-2 overflow-x-auto no-scrollbar">
+                <!-- Tab 1 -->
+                <button type="button" onclick="switchRubricTab(1)" id="tabBtn1" class="rubric-tab flex-1 min-w-[150px] sm:min-w-[170px] py-2.5 px-3 rounded-xl border text-left transition-all duration-200 bg-white border-brandPurple text-brandPurple shadow-sm ring-1 ring-brandPurple/20">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-mono font-bold tracking-wider uppercase text-brandPurple">01 • 20%</span>
+                        <span id="tabScoreR1" class="text-[11px] font-mono font-bold text-brandPurple">20.0 pts</span>
+                    </div>
+                    <p class="text-xs font-bold font-display truncate text-slate-900 mt-0.5">Estructura e Higiene</p>
+                </button>
+
+                <!-- Tab 2 -->
+                <button type="button" onclick="switchRubricTab(2)" id="tabBtn2" class="rubric-tab flex-1 min-w-[150px] sm:min-w-[170px] py-2.5 px-3 rounded-xl border border-slate-200 text-left transition-all duration-200 bg-slate-100/70 hover:bg-white text-slate-600">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-mono font-bold tracking-wider uppercase text-slate-400">02 • 25%</span>
+                        <span id="tabScoreR2" class="text-[11px] font-mono font-bold text-slate-500">25.0 pts</span>
+                    </div>
+                    <p class="text-xs font-bold font-display truncate text-slate-700 mt-0.5">Design System GLUE</p>
+                </button>
+
+                <!-- Tab 3 -->
+                <button type="button" onclick="switchRubricTab(3)" id="tabBtn3" class="rubric-tab flex-1 min-w-[150px] sm:min-w-[170px] py-2.5 px-3 rounded-xl border border-slate-200 text-left transition-all duration-200 bg-slate-100/70 hover:bg-white text-slate-600">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-mono font-bold tracking-wider uppercase text-slate-400">03 • 20%</span>
+                        <span id="tabScoreR3" class="text-[11px] font-mono font-bold text-slate-500">20.0 pts</span>
+                    </div>
+                    <p class="text-xs font-bold font-display truncate text-slate-700 mt-0.5">Auto Layout & Resp.</p>
+                </button>
+
+                <!-- Tab 4 -->
+                <button type="button" onclick="switchRubricTab(4)" id="tabBtn4" class="rubric-tab flex-1 min-w-[150px] sm:min-w-[170px] py-2.5 px-3 rounded-xl border border-slate-200 text-left transition-all duration-200 bg-slate-100/70 hover:bg-white text-slate-600">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-mono font-bold tracking-wider uppercase text-slate-400">04 • 20%</span>
+                        <span id="tabScoreR4" class="text-[11px] font-mono font-bold text-slate-500">20.0 pts</span>
+                    </div>
+                    <p class="text-xs font-bold font-display truncate text-slate-700 mt-0.5">Flujos & Edge Cases</p>
+                </button>
+
+                <!-- Tab 5 -->
+                <button type="button" onclick="switchRubricTab(5)" id="tabBtn5" class="rubric-tab flex-1 min-w-[150px] sm:min-w-[170px] py-2.5 px-3 rounded-xl border border-slate-200 text-left transition-all duration-200 bg-slate-100/70 hover:bg-white text-slate-600">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-mono font-bold tracking-wider uppercase text-slate-400">05 • 15%</span>
+                        <span id="tabScoreR5" class="text-[11px] font-mono font-bold text-slate-500">15.0 pts</span>
+                    </div>
+                    <p class="text-xs font-bold font-display truncate text-slate-700 mt-0.5">Handoff & Dev Mode</p>
+                </button>
+            </div>
+
+            <!-- TAB PANEL 1: ESTRUCTURA, ORDEN E HIGIENE (20%) -->
+            <div id="tabPanel1" class="rubric-panel">
+                <div class="bg-purple-50/50 px-6 py-4 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-purple-100 text-brandPurple flex items-center justify-center font-bold text-sm font-display">01</span>
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-900 font-display">Estructura, Orden e Higiene del Archivo</h3>
+                            <p class="text-xs text-slate-500">Portada, estandarización de páginas, orden de capas y nomenclatura clara.</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-bold text-brandPurple bg-purple-100/70 border border-purple-200 px-2.5 py-1 rounded-full font-mono">Ponderación: 20%</span>
+                    </div>
+                </div>
+
+                <div class="p-6 divide-y divide-slate-100">
+                    <!-- Item 1.1 -->
+                    <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-8 space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-900">1.1 Portada Oficial y Metadatos Completos</span>
+                                <span class="text-[10px] text-slate-400 font-mono">Requisito Obligatorio</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Contiene la portada estándar con Jira Ticket, estado del diseño (WIP/Ready/QA), célula, autor(a) y versión del archivo.</p>
+                        </div>
+                        <div class="md:col-span-4 flex items-center justify-end gap-3">
+                            <span class="text-xs font-mono font-bold text-brandPurple w-8 text-right" id="val_r1_1">5</span>
+                            <input type="range" min="1" max="5" value="5" class="w-36 slider-thumb accent-brandPink bg-slate-200 rounded-lg h-2" oninput="updateScore('r1_1', this.value)">
+                        </div>
+                    </div>
+
+                    <!-- Item 1.2 -->
+                    <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-8 space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-900">1.2 Organización Semántica de Páginas</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Páginas nombradas ordenadamente (ej. Cover, Flows, Ready for Dev, Sandbox, Local Components). Cero páginas vacías o sin propósito.</p>
+                        </div>
+                        <div class="md:col-span-4 flex items-center justify-end gap-3">
+                            <span class="text-xs font-mono font-bold text-brandPurple w-8 text-right" id="val_r1_2">5</span>
+                            <input type="range" min="1" max="5" value="5" class="w-36 slider-thumb accent-brandPink bg-slate-200 rounded-lg h-2" oninput="updateScore('r1_2', this.value)">
+                        </div>
+                    </div>
+
+                    <!-- Item 1.3 -->
+                    <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-8 space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-900">1.3 Higiene del Canvas y Nombres de Capas</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Capas renombradas según su función semántica. Cero frames anónimos ('Frame 8492', 'Group 23') y sin elementos ocultos o basura dispersa en el canvas.</p>
+                        </div>
+                        <div class="md:col-span-4 flex items-center justify-end gap-3">
+                            <span class="text-xs font-mono font-bold text-brandPurple w-8 text-right" id="val_r1_3">5</span>
+                            <input type="range" min="1" max="5" value="5" class="w-36 slider-thumb accent-brandPink bg-slate-200 rounded-lg h-2" oninput="updateScore('r1_3', this.value)">
+                        </div>
+                    </div>
+
+                    <!-- Item 1.4 -->
+                    <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-8 space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-900">1.4 Limpieza de Estilos y Estructura Modular</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Ausencia de estilos huérfanos o componentes locales rotos. Orden coherente de izquierda a derecha o arriba a abajo en los flujos.</p>
+                        </div>
+                        <div class="md:col-span-4 flex items-center justify-end gap-3">
+                            <span class="text-xs font-mono font-bold text-brandPurple w-8 text-right" id="val_r1_4">5</span>
+                            <input type="range" min="1" max="5" value="5" class="w-36 slider-thumb accent-brandPink bg-slate-200 rounded-lg h-2" oninput="updateScore('r1_4', this.value)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50/70 px-6 py-3.5 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center gap-3">
+                    <label class="text-xs font-semibold text-slate-600 flex items-center gap-1.5 shrink-0">
+                        <i class="fa-regular fa-comment-dots text-brandPurple"></i>
+                        <span>Comentarios del Rubro 1 (Opcional):</span>
+                    </label>
+                    <input type="text" id="commentR1" placeholder="Ej: Portada completa pero faltó nombrar frames en sección de flujos..." class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-brandPink/30 focus:border-brandPink font-medium text-slate-800 transition">
+                </div>
+            </div>
+
+            <!-- TAB PANEL 2: ADOPCIÓN DESIGN SYSTEM GLUE (25%) -->
+            <div id="tabPanel2" class="rubric-panel hidden">
+                <div class="bg-pink-50/50 px-6 py-4 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-pink-100 text-brandPink flex items-center justify-center font-bold text-sm font-display">02</span>
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-900 font-display">Adopción del Design System GLUE y Tokens</h3>
+                            <p class="text-xs text-slate-500">Componentización estricta, uso de tokens de color/tipografía y cero elementos detached.</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-bold text-brandPink bg-pink-100/70 border border-pink-200 px-2.5 py-1 rounded-full font-mono">Ponderación: 25%</span>
+                    </div>
+                </div>
+
+                <div class="p-6 divide-y divide-slate-100">
+                    <!-- Item 2.1 -->
+                    <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-8 space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-900">2.1 100% Componentes Vinculados (0% Detached)</span>
+                                <span class="text-[10px] bg-rose-100 text-rose-700 px-1.5 py-0.5 rounded font-mono font-bold">Filtro Crítico</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Todos los componentes (botones, inputs, cards, modales, headers) provienen directamente de la librería oficial GLUE sin desvincular.</p>
+                        </div>
+                        <div class="md:col-span-4 flex items-center justify-end gap-3">
+                            <span class="text-xs font-mono font-bold text-brandPink w-8 text-right" id="val_r2_1">5</span>
+                            <input type="range" min="1" max="5" value="5" class="w-36 slider-thumb accent-brandPink bg-slate-200 rounded-lg h-2" oninput="updateScore('r2_1', this.value)">
+                        </div>
+                    </div>
+
+                    <!-- Item 2.2 -->
+                    <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-8 space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-900">2.2 Uso Estricto de Tokens de Color y Tipografía</span>
+                            </div>
+                            <p class="text-xs text-slate-500">No existen colores hexadecimales 'hardcodeados' ni fuentes fuera del sistema tipográfico institucional (ej. Montserrat / Poppins / Lato).</p>
+                        </div>
+                        <div class="md:col-span-4 flex items-center justify-end gap-3">
+                            <span class="text-xs font-mono font-bold text-brandPink w-8 text-right" id="val_r2_2">5</span>
+                            <input type="range" min="1" max="5" value="5" class="w-36 slider-thumb accent-brandPink bg-slate-200 rounded-lg h-2" oninput="updateScore('r2_2', this.value)">
+                        </div>
+                    </div>
+
+                    <!-- Item 2.3 -->
+                    <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-8 space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-900">2.3 Implementación de Variantes y Component Properties</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Uso adecuado de switches booleanos, text properties e icon swaps en lugar de duplicar componentes locales manualmente.</p>
+                        </div>
+                        <div class="md:col-span-4 flex items-center justify-end gap-3">
+                            <span class="text-xs font-mono font-bold text-brandPink w-8 text-right" id="val_r2_3">5</span>
+                            <input type="range" min="1" max="5" value="5" class="w-36 slider-thumb accent-brandPink bg-slate-200 rounded-lg h-2" oninput="updateScore('r2_3', this.value)">
+                        </div>
+                    </div>
+
+                    <!-- Item 2.4 -->
+                    <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-8 space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-900">2.4 Cero Redundancia de Patrones UI</span>
+                            </div>
+                            <p class="text-xs text-slate-500">No se inventaron patrones nuevos cuando ya existía una solución equivalente aprobada en GLUE.</p>
+                        </div>
+                        <div class="md:col-span-4 flex items-center justify-end gap-3">
+                            <span class="text-xs font-mono font-bold text-brandPink w-8 text-right" id="val_r2_4">5</span>
+                            <input type="range" min="1" max="5" value="5" class="w-36 slider-thumb accent-brandPink bg-slate-200 rounded-lg h-2" oninput="updateScore('r2_4', this.value)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50/70 px-6 py-3.5 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center gap-3">
+                    <label class="text-xs font-semibold text-slate-600 flex items-center gap-1.5 shrink-0">
+                        <i class="fa-regular fa-comment-dots text-brandPink"></i>
+                        <span>Comentarios del Rubro 2 (Opcional):</span>
+                    </label>
+                    <input type="text" id="commentR2" placeholder="Ej: Se detectaron 2 botones desvinculados en el modal de confirmación..." class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-brandPink/30 focus:border-brandPink font-medium text-slate-800 transition">
+                </div>
+            </div>
+
+            <!-- TAB PANEL 3: RESPONSIVE & AUTO LAYOUT (20%) -->
+            <div id="tabPanel3" class="rubric-panel hidden">
+                <div class="bg-blue-50/50 px-6 py-4 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm font-display">03</span>
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-900 font-display">Interacción, Responsive Design y Auto Layout</h3>
+                            <p class="text-xs text-slate-500">Fluidez de contenedores, comportamiento responsive y estados interactivos.</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-bold text-blue-600 bg-blue-100/70 border border-blue-200 px-2.5 py-1 rounded-full font-mono">Ponderación: 20%</span>
+                    </div>
+                </div>
+
+                <div class="p-6 divide-y divide-slate-100">
+                    <!-- Item 3.1 -->
+                    <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-8 space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-900">3.1 Contenedores 100% Auto Layout (Fill / Hug)</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Los frames y módulos se adaptan fluidamente al contenido (Hug contents) o al contenedor (Fill container) sin anchos fijos que quiebren en dev.</p>
+                        </div>
+                        <div class="md:col-span-4 flex items-center justify-end gap-3">
+                            <span class="text-xs font-mono font-bold text-blue-600 w-8 text-right" id="val_r3_1">5</span>
+                            <input type="range" min="1" max="5" value="5" class="w-36 slider-thumb accent-brandPink bg-slate-200 rounded-lg h-2" oninput="updateScore('r3_1', this.value)">
+                        </div>
+                    </div>
+
+                    <!-- Item 3.2 -->
+                    <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-8 space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-900">3.2 Cobertura de Breakpoints Oficiales</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Se diseñaron y comprobaron los breakpoints requeridos para el producto (Mobile 375/390px, Tablet 768px, Desktop 1280/1440px o POS).</p>
+                        </div>
+                        <div class="md:col-span-4 flex items-center justify-end gap-3">
+                            <span class="text-xs font-mono font-bold text-blue-600 w-8 text-right" id="val_r3_2">5</span>
+                            <input type="range" min="1" max="5" value="5" class="w-36 slider-thumb accent-brandPink bg-slate-200 rounded-lg h-2" oninput="updateScore('r3_2', this.value)">
+                        </div>
+                    </div>
+
+                    <!-- Item 3.3 -->
+                    <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-8 space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-900">3.3 Sistema de Espaciados y Grillas (Grid System)</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Mapeo estricto del sistema de 8 puntos (padding y gap múltiplos de 4 u 8px) en todas las jerarquías.</p>
+                        </div>
+                        <div class="md:col-span-4 flex items-center justify-end gap-3">
+                            <span class="text-xs font-mono font-bold text-blue-600 w-8 text-right" id="val_r3_3">5</span>
+                            <input type="range" min="1" max="5" value="5" class="w-36 slider-thumb accent-brandPink bg-slate-200 rounded-lg h-2" oninput="updateScore('r3_3', this.value)">
+                        </div>
+                    </div>
+
+                    <!-- Item 3.4 -->
+                    <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-8 space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-900">3.4 Estados Interactivos de Componentes</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Se especifican claramente los estados interactivos: Default, Hover, Focus, Pressed, Disabled y Loading.</p>
+                        </div>
+                        <div class="md:col-span-4 flex items-center justify-end gap-3">
+                            <span class="text-xs font-mono font-bold text-blue-600 w-8 text-right" id="val_r3_4">5</span>
+                            <input type="range" min="1" max="5" value="5" class="w-36 slider-thumb accent-brandPink bg-slate-200 rounded-lg h-2" oninput="updateScore('r3_4', this.value)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50/70 px-6 py-3.5 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center gap-3">
+                    <label class="text-xs font-semibold text-slate-600 flex items-center gap-1.5 shrink-0">
+                        <i class="fa-regular fa-comment-dots text-blue-600"></i>
+                        <span>Comentarios del Rubro 3 (Opcional):</span>
+                    </label>
+                    <input type="text" id="commentR3" placeholder="Ej: Ajustar contenedores a Fill container en breakpoint tablet 768px..." class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-brandPink/30 focus:border-brandPink font-medium text-slate-800 transition">
+                </div>
+            </div>
+
+            <!-- TAB PANEL 4: FLUJOS & EDGE CASES (20%) -->
+            <div id="tabPanel4" class="rubric-panel hidden">
+                <div class="bg-emerald-50/50 px-6 py-4 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-sm font-display">04</span>
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-900 font-display">Flujos de Usuario y Mapeo de Casos Borde</h3>
+                            <p class="text-xs text-slate-500">Completitud del recorrido, validaciones, estados vacíos y manejo de errores.</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-bold text-emerald-600 bg-emerald-100/70 border border-emerald-200 px-2.5 py-1 rounded-full font-mono">Ponderación: 20%</span>
+                    </div>
+                </div>
+
+                <div class="p-6 divide-y divide-slate-100">
+                    <!-- Item 4.1 -->
+                    <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-8 space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-900">4.1 Flujo Integral de Punta a Punta (End-to-End)</span>
+                            </div>
+                            <p class="text-xs text-slate-500">El flujo resuelve la necesidad funcional completa sin saltos de contexto ni contradicciones en el viaje del usuario.</p>
+                        </div>
+                        <div class="md:col-span-4 flex items-center justify-end gap-3">
+                            <span class="text-xs font-mono font-bold text-emerald-600 w-8 text-right" id="val_r4_1">5</span>
+                            <input type="range" min="1" max="5" value="5" class="w-36 slider-thumb accent-brandPink bg-slate-200 rounded-lg h-2" oninput="updateScore('r4_1', this.value)">
+                        </div>
+                    </div>
+
+                    <!-- Item 4.2 -->
+                    <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-8 space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-900">4.2 Casos Borde y Escenarios de Error (Edge Cases)</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Documentación de caídas de servicio, timeouts, errores 404/500, transacciones fallidas y reglas de reintento.</p>
+                        </div>
+                        <div class="md:col-span-4 flex items-center justify-end gap-3">
+                            <span class="text-xs font-mono font-bold text-emerald-600 w-8 text-right" id="val_r4_2">5</span>
+                            <input type="range" min="1" max="5" value="5" class="w-36 slider-thumb accent-brandPink bg-slate-200 rounded-lg h-2" oninput="updateScore('r4_2', this.value)">
+                        </div>
+                    </div>
+
+                    <!-- Item 4.3 -->
+                    <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-8 space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-900">4.3 Estados Vacíos (Empty States) y Validaciones</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Mapeo de estados 'sin resultados', primera visita (onboarding) y mensajes de validación de formularios en tiempo real.</p>
+                        </div>
+                        <div class="md:col-span-4 flex items-center justify-end gap-3">
+                            <span class="text-xs font-mono font-bold text-emerald-600 w-8 text-right" id="val_r4_3">5</span>
+                            <input type="range" min="1" max="5" value="5" class="w-36 slider-thumb accent-brandPink bg-slate-200 rounded-lg h-2" oninput="updateScore('r4_3', this.value)">
+                        </div>
+                    </div>
+
+                    <!-- Item 4.4 -->
+                    <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-8 space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-900">4.4 Anotaciones Funcionales y Reglas de Negocio</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Notas claras en el canvas explicando el comportamiento de APIs, condiciones de renderizado y lógica transaccional.</p>
+                        </div>
+                        <div class="md:col-span-4 flex items-center justify-end gap-3">
+                            <span class="text-xs font-mono font-bold text-emerald-600 w-8 text-right" id="val_r4_4">5</span>
+                            <input type="range" min="1" max="5" value="5" class="w-36 slider-thumb accent-brandPink bg-slate-200 rounded-lg h-2" oninput="updateScore('r4_4', this.value)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50/70 px-6 py-3.5 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center gap-3">
+                    <label class="text-xs font-semibold text-slate-600 flex items-center gap-1.5 shrink-0">
+                        <i class="fa-regular fa-comment-dots text-emerald-600"></i>
+                        <span>Comentarios del Rubro 4 (Opcional):</span>
+                    </label>
+                    <input type="text" id="commentR4" placeholder="Ej: Faltó documentar el caso borde de timeout en la pasarela bancaria..." class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-brandPink/30 focus:border-brandPink font-medium text-slate-800 transition">
+                </div>
+            </div>
+
+            <!-- TAB PANEL 5: HANDOFF & DEV MODE (15%) -->
+            <div id="tabPanel5" class="rubric-panel hidden">
+                <div class="bg-amber-50/50 px-6 py-4 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-sm font-display">05</span>
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-900 font-display">Preparación de Handoff y Dev Mode</h3>
+                            <p class="text-xs text-slate-500">Sección Ready for Dev, optimización de assets vectoriales y variables de desarrollo.</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs font-bold text-amber-600 bg-amber-100/70 border border-amber-200 px-2.5 py-1 rounded-full font-mono">Ponderación: 15%</span>
+                    </div>
+                </div>
+
+                <div class="p-6 divide-y divide-slate-100">
+                    <!-- Item 5.1 -->
+                    <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-8 space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-900">5.1 Configuración de Sección 'Ready for Dev'</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Secciones marcadas formalmente para Dev Mode en Figma, separando claramente el código final de los experimentos.</p>
+                        </div>
+                        <div class="md:col-span-4 flex items-center justify-end gap-3">
+                            <span class="text-xs font-mono font-bold text-amber-600 w-8 text-right" id="val_r5_1">5</span>
+                            <input type="range" min="1" max="5" value="5" class="w-36 slider-thumb accent-brandPink bg-slate-200 rounded-lg h-2" oninput="updateScore('r5_1', this.value)">
+                        </div>
+                    </div>
+
+                    <!-- Item 5.2 -->
+                    <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-8 space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-900">5.2 Optimización de Assets e Iconografía SVG</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Iconos vectoriales en fill único (outline resuelto), exportables limpios sin trazados rotos y con nombres estándar.</p>
+                        </div>
+                        <div class="md:col-span-4 flex items-center justify-end gap-3">
+                            <span class="text-xs font-mono font-bold text-amber-600 w-8 text-right" id="val_r5_2">5</span>
+                            <input type="range" min="1" max="5" value="5" class="w-36 slider-thumb accent-brandPink bg-slate-200 rounded-lg h-2" oninput="updateScore('r5_2', this.value)">
+                        </div>
+                    </div>
+
+                    <!-- Item 5.3 -->
+                    <div class="py-4 first:pt-0 last:pb-0 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                        <div class="md:col-span-8 space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-slate-900">5.3 Alineación de Nomenclatura con Front-end</span>
+                            </div>
+                            <p class="text-xs text-slate-500">Nombres de propiedades, tokens y variables compatibles con el stack técnico de los desarrolladores.</p>
+                        </div>
+                        <div class="md:col-span-4 flex items-center justify-end gap-3">
+                            <span class="text-xs font-mono font-bold text-amber-600 w-8 text-right" id="val_r5_3">5</span>
+                            <input type="range" min="1" max="5" value="5" class="w-36 slider-thumb accent-brandPink bg-slate-200 rounded-lg h-2" oninput="updateScore('r5_3', this.value)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50/70 px-6 py-3.5 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center gap-3">
+                    <label class="text-xs font-semibold text-slate-600 flex items-center gap-1.5 shrink-0">
+                        <i class="fa-regular fa-comment-dots text-amber-600"></i>
+                        <span>Comentarios del Rubro 5 (Opcional):</span>
+                    </label>
+                    <input type="text" id="commentR5" placeholder="Ej: Seccionar frames listos con la bandera Ready for Dev en Figma..." class="w-full px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-brandPink/30 focus:border-brandPink font-medium text-slate-800 transition">
+                </div>
+            </div>
+
+            <!-- Quick Navigation Footer Controls -->
+            <div class="bg-slate-50/90 px-6 py-3 border-t border-slate-200 flex items-center justify-between">
+                <button type="button" id="prevRubricBtn" onclick="navigateRubricTab(-1)" class="px-3.5 py-1.5 rounded-lg border border-slate-300 text-slate-600 hover:bg-white text-xs font-semibold flex items-center gap-2 transition disabled:opacity-40 disabled:cursor-not-allowed">
+                    <i class="fa-solid fa-chevron-left text-[10px]"></i>
+                    <span>Rubro Anterior</span>
+                </button>
+
+                <div class="flex items-center gap-2">
+                    <span id="tabNavIndicator" class="text-xs font-mono font-bold text-slate-500">1 / 5 Rubros</span>
+                </div>
+
+                <button type="button" id="nextRubricBtn" onclick="navigateRubricTab(1)" class="px-3.5 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 text-xs font-bold flex items-center gap-2 shadow-sm transition">
+                    <span>Siguiente Rubro</span>
+                    <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Qualitative Observations & Actionable Commitments -->
+        <section class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-6">
+            <div class="border-b border-slate-100 pb-3 flex items-center justify-between">
+                <h3 class="text-sm font-bold text-slate-900 font-display flex items-center gap-2">
+                    <i class="fa-solid fa-clipboard-check text-brandPurple"></i>
+                    <span>Diagnóstico Cualitativo y Compromisos del Sprint</span>
+                </h3>
+                <span class="text-xs text-slate-400">Retroalimentación Objetiva</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                        <span>Fortalezas Observadas en el Archivo</span>
+                    </label>
+                    <textarea id="obsStrengths" rows="3" placeholder="Aspectos técnicos sobresalientes, buenas prácticas en componentes o documentación exhaustiva..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brandPink/30 focus:border-brandPink font-medium text-slate-800 transition"></textarea>
+                </div>
+
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
+                        <span>Oportunidades de Mejora / Deuda Técnica Detectada</span>
+                    </label>
+                    <textarea id="obsImprovements" rows="3" placeholder="Componentes desvinculados, omisión de estados de error, problemas de Auto Layout o fallas en nomenclatura..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brandPink/30 focus:border-brandPink font-medium text-slate-800 transition"></textarea>
+                </div>
+
+                <div class="md:col-span-2">
+                    <label class="block font-semibold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                        <i class="fa-solid fa-handshake text-brandPurple"></i>
+                        <span>Compromiso de Ajuste / Acuerdo para el Siguiente Sprint</span>
+                    </label>
+                    <input type="text" id="obsCommitment" placeholder="Acción correctiva concreta a validar en el siguiente checkpoint de revisión..." class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brandPink/30 focus:border-brandPink font-medium text-slate-800 transition">
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400 no-print">
+        <p class="font-medium text-slate-500">Sistema Integral de Evaluación y Auditoría UX Operations (SEAO-UX)</p>
+        <p class="mt-1">El Puerto de Liverpool S.A.B. de C.V. • Confidencial Interno</p>
+    </footer>
+
+    <!-- Toast Notification Element -->
+    <div id="toastMessage" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-slate-900 text-white text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-slate-700">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+        <span id="toastText" class="font-medium">Mensaje informativo</span>
+    </div>
+
+    <script>
+        // State storage for scores
+        const scores = {
+            r1_1: 5, r1_2: 5, r1_3: 5, r1_4: 5, // Rubro 1 (Weight: 20%)
+            r2_1: 5, r2_2: 5, r2_3: 5, r2_4: 5, // Rubro 2 (Weight: 25%)
+            r3_1: 5, r3_2: 5, r3_3: 5, r3_4: 5, // Rubro 3 (Weight: 20%)
+            r4_1: 5, r4_2: 5, r4_3: 5, r4_4: 5, // Rubro 4 (Weight: 20%)
+            r5_1: 5, r5_2: 5, r5_3: 5           // Rubro 5 (Weight: 15%)
+        };
+
+        // Weights configuration
+        const weights = {
+            r1: 0.20,
+            r2: 0.25,
+            r3: 0.20,
+            r4: 0.20,
+            r5: 0.15
+        };
+
+        // Active Rubric Tab State
+        let currentRubricTab = 1;
+
+        function switchRubricTab(tabIndex) {
+            currentRubricTab = tabIndex;
+
+            // Hide all tab panels & deactivate tab buttons
+            for (let i = 1; i <= 5; i++) {
+                const panel = document.getElementById(`tabPanel${i}`);
+                const btn = document.getElementById(`tabBtn${i}`);
+                if (panel) panel.classList.add('hidden');
+                if (btn) {
+                    btn.className = 'rubric-tab flex-1 min-w-[150px] sm:min-w-[170px] py-2.5 px-3 rounded-xl border border-slate-200 text-left transition-all duration-200 bg-slate-100/70 hover:bg-white text-slate-600';
+                    const numSpan = btn.querySelector('span:first-child');
+                    if (numSpan) numSpan.className = 'text-[10px] font-mono font-bold tracking-wider uppercase text-slate-400';
+                    const titleP = btn.querySelector('p');
+                    if (titleP) titleP.className = 'text-xs font-bold font-display truncate text-slate-700 mt-0.5';
+                }
+            }
+
+            // Show active panel
+            const activePanel = document.getElementById(`tabPanel${tabIndex}`);
+            if (activePanel) activePanel.classList.remove('hidden');
+
+            // Highlight active button
+            const activeBtn = document.getElementById(`tabBtn${tabIndex}`);
+            if (activeBtn) {
+                activeBtn.className = 'rubric-tab flex-1 min-w-[150px] sm:min-w-[170px] py-2.5 px-3 rounded-xl border text-left transition-all duration-200 bg-white border-brandPurple text-brandPurple shadow-sm ring-1 ring-brandPurple/20';
+                const numSpan = activeBtn.querySelector('span:first-child');
+                if (numSpan) numSpan.className = 'text-[10px] font-mono font-bold tracking-wider uppercase text-brandPurple';
+                const titleP = activeBtn.querySelector('p');
+                if (titleP) titleP.className = 'text-xs font-bold font-display truncate text-slate-900 mt-0.5';
+            }
+
+            // Update Previous / Next Buttons state
+            const prevBtn = document.getElementById('prevRubricBtn');
+            const nextBtn = document.getElementById('nextRubricBtn');
+            const indicator = document.getElementById('tabNavIndicator');
+
+            if (prevBtn) prevBtn.disabled = (tabIndex === 1);
+            if (nextBtn) {
+                if (tabIndex === 5) {
+                    nextBtn.innerHTML = `<span>Ir a Diagnóstico</span> <i class="fa-solid fa-arrow-down text-[10px]"></i>`;
+                } else {
+                    nextBtn.innerHTML = `<span>Siguiente Rubro</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>`;
+                }
+            }
+            if (indicator) indicator.textContent = `${tabIndex} / 5 Rubros`;
+        }
+
+        function navigateRubricTab(direction) {
+            const nextTab = currentRubricTab + direction;
+            if (nextTab >= 1 && nextTab <= 5) {
+                switchRubricTab(nextTab);
+            } else if (nextTab > 5) {
+                // Scroll down to qualitative section
+                const qualitativeSection = document.getElementById('obsStrengths');
+                if (qualitativeSection) {
+                    qualitativeSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    qualitativeSection.focus();
+                }
+            }
+        }
+
+        function updateScore(key, value) {
+            scores[key] = parseInt(value, 10);
+            const valLabel = document.getElementById(`val_${key}`);
+            if (valLabel) valLabel.textContent = value;
+            calculateAll();
+        }
+
+        function calculateAll() {
+            // Rubro 1 Average (4 items)
+            const avgR1 = (scores.r1_1 + scores.r1_2 + scores.r1_3 + scores.r1_4) / 4;
+            const subR1 = (avgR1 / 5) * (weights.r1 * 100);
+
+            // Rubro 2 Average (4 items)
+            const avgR2 = (scores.r2_1 + scores.r2_2 + scores.r2_3 + scores.r2_4) / 4;
+            const subR2 = (avgR2 / 5) * (weights.r2 * 100);
+
+            // Rubro 3 Average (4 items)
+            const avgR3 = (scores.r3_1 + scores.r3_2 + scores.r3_3 + scores.r3_4) / 4;
+            const subR3 = (avgR3 / 5) * (weights.r3 * 100);
+
+            // Rubro 4 Average (4 items)
+            const avgR4 = (scores.r4_1 + scores.r4_2 + scores.r4_3 + scores.r4_4) / 4;
+            const subR4 = (avgR4 / 5) * (weights.r4 * 100);
+
+            // Rubro 5 Average (3 items)
+            const avgR5 = (scores.r5_1 + scores.r5_2 + scores.r5_3) / 3;
+            const subR5 = (avgR5 / 5) * (weights.r5 * 100);
+
+            // Total Score
+            const totalScore = subR1 + subR2 + subR3 + subR4 + subR5;
+            const roundedTotal = Math.round(totalScore * 10) / 10;
+
+            // Update DOM Subscores
+            document.getElementById('subscoreR1').textContent = `${subR1.toFixed(1)} / 20`;
+            document.getElementById('subscoreR2').textContent = `${subR2.toFixed(1)} / 25`;
+            document.getElementById('subscoreR3').textContent = `${subR3.toFixed(1)} / 20`;
+            document.getElementById('subscoreR4').textContent = `${subR4.toFixed(1)} / 20`;
+            document.getElementById('subscoreR5').textContent = `${subR5.toFixed(1)} / 15`;
+
+            // Update Tab Score Pills
+            const tabR1 = document.getElementById('tabScoreR1');
+            const tabR2 = document.getElementById('tabScoreR2');
+            const tabR3 = document.getElementById('tabScoreR3');
+            const tabR4 = document.getElementById('tabScoreR4');
+            const tabR5 = document.getElementById('tabScoreR5');
+            if (tabR1) tabR1.textContent = `${subR1.toFixed(1)} pts`;
+            if (tabR2) tabR2.textContent = `${subR2.toFixed(1)} pts`;
+            if (tabR3) tabR3.textContent = `${subR3.toFixed(1)} pts`;
+            if (tabR4) tabR4.textContent = `${subR4.toFixed(1)} pts`;
+            if (tabR5) tabR5.textContent = `${subR5.toFixed(1)} pts`;
+
+            // Update Progress Bar Percentages
+            const pctR1 = Math.round((avgR1 / 5) * 100);
+            const pctR2 = Math.round((avgR2 / 5) * 100);
+            const pctR3 = Math.round((avgR3 / 5) * 100);
+            const pctR4 = Math.round((avgR4 / 5) * 100);
+            const pctR5 = Math.round((avgR5 / 5) * 100);
+
+            document.getElementById('barPctR1').textContent = `${pctR1}%`;
+            document.getElementById('barFillR1').style.width = `${pctR1}%`;
+
+            document.getElementById('barPctR2').textContent = `${pctR2}%`;
+            document.getElementById('barFillR2').style.width = `${pctR2}%`;
+
+            document.getElementById('barPctR3').textContent = `${pctR3}%`;
+            document.getElementById('barFillR3').style.width = `${pctR3}%`;
+
+            document.getElementById('barPctR4').textContent = `${pctR4}%`;
+            document.getElementById('barFillR4').style.width = `${pctR4}%`;
+
+            document.getElementById('barPctR5').textContent = `${pctR5}%`;
+            document.getElementById('barFillR5').style.width = `${pctR5}%`;
+
+            // Update Final Score Display
+            const scoreDisplay = document.getElementById('finalScoreDisplay');
+            scoreDisplay.textContent = roundedTotal.toFixed(1);
+
+            // Update Verdict & Badge
+            const badge = document.getElementById('badgeStatus');
+            const verdict = document.getElementById('verdictText');
+
+            if (roundedTotal >= 85) {
+                badge.className = 'px-2.5 py-1 rounded-full text-xs font-bold font-display bg-emerald-100 text-emerald-800';
+                badge.textContent = 'Aprobado • Listo para Dev';
+                verdict.textContent = 'Archivo con rigor técnico sobresaliente. Cumple con la gobernanza de GLUE y facilita el desarrollo sin fricciones.';
+            } else if (roundedTotal >= 70) {
+                badge.className = 'px-2.5 py-1 rounded-full text-xs font-bold font-display bg-amber-100 text-amber-800';
+                badge.textContent = 'Aprobado con Observaciones';
+                verdict.textContent = 'Requiere ajustes menores en higiene o nomenclatura antes de cerrar el sprint. No bloquea desarrollo.';
+            } else {
+                badge.className = 'px-2.5 py-1 rounded-full text-xs font-bold font-display bg-rose-100 text-rose-800';
+                badge.textContent = 'Alerta • Retrabajo Requerido';
+                verdict.textContent = 'Deuda técnica visual severa. Se detectaron componentes rotos, fallas de responsive o falta de casos borde.';
+            }
+        }
+
+        function showToast(text, isSuccess = true) {
+            const toast = document.getElementById('toastMessage');
+            const toastText = document.getElementById('toastText');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastText.textContent = text;
+            if (isSuccess) {
+                toastIcon.className = 'fa-solid fa-circle-check text-emerald-400 text-base';
+            } else {
+                toastIcon.className = 'fa-solid fa-triangle-exclamation text-amber-400 text-base';
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function generateEmailHtml() {
+            const consultant = document.getElementById('metaConsultant').value.trim() || 'No especificado';
+            const coordinator = document.getElementById('metaCoordinator').value.trim() || 'No especificado';
+            const stage = document.getElementById('metaStage').value;
+            const auditDate = document.getElementById('metaDate').value || new Date().toISOString().split('T')[0];
+            const auditor = document.getElementById('metaAuditor').value.trim() || 'No especificado';
+            const score = document.getElementById('finalScoreDisplay').textContent;
+
+            // Subscores
+            const subR1 = document.getElementById('subscoreR1').textContent;
+            const subR2 = document.getElementById('subscoreR2').textContent;
+            const subR3 = document.getElementById('subscoreR3').textContent;
+            const subR4 = document.getElementById('subscoreR4').textContent;
+            const subR5 = document.getElementById('subscoreR5').textContent;
+
+            // Optional comments per rubric
+            const commR1 = document.getElementById('commentR1').value.trim();
+            const commR2 = document.getElementById('commentR2').value.trim();
+            const commR3 = document.getElementById('commentR3').value.trim();
+            const commR4 = document.getElementById('commentR4').value.trim();
+            const commR5 = document.getElementById('commentR5').value.trim();
+
+            // Qualitative feedback
+            const strengths = document.getElementById('obsStrengths').value.trim() || 'Sin observaciones registradas.';
+            const improvements = document.getElementById('obsImprovements').value.trim() || 'Sin observaciones registradas.';
+            const commitment = document.getElementById('obsCommitment').value.trim() || 'Sin acuerdos registrados.';
+
+            // Status color based on score
+            const numScore = parseFloat(score);
+            let badgeBg = '#d1fae5';
+            let badgeColor = '#065f46';
+            let statusText = 'APROBADO • LISTO PARA DEV';
+            let statusDesc = 'El archivo cumple rigurosamente con los estándares de diseño, higiene de capas y componentes de GLUE.';
+
+            if (numScore < 70) {
+                badgeBg = '#ffe4e6';
+                badgeColor = '#9f1239';
+                statusText = 'ALERTA • RETRABAJO REQUERIDO';
+                statusDesc = 'Se detectaron inconsistencias severas, componentes desvinculados o falta de casos borde que bloquean el desarrollo.';
+            } else if (numScore < 85) {
+                badgeBg = '#fef3c7';
+                badgeColor = '#92400e';
+                statusText = 'APROBADO CON OBSERVACIONES';
+                statusDesc = 'El archivo es viable para desarrollo pero requiere ajustes menores en nomenclatura o espaciados.';
+            }
+
+            // Bulletproof Gmail/Email-compatible HTML with inline styles & tables
+            return `<div style="margin: 0; padding: 20px 0; background-color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 620px; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 18px rgba(0,0,0,0.06);">
+    <!-- Header Banner -->
+    <tr>
+      <td style="background: linear-gradient(135deg, #833177 0%, #E10098 100%); padding: 24px 28px; color: #ffffff;">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tr>
+            <td>
+              <div style="font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #fce7f3; margin-bottom: 4px;">El Puerto de Liverpool • UX Operations</div>
+              <h1 style="margin: 0; font-size: 22px; font-weight: 800; color: #ffffff; line-height: 1.2;">Resumen de Auditoría de Archivo Figma</h1>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Main Content Body -->
+    <tr>
+      <td style="padding: 24px 28px;">
+        <!-- Metadata Overview Card -->
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f8fafc; border: 1px solid #edf2f7; border-radius: 12px; margin-bottom: 20px;">
+          <tr>
+            <td style="padding: 16px;">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%" style="font-size: 13px; line-height: 1.5;">
+                <tr>
+                  <td style="color: #64748b; width: 36%; padding-bottom: 6px; font-weight: 600;">Consultor(a) Evaluado(a):</td>
+                  <td style="color: #0f172a; padding-bottom: 6px; font-weight: 700;">${consultant}</td>
+                </tr>
+                <tr>
+                  <td style="color: #64748b; padding-bottom: 6px; font-weight: 600;">Coordinador(a) responsable:</td>
+                  <td style="color: #0f172a; padding-bottom: 6px; font-weight: 600;">${coordinator}</td>
+                </tr>
+                <tr>
+                  <td style="color: #64748b; padding-bottom: 6px; font-weight: 600;">Etapa de la Auditoría:</td>
+                  <td style="color: #0f172a; padding-bottom: 6px;">${stage}</td>
+                </tr>
+                <tr>
+                  <td style="color: #64748b; padding-bottom: 6px; font-weight: 600;">Fecha de auditoría:</td>
+                  <td style="color: #0f172a; padding-bottom: 6px; font-family: monospace; font-weight: 600;">${auditDate}</td>
+                </tr>
+                <tr>
+                  <td style="color: #64748b; font-weight: 600;">Auditor(a) / Evaluador(a):</td>
+                  <td style="color: #0f172a; font-weight: 600;">${auditor}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+
+        <!-- Score Highlight Box -->
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border: 2px solid #f1f5f9; border-radius: 14px; margin-bottom: 24px; background-color: #ffffff;">
+          <tr>
+            <td style="padding: 18px 20px; vertical-align: middle;">
+              <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #64748b;">Calificación Técnica Final</div>
+              <div style="font-size: 38px; font-weight: 900; color: #833177; line-height: 1.1; margin-top: 2px;">
+                ${score} <span style="font-size: 16px; font-weight: 600; color: #94a3b8;">/ 100 pts</span>
+              </div>
+              <div style="font-size: 12px; color: #475569; margin-top: 4px; font-weight: 500;">${statusDesc}</div>
+            </td>
+            <td align="right" style="padding: 18px 20px; vertical-align: middle;">
+              <div style="display: inline-block; background-color: ${badgeBg}; color: ${badgeColor}; padding: 8px 16px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; text-align: center;">
+                ${statusText}
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <!-- Rubric Breakdown Table -->
+        <h3 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 800; color: #1e293b; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #f1f5f9; padding-bottom: 6px;">
+          Desglose Ponderado por Rubro
+        </h3>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="font-size: 13px; margin-bottom: 24px;">
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 9px 0; color: #334155; font-weight: 600;">1. Estructura e Higiene del Archivo (20%)</td>
+            <td align="right" style="padding: 9px 0; font-weight: 800; color: #833177;">${subR1}</td>
+          </tr>
+          ${commR1 ? `<tr><td colspan="2" style="padding: 2px 0 8px 14px; font-size: 11px; color: #64748b; font-style: italic;">↳ Nota: ${commR1}</td></tr>` : ''}
+
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 9px 0; color: #334155; font-weight: 600;">2. Adopción del Design System GLUE (25%)</td>
+            <td align="right" style="padding: 9px 0; font-weight: 800; color: #E10098;">${subR2}</td>
+          </tr>
+          ${commR2 ? `<tr><td colspan="2" style="padding: 2px 0 8px 14px; font-size: 11px; color: #64748b; font-style: italic;">↳ Nota: ${commR2}</td></tr>` : ''}
+
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 9px 0; color: #334155; font-weight: 600;">3. Auto Layout y Responsive Design (20%)</td>
+            <td align="right" style="padding: 9px 0; font-weight: 800; color: #2563eb;">${subR3}</td>
+          </tr>
+          ${commR3 ? `<tr><td colspan="2" style="padding: 2px 0 8px 14px; font-size: 11px; color: #64748b; font-style: italic;">↳ Nota: ${commR3}</td></tr>` : ''}
+
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 9px 0; color: #334155; font-weight: 600;">4. Flujos de Usuario y Casos Borde (20%)</td>
+            <td align="right" style="padding: 9px 0; font-weight: 800; color: #059669;">${subR4}</td>
+          </tr>
+          ${commR4 ? `<tr><td colspan="2" style="padding: 2px 0 8px 14px; font-size: 11px; color: #64748b; font-style: italic;">↳ Nota: ${commR4}</td></tr>` : ''}
+
+          <tr style="border-bottom: 1px solid #f1f5f9;">
+            <td style="padding: 9px 0; color: #334155; font-weight: 600;">5. Preparación de Handoff & Dev Mode (15%)</td>
+            <td align="right" style="padding: 9px 0; font-weight: 800; color: #d97706;">${subR5}</td>
+          </tr>
+          ${commR5 ? `<tr><td colspan="2" style="padding: 2px 0 8px 14px; font-size: 11px; color: #64748b; font-style: italic;">↳ Nota: ${commR5}</td></tr>` : ''}
+        </table>
+
+        <!-- Qualitative Observations -->
+        <h3 style="margin: 0 0 12px 0; font-size: 14px; font-weight: 800; color: #1e293b; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #f1f5f9; padding-bottom: 6px;">
+          Diagnóstico Cualitativo y Compromisos
+        </h3>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="font-size: 12px; margin-bottom: 12px;">
+          <tr>
+            <td style="background-color: #f0fdf4; border-left: 4px solid #16a34a; border-radius: 8px; padding: 12px 14px; margin-bottom: 8px;">
+              <div style="font-weight: bold; color: #15803d; margin-bottom: 3px;">✅ Fortalezas Observadas:</div>
+              <div style="color: #1e293b; line-height: 1.4;">${strengths}</div>
+            </td>
+          </tr>
+          <tr><td style="height: 8px;"></td></tr>
+          <tr>
+            <td style="background-color: #fffbeb; border-left: 4px solid #f59e0b; border-radius: 8px; padding: 12px 14px; margin-bottom: 8px;">
+              <div style="font-weight: bold; color: #b45309; margin-bottom: 3px;">⚠️ Oportunidades de Mejora:</div>
+              <div style="color: #1e293b; line-height: 1.4;">${improvements}</div>
+            </td>
+          </tr>
+          <tr><td style="height: 8px;"></td></tr>
+          <tr>
+            <td style="background-color: #faf5ff; border-left: 4px solid #9333ea; border-radius: 8px; padding: 12px 14px;">
+              <div style="font-weight: bold; color: #7e22ce; margin-bottom: 3px;">🤝 Compromiso de Ajuste para el Sprint:</div>
+              <div style="color: #1e293b; line-height: 1.4;">${commitment}</div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Email Footer -->
+    <tr>
+      <td style="background-color: #f8fafc; border-top: 1px solid #e2e8f0; padding: 14px 28px; text-align: center; font-size: 11px; color: #94a3b8;">
+        Sistema de Auditoría Técnica Figma • El Puerto de Liverpool S.A.B. de C.V. • Confidencial Interno
+      </td>
+    </tr>
+  </table>
+</div>`;
+        }
+
+        function copyEmailSummary() {
+            const emailHtml = generateEmailHtml();
+
+            // Create temporary hidden rich container for clipboard extraction
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = emailHtml;
+            tempDiv.style.position = 'fixed';
+            tempDiv.style.left = '-9999px';
+            tempDiv.style.top = '0';
+            document.body.appendChild(tempDiv);
+
+            // Select node contents to copy both rich HTML format and text
+            const range = document.createRange();
+            range.selectNodeContents(tempDiv);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+
+            let success = false;
+            try {
+                success = document.execCommand('copy');
+            } catch (err) {
+                success = false;
+            }
+
+            selection.removeAllRanges();
+            document.body.removeChild(tempDiv);
+
+            if (success) {
+                showToast('¡Resumen para correo copiado! Pégalo (Ctrl+V) en Gmail');
+            } else {
+                // Fallback: Copy raw HTML text
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = emailHtml;
+                document.body.appendChild(tempTextArea);
+                tempTextArea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast('Código HTML copiado. Pégalo en tu cliente de correo.');
+                } catch (e) {
+                    showToast('No se pudo copiar automáticamente', false);
+                }
+                document.body.removeChild(tempTextArea);
+            }
+        }
+
+        function copyAuditReportHtml() {
+            const htmlSummary = generateEmailHtml();
+
+            // Copy the raw HTML string to clipboard
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = htmlSummary;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            try {
+                document.execCommand('copy');
+                showToast('¡Código HTML copiado al portapapeles!');
+            } catch (err) {
+                showToast('No se pudo copiar automáticamente', false);
+            }
+            document.body.removeChild(tempTextArea);
+        }
+
+        function resetEvaluation() {
+            Object.keys(scores).forEach(k => {
+                scores[k] = 5;
+                const input = document.querySelector(`input[oninput*="'${k}'"]`);
+                if (input) input.value = 5;
+                const label = document.getElementById(`val_${k}`);
+                if (label) label.textContent = 5;
+            });
+            // Clear rubric comments
+            ['commentR1', 'commentR2', 'commentR3', 'commentR4', 'commentR5'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            document.getElementById('metaConsultant').value = '';
+            document.getElementById('metaCoordinator').value = '';
+            document.getElementById('metaStage').selectedIndex = 0;
+            document.getElementById('metaDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('obsStrengths').value = '';
+            document.getElementById('obsImprovements').value = '';
+            document.getElementById('obsCommitment').value = '';
+            switchRubricTab(1);
+            calculateAll();
+            showToast('Formulario reiniciado a valores predeterminados');
+        }
+
+        // Initialize calculation and date on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const dateInput = document.getElementById('metaDate');
+            if (dateInput && !dateInput.value) {
+                dateInput.value = new Date().toISOString().split('T')[0];
+            }
+            calculateAll();
+        });
+    </script>
+</body>
+</html>

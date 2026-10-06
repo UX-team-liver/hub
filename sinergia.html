@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Estratégico de Retrospectiva: UX & Desarrollo IA</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fdf0f7',
+                            100: '#fbe1f0',
+                            500: '#DB0080',
+                            600: '#b90069',
+                            700: '#980055',
+                            800: '#7c0046',
+                            900: '#65033a',
+                        },
+                        ux: {
+                            50: '#fdf2f8',
+                            500: '#ec4899',
+                            600: '#db2777',
+                            700: '#be185d',
+                        },
+                        dev: {
+                            50: '#f0fdf4',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 280px;
+            max-height: 380px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 340px;
+            }
+        }
+        /* Custom scrollbar for tab content */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="h-full text-slate-800 flex flex-col font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Chosen Palette: El Puerto de Liverpool (Rosa #DB0080, Slate-800) -->
+    <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div>
+                        <h1 class="text-base font-bold leading-none">Sinergia UX & Desarrollo IA</h1>
+                        <p class="text-xs text-slate-400 mt-0.5">Guía de Facilitación y Marco Estratégico (90 Min)</p>
+                    </div>
+                </div>
+                
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex space-x-1">
+                    <button onclick="switchTab('agenda')" id="nav-agenda" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-white bg-slate-800 border-b-2 border-brand-500 transition-all">
+                        &#9201; Agenda 90m
+                    </button>
+                    <button onclick="switchTab('diagnostico')" id="nav-diagnostico" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">
+                        &#9878; Diagnóstico & IA
+                    </button>
+                    <button onclick="switchTab('roi')" id="nav-roi" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">
+                        &#128200; ROI & Deuda
+                    </button>
+                    <button onclick="switchTab('marcos')" id="nav-marcos" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">
+                        &#9881; Dual-Track & Trío
+                    </button>
+                    <button onclick="switchTab('acuerdos')" id="nav-acuerdos" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition-all">
+                        &#128221; Generador Acuerdos
+                    </button>
+                </nav>
+
+                <!-- Workshop Timer Quick Control -->
+                <div class="hidden lg:flex items-center bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700 text-xs text-slate-300 space-x-2">
+                    <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Sesión de 90 Minutos</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Scrollable -->
+        <div class="md:hidden flex overflow-x-auto px-2 py-2 border-t border-slate-800 space-x-1 no-scrollbar bg-slate-900">
+            <button onclick="switchTab('agenda')" id="mobile-nav-agenda" class="px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap bg-slate-800 text-white">Agenda 90m</button>
+            <button onclick="switchTab('diagnostico')" id="mobile-nav-diagnostico" class="px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap text-slate-300">Diagnóstico</button>
+            <button onclick="switchTab('roi')" id="mobile-nav-roi" class="px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap text-slate-300">ROI & Deuda</button>
+            <button onclick="switchTab('marcos')" id="mobile-nav-marcos" class="px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap text-slate-300">Dual-Track</button>
+            <button onclick="switchTab('acuerdos')" id="mobile-nav-acuerdos" class="px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap text-slate-300">Acuerdos</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- TAB 1: AGENDA 90 MINUTOS (LIVE FACILITATOR GUIDE) -->
+        <section id="tab-agenda" class="tab-content block space-y-6">
+            
+            <!-- Section Intro -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-brand-50 text-brand-700 border border-brand-200">
+                            &#127897; Guía Interactiva para el Gerente
+                        </span>
+                        <h2 class="text-2xl font-bold text-slate-900 mt-2">Agenda de Retrospectiva Estratégica (90 Minutos)</h2>
+                        <p class="text-slate-600 text-sm mt-1 max-w-3xl">
+                            Esta sesión no busca buscar culpables ni exigir "mejor actitud". Está estructurada para desmantelar barreras defensivas, alinear paradigmas de trabajo y transformar la fricción entre UX y Desarrollo en reglas de colaboración claras y ejecutables.
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-2 bg-slate-50 p-3 rounded-lg border border-slate-200 shrink-0">
+                        <div class="text-center px-3">
+                            <span class="block text-xs font-bold text-slate-500 uppercase">Tiempo Total</span>
+                            <span class="text-xl font-black text-slate-900">90 Min</span>
+                        </div>
+                        <div class="border-l border-slate-200 h-8"></div>
+                        <div class="text-center px-3">
+                            <span class="block text-xs font-bold text-slate-500 uppercase">Fases</span>
+                            <span class="text-xl font-black text-brand-600">5 Módulos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Agenda Timeline Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Left: Interactive Phase List (4 cols) -->
+                <div class="lg:col-span-4 space-y-3">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 px-1">Fases de la Sesión</h3>
+                    
+                    <button onclick="selectPhase(1)" id="phase-btn-1" class="phase-btn w-full text-left p-4 rounded-xl border-2 transition-all bg-white border-brand-500 shadow-md">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">Fase 1 (15 min)</span>
+                            <span class="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-mono font-bold">00:00 - 00:15</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-base mt-1">Calibración & Seguridad Psicológica</h4>
+                        <p class="text-xs text-slate-500 mt-1 line-clamp-2">Directiva principal, check-in de seguridad anónimo y enmarque del ROI de UX.</p>
+                    </button>
+
+                    <button onclick="selectPhase(2)" id="phase-btn-2" class="phase-btn w-full text-left p-4 rounded-xl border-2 border-slate-200 hover:border-slate-300 transition-all bg-white">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Fase 2 (20 min)</span>
+                            <span class="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-mono font-bold">00:15 - 00:35</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-base mt-1">La "Peor Idea Posible" & Espejo</h4>
+                        <p class="text-xs text-slate-500 mt-1 line-clamp-2">Dinámica subversiva para desactivar posturas defensivas y mapear disfunciones.</p>
+                    </button>
+
+                    <button onclick="selectPhase(3)" id="phase-btn-3" class="phase-btn w-full text-left p-4 rounded-xl border-2 border-slate-200 hover:border-slate-300 transition-all bg-white">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Fase 3 (25 min)</span>
+                            <span class="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-mono font-bold">00:35 - 01:00</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-base mt-1">Sinergia & Riesgo (1-2-4-All)</h4>
+                        <p class="text-xs text-slate-500 mt-1 line-clamp-2">Evaluación cruzada de iniciativa de IA real para acordar hechos sobre opiniones.</p>
+                    </button>
+
+                    <button onclick="selectPhase(4)" id="phase-btn-4" class="phase-btn w-full text-left p-4 rounded-xl border-2 border-slate-200 hover:border-slate-300 transition-all bg-white">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Fase 4 (15 min)</span>
+                            <span class="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-mono font-bold">01:00 - 01:15</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-base mt-1">Clarificación de Flujos de Trabajo</h4>
+                        <p class="text-xs text-slate-500 mt-1 line-clamp-2">Presentación de Dual-Track Agile y la regla de los 5 usuarios en testing.</p>
+                    </button>
+
+                    <button onclick="selectPhase(5)" id="phase-btn-5" class="phase-btn w-full text-left p-4 rounded-xl border-2 border-slate-200 hover:border-slate-300 transition-all bg-white">
+                        <div class="flex justify-between items-start">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Fase 5 (15 min)</span>
+                            <span class="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-mono font-bold">01:15 - 01:30</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-base mt-1">Acuerdos de Trabajo & Cierre</h4>
+                        <p class="text-xs text-slate-500 mt-1 line-clamp-2">Formalización de Working Agreements y definición del Definition of Done.</p>
+                    </button>
+                </div>
+
+                <!-- Right: Detailed Facilitator Card (8 cols) -->
+                <div class="lg:col-span-8 bg-white rounded-xl border border-slate-200 shadow-sm p-6 flex flex-col justify-between">
+                    <div id="phase-detail-content">
+                        <!-- Content dynamically updated via JS -->
+                    </div>
+
+                    <!-- Bottom Controls -->
+                    <div class="pt-6 border-t border-slate-100 flex items-center justify-between mt-6">
+                        <button onclick="prevPhase()" id="btn-prev-phase" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50 transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                            &#8592; Fase Anterior
+                        </button>
+                        <span id="phase-counter" class="text-xs font-bold text-slate-500 font-mono">Fase 1 de 5</span>
+                        <button onclick="nextPhase()" id="btn-next-phase" class="px-4 py-2 rounded-lg bg-brand-600 text-white font-semibold text-sm hover:bg-brand-700 transition-all">
+                            Siguiente Fase &#8594;
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 2: DIAGNÓSTICO & PARADIGMAS (IA VS UX) -->
+        <section id="tab-diagnostico" class="tab-content hidden space-y-6">
+            
+            <!-- Section Intro -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                    &#9878; Análisis de Causa Raíz
+                </span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-2">Diagnóstico de Conflicto: Velocidad Técnica vs. Cognición Humana</h2>
+                <p class="text-slate-600 text-sm mt-1 max-w-4xl">
+                    Los roces entre UX y Desarrollo no son fallas de "actitud", sino el choque predecible de dos paradigmas operativos distintos. Mientras Desarrollo prioriza reducir la latencia de los modelos de IA e iterar rápido, UX diseña para generar confianza en el usuario y mitigar errores algorítmicos.
+                </p>
+            </div>
+
+            <!-- Paradigm Comparison Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Dev AI Paradigm -->
+                <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl p-6 text-white border border-slate-700">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-xs font-bold border border-emerald-500/30">Paradigma de Desarrollo & IA</span>
+                        <span class="text-2xl">&#128187;</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Enfoque: Rendimiento & Latencia Algorítmica</h3>
+                    <ul class="space-y-2.5 text-xs text-slate-300">
+                        <li class="flex items-start">
+                            <span class="text-emerald-400 mr-2 font-bold">&#10003;</span>
+                            <span><strong>Métrica de éxito:</strong> Tiempos cortos de respuesta, throughput del modelo y velocidad de despliegue.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-emerald-400 mr-2 font-bold">&#10003;</span>
+                            <span><strong>Entorno estocástico:</strong> Manejan modelos de probabilidad que cambian constantemente.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-emerald-400 mr-2 font-bold">&#10003;</span>
+                            <span><strong>Percepción de fricción:</strong> Cualquier pantalla adicional o ajuste visual se percibe como una demora inútil.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- UX Paradigm -->
+                <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl p-6 text-white border border-slate-700">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="px-3 py-1 bg-ux-500/20 text-ux-500 rounded-full text-xs font-bold border border-ux-500/30">Paradigma de UX 3.0 & HCAI</span>
+                        <span class="text-2xl">&#129504;</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Enfoque: Confianza & Ergonomía Cognitiva</h3>
+                    <ul class="space-y-2.5 text-xs text-slate-300">
+                        <li class="flex items-start">
+                            <span class="text-ux-500 mr-2 font-bold">&#10003;</span>
+                            <span><strong>Métrica de éxito:</strong> Adopción sostenida, interpretabilidad de la IA y baja tasa de abandono.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-ux-500 mr-2 font-bold">&#10003;</span>
+                            <span><strong>Brecha de Confianza:</strong> Los humanos procesan riesgos a un ritmo más lento que los servidores.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-ux-500 mr-2 font-bold">&#10003;</span>
+                            <span><strong>Fricción Estratégica:</strong> A veces ralentizar una interfaz (mostrar razonamiento) genera más confianza que dar un resultado instantáneo.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Interactive Tool: Reversibility & Impact Matrix Explorer -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-4">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900">Matriz de Reversibilidad e Impacto para la Super App</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Utiliza este marco para acordar cuándo la velocidad es prioridad y cuándo el diseño detallado de UX es obligatorio.</p>
+                </div>
+
+                <!-- Matrix Filter Buttons -->
+                <div class="flex flex-wrap gap-2 pt-2">
+                    <button onclick="filterMatrix('all')" id="mbtn-all" class="matrix-btn text-xs font-bold px-3 py-1.5 rounded-lg bg-brand-600 text-white border border-brand-600">
+                        Ver Todos los Cuadrantes
+                    </button>
+                    <button onclick="filterMatrix('high-low')" id="mbtn-high-low" class="matrix-btn text-xs font-bold px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-300">
+                        Alto Impacto / Irreversible (Fricción Obligatoria)
+                    </button>
+                    <button onclick="filterMatrix('low-high')" id="mbtn-low-high" class="matrix-btn text-xs font-bold px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-300">
+                        Bajo Impacto / Alta Reversibilidad (Velocidad Máxima)
+                    </button>
+                </div>
+
+                <!-- Dynamic Grid Matrix -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2" id="matrix-cards-container">
+                    
+                    <!-- Card 1 -->
+                    <div class="matrix-card high-low p-4 rounded-xl border-2 border-rose-200 bg-rose-50/50 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-extrabold uppercase px-2 py-0.5 rounded bg-rose-100 text-rose-800">Alto Impacto &bull; Irreversible</span>
+                            <span class="text-xs font-bold text-slate-500">Ej: Transferencia monetaria / Modelo de IA permanente</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm">Enfoque de UX: Fricción Estratégica Obligatoria</h4>
+                        <p class="text-xs text-slate-600">Requiere deliberación visible, verificación de múltiples pasos y pantallas explícitas de confirmación.</p>
+                        <div class="text-xs font-semibold text-rose-900 bg-white p-2 rounded border border-rose-200">
+                            <strong>Acuerdo Dev/UX:</strong> Desarrollo desacopla la latencia de backend y renderiza estados intermedios explicativos.
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="matrix-card high-high p-4 rounded-xl border-2 border-amber-200 bg-amber-50/50 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-extrabold uppercase px-2 py-0.5 rounded bg-amber-100 text-amber-800">Alto Impacto &bull; Reversible</span>
+                            <span class="text-xs font-bold text-slate-500">Ej: Rebalanceo de portafolio por IA</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm">Enfoque de UX: Barandillas Visibles (Guardrails)</h4>
+                        <p class="text-xs text-slate-600">Mostrar el progreso y permitir deshacer (Undo) fácilmente sin bloquear al usuario.</p>
+                        <div class="text-xs font-semibold text-amber-900 bg-white p-2 rounded border border-amber-200">
+                            <strong>Acuerdo Dev/UX:</strong> Dev expone webhooks de cancelación rápida; UX minimiza pasos obligatorios.
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="matrix-card low-high p-4 rounded-xl border-2 border-emerald-200 bg-emerald-50/50 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-extrabold uppercase px-2 py-0.5 rounded bg-emerald-100 text-emerald-800">Bajo Impacto &bull; Reversible</span>
+                            <span class="text-xs font-bold text-slate-500">Ej: Guardar un borrador / Dar 'Like'</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm">Enfoque de UX: Cero Fricción / Clics Mínimos</h4>
+                        <p class="text-xs text-slate-600">Prioridad total a la velocidad de respuesta técnica y feedback visual instantáneo.</p>
+                        <div class="text-xs font-semibold text-emerald-900 bg-white p-2 rounded border border-emerald-200">
+                            <strong>Acuerdo Dev/UX:</strong> Optimización técnica extrema; UX acepta diseño estándar preexistente.
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="matrix-card low-low p-4 rounded-xl border-2 border-slate-200 bg-slate-50 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-extrabold uppercase px-2 py-0.5 rounded bg-slate-200 text-slate-700">Bajo Impacto &bull; Irreversible</span>
+                            <span class="text-xs font-bold text-slate-500">Ej: Publicación de comentario</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-sm">Enfoque de UX: Empujón Suave (Gentle Nudge)</h4>
+                        <p class="text-xs text-slate-600">Notificación o todo en pantalla rápida sin detener el flujo principal.</p>
+                        <div class="text-xs font-semibold text-slate-800 bg-white p-2 rounded border border-slate-200">
+                            <strong>Acuerdo Dev/UX:</strong> Validación asíncrona en servidor; UI no bloqueante.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Thomas-Kilmann Conflict Resolution Note -->
+            <div class="bg-indigo-900 text-white rounded-xl p-6 border border-indigo-800 flex flex-col sm:flex-row items-center gap-4">
+                <div class="text-4xl shrink-0">&#129309;</div>
+                <div class="space-y-1">
+                    <h4 class="font-bold text-base">Modelo de Conflicto de Thomas-Kilmann</h4>
+                    <p class="text-xs text-indigo-200">
+                        Actualmente, Desarrollo opera bajo un estilo <strong>Competitivo/Evasivo</strong> (forzar tiempos) y UX en <strong>Acomodaticio/Resentido</strong>. El objetivo de la retrospectiva es mover a ambos equipos hacia el estilo <strong>Colaborativo</strong>, reconociendo que la usabilidad y la factibilidad técnica son igual de críticas para el negocio.
+                    </p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- TAB 3: ROI & DEUDA DE UX (CHARTS & DATA) -->
+        <section id="tab-roi" class="tab-content hidden space-y-6">
+            
+            <!-- Intro -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    &#128200; Justificación Económica
+                </span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-2">El Impacto Financiero de UX vs. La Deuda Técnica</h2>
+                <p class="text-slate-600 text-sm mt-1 max-w-4xl">
+                    Rechazar ajustes de UX por "falta de tiempo" genera <strong>Deuda de UX</strong>, la cual destruye la retención del usuario de la Super App. Muestra estos datos al equipo de desarrollo durante la sesión para demostrar que el diseño previene el desperdicio de horas de ingeniería.
+                </p>
+            </div>
+
+            <!-- Visual Charts Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                <!-- Chart 1: Cost to Fix Bugs (1x - 10x - 100x) -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-bold text-slate-900 text-base">Costo de Corrección de Errores por Fase</h3>
+                            <span class="text-xs bg-slate-100 font-mono text-slate-600 px-2 py-0.5 rounded">Regla del 1-10-100</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-4">
+                            Corregir un error de flujo en prototipo de Figma es 10 veces más barato que refactorizarlo en código y 100 veces más barato que tras el lanzamiento.
+                        </p>
+                    </div>
+
+                    <!-- Chart Container -->
+                    <div class="chart-container">
+                        <canvas id="costChart"></canvas>
+                    </div>
+
+                    <div class="mt-4 p-3 bg-brand-50 rounded-lg border border-brand-100 text-xs text-brand-900 font-medium">
+                        &#128119; <strong>Mensaje para Devs:</strong> Aceptar el feedback de UX en etapas tempranas no te retrasa; evita que tengas que rehacer tu código de IA más adelante.
+                    </div>
+                </div>
+
+                <!-- Chart 2: 5-User Usability Curve (Nielsen Norman Group) -->
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-bold text-slate-900 text-base">Regla de los 5 Usuarios en Testing</h3>
+                            <span class="text-xs bg-slate-100 font-mono text-slate-600 px-2 py-0.5 rounded">Detección de Usabilidad</span>
+                        </div>
+                        <p class="text-xs text-slate-500 mb-4">
+                            UX no requiere meses de investigación. Probar un prototipo con solo 5 personas detecta hasta el 85% de los errores críticos.
+                        </p>
+                    </div>
+
+                    <!-- Chart Container -->
+                    <div class="chart-container">
+                        <canvas id="userChart"></canvas>
+                    </div>
+
+                    <div class="mt-4 p-3 bg-ux-50 rounded-lg border border-ux-100 text-xs text-ux-900 font-medium">
+                        &#9881; <strong>Mensaje para UX:</strong> El testing no debe frenar el Sprint. Con validaciones cualitativas relámpago de 5 usuarios obtenemos certeza suficiente.
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Comparison Table: Technical Debt vs UX Debt -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 overflow-x-auto">
+                <h3 class="font-bold text-slate-900 text-lg mb-3">Anatomía Comparativa: Deuda Técnica vs. Deuda de UX</h3>
+                <table class="w-full text-left text-xs text-slate-600 border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100 border-b border-slate-200 text-slate-800 font-bold">
+                            <th class="p-3">Característica</th>
+                            <th class="p-3">Deuda Técnica (Engineering Debt)</th>
+                            <th class="p-3">Deuda de Diseño (UX Debt)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        <tr>
+                            <td class="p-3 font-bold text-slate-900">Origen Principal</td>
+                            <td class="p-3">Atajos de arquitectura, código no refactorizado, modelos sin optimizar.</td>
+                            <td class="p-3">Omisión de pruebas de usuario, falta de consistencia de UI, decisiones apresuradas.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-bold text-slate-900">Síntomas Visibles</td>
+                            <td class="p-3">Lentitud en el servidor, caídas de la app, bugs de integración backend.</td>
+                            <td class="p-3">Aumento de carga cognitiva, flujos confusos, llamadas frecuentes a soporte.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-bold text-slate-900">Impacto en Negocio</td>
+                            <td class="p-3">Dificulta el escalamiento del sistema y la entrega de nuevas funciones.</td>
+                            <td class="p-3">Destruye la adopción de la IA, aumenta la tasa de abandono (Churn) y mata la conversión.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <!-- TAB 4: MARCOS OPERATIVOS (DUAL-TRACK & PRODUCT TRIO) -->
+        <section id="tab-marcos" class="tab-content hidden space-y-6">
+            
+            <!-- Section Intro -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                    &#9881; Solución Metodológica
+                </span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-2">Nuevos Marcos de Trabajo: Dual-Track Agile & Product Trio</h2>
+                <p class="text-slate-600 text-sm mt-1 max-w-4xl">
+                    Para eliminar la presión de entregas inmediatas en el mismo Sprint, la organización debe pasar de un flujo en cascada encubierto al modelo <strong>Dual-Track Agile</strong> y la alineación por <strong>Trío de Producto</strong>.
+                </p>
+            </div>
+
+            <!-- Interactive Dual-Track Visualizer -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg">Arquitectura de Dual-Track Agile</h3>
+                        <p class="text-xs text-slate-500">UX investiga y valida 1 o 2 Sprints por delante de los desarrolladores.</p>
+                    </div>
+                    <div class="flex items-center space-x-2 bg-slate-100 p-1.5 rounded-lg text-xs font-bold">
+                        <button onclick="toggleTrackView('traditional')" id="track-btn-trad" class="px-3 py-1.5 rounded-md text-slate-600">Sprint Tradicional (Fricción)</button>
+                        <button onclick="toggleTrackView('dual')" id="track-btn-dual" class="px-3 py-1.5 rounded-md bg-white text-slate-900 shadow-sm">Dual-Track (Recomendado)</button>
+                    </div>
+                </div>
+
+                <!-- Interactive Workflow Render -->
+                <div id="workflow-render-box" class="p-6 rounded-xl border border-slate-200 bg-slate-50">
+                    <!-- Dynamic rendering via JS -->
+                </div>
+            </div>
+
+            <!-- Product Trio Framework Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- PM Card -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold uppercase px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full">Product Manager</span>
+                        <span class="text-xl">&#128188;</span>
+                    </div>
+                    <h4 class="font-bold text-slate-900">Viabilidad de Negocio</h4>
+                    <p class="text-xs text-slate-500">Garantiza que las funciones de IA impacten las métricas de negocio de la Super App y entreguen retorno financiero.</p>
+                    <div class="text-xs text-slate-700 bg-slate-50 p-2.5 rounded border border-slate-200">
+                        <strong>Foco clave:</strong> ¿Vale la pena resolver este problema para el negocio?
+                    </div>
+                </div>
+
+                <!-- UX Card -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold uppercase px-2.5 py-1 bg-ux-50 text-ux-700 rounded-full">UX / Research Lead</span>
+                        <span class="text-xl">&#127912;</span>
+                    </div>
+                    <h4 class="font-bold text-slate-900">Deseabilidad & Utilidad</h4>
+                    <p class="text-xs text-slate-500">Garantiza que la interfaz reduzca la carga cognitiva, cree confianza en la IA y sea utilizable de forma intuitiva.</p>
+                    <div class="text-xs text-slate-700 bg-slate-50 p-2.5 rounded border border-slate-200">
+                        <strong>Foco clave:</strong> ¿El usuario entiende y confía en la respuesta de la IA?
+                    </div>
+                </div>
+
+                <!-- Lead Dev Card -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-bold uppercase px-2.5 py-1 bg-dev-50 text-dev-700 rounded-full">Líder Técnico / Dev IA</span>
+                        <span class="text-xl">&#9881;</span>
+                    </div>
+                    <h4 class="font-bold text-slate-900">Factibilidad Técnica</h4>
+                    <p class="text-xs text-slate-500">Garantiza la viabilidad matemática del modelo, la escalabilidad de la arquitectura y el manejo de latencia.</p>
+                    <div class="text-xs text-slate-700 bg-slate-50 p-2.5 rounded border border-slate-200">
+                        <strong>Foco clave:</strong> ¿Se puede construir dentro de las restricciones de la arquitectura?
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Design Tokens & UX Ops Explanation -->
+            <div class="bg-slate-900 text-white rounded-xl p-6 border border-slate-800 space-y-3">
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs font-bold uppercase px-2 py-0.5 bg-brand-500/20 text-brand-400 rounded border border-brand-500/30">Automatización de Handoff</span>
+                    <h4 class="font-bold text-base text-white">UX Ops: El Poder de los Design Tokens</h4>
+                </div>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                    Para evitar discusiones tediosas sobre márgenes, colores y tamaños de fuente, el equipo implementará <strong>Design Tokens</strong> (variables semánticas compartidas en Figma y código). Cuando UX actualiza un token de interfaz, este se sincroniza en el repositorio sin trabajo manual por parte del desarrollador.
+                </p>
+            </div>
+
+        </section>
+
+        <!-- TAB 5: GENERADOR DE ACUERDOS DE TRABAJO (WORKING AGREEMENTS) -->
+        <section id="tab-acuerdos" class="tab-content hidden space-y-6">
+            
+            <!-- Section Intro -->
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-brand-50 text-brand-700 border border-brand-200">
+                    &#128221; Cierre Practico
+                </span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-2">Generador de Acuerdos de Trabajo (Working Agreements)</h2>
+                <p class="text-slate-600 text-sm mt-1 max-w-4xl">
+                    Utiliza esta herramienta interactiva durante la Fase 5 de la retrospectiva para negociar, seleccionar y exportar los acuerdos de colaboración que regirán al equipo de la Super App de ahora en adelante.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Agreement Checklist Selector (7 cols) -->
+                <div class="lg:col-span-7 bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-4">
+                    <h3 class="font-bold text-slate-900 text-base">Selecciona los Acuerdos que la Mesa Apruebe:</h3>
+
+                    <div class="space-y-3" id="agreements-checklist-container">
+                        <!-- Rendered dynamically -->
+                    </div>
+
+                    <!-- Custom Agreement Input -->
+                    <div class="pt-4 border-t border-slate-200">
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Añadir Acuerdo Personalizado para la Sesión:</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="custom-agreement-input" placeholder="Ej: Las decisiones de UI se revisarán máximo los martes..." class="flex-grow p-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500">
+                            <button onclick="addCustomAgreement()" class="px-3 py-2 bg-slate-800 text-white rounded-lg text-xs font-bold hover:bg-slate-900 transition-all">
+                                Agregar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Final Agreement Output / Document Preview (5 cols) -->
+                <div class="lg:col-span-5 bg-slate-900 text-white rounded-xl p-6 border border-slate-800 flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                            <h3 class="font-bold text-white text-base">Contrato Social Formal</h3>
+                            <span class="text-xs bg-emerald-500/20 text-emerald-400 font-mono font-bold px-2 py-0.5 rounded border border-emerald-500/30">Super App Team</span>
+                        </div>
+
+                        <div class="mt-4 space-y-3 text-xs text-slate-300" id="agreements-output-box">
+                            <!-- Rendered dynamically -->
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-800 space-y-2">
+                        <button onclick="copyAgreements()" class="w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-lg transition-all flex items-center justify-center space-x-2">
+                            <span>&#128203; Copiar Acuerdos al Portapapeles (Jira / Confluence)</span>
+                        </button>
+                        <p class="text-center text-[10px] text-slate-500">Estos acuerdos se incorporarán oficialmente a la Definition of Done (DoD).</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-8">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500 flex flex-col sm:flex-row justify-between items-center gap-2">
+            <span>&#128081; Super App Management Framework &bull; Retrospectiva Estratégica</span>
+            <span>Basado en Dual-Track Agile, Nielsen Norman Group & HCAI</span>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // DATA STATE
+        let currentPhase = 1;
+        let selectedAgreements = [1, 2, 4, 5]; // Default checked indices
+        
+        const phasesData = {
+            1: {
+                title: "Fase 1: Calibración, Seguridad Psicológica y Contexto",
+                time: "15 Minutos (00:00 - 00:15)",
+                badge: "Apertura & Seguridad",
+                steps: [
+                    {
+                        title: "1. Lectura de la Directiva Principal de Retrospectivas (5 min)",
+                        desc: "El gerente abre proyectando y leyendo en voz alta la Directiva de Norm Kerth para desarmar actitudes defensivas:",
+                        script: '"Independientemente de lo que descubramos hoy, entendemos y creemos verdaderamente que todos hicieron el mejos trabajo posible, dado lo que sabían en ese momento, sus habilidades, los recursos disponibles y la situación en cuestión."'
+                    },
+                    {
+                        title: "2. Check-in Anónimo de Seguridad Psicológica (5 min)",
+                        desc: "Solicitar al equipo que vote del 1 al 5 en notas adhesivas o Slido: '¿Qué tan seguro me siento hoy para expresar mis frustraciones sin temor a represalias?'. El gerente comparte primero un error propio para modelar vulnerabilidad."
+                    },
+                    {
+                        title: "3. Alineación del ROI y Propósito de la Sesión (5 min)",
+                        desc: "Compartir el dato clave: Corregir un error en fase de diseño es 10 veces más barato que en código y 100 veces más barato que en producción. Muestra que los ajustes de UX protegen el esfuerzo de los desarrolladores."
+                    }
+                ]
+            },
+            2: {
+                title: "Fase 2: Mapeo de Realidades y 'La Peor Idea Posible'",
+                time: "20 Minutos (00:15 - 00:35)",
+                badge: "Dinámica Subversiva",
+                steps: [
+                    {
+                        title: "1. Lluvia de Ideas: 'La Peor Idea Posible' (15 min)",
+                        desc: "Formar parejas mixtas (1 UXer + 1 Developer). Pedirles responder en 5 minutos: '¿Cuáles son las formas más desastrosas en que UX y Dev podrían colaborar para garantizar el fracaso total de la IA en la Super App?'",
+                        script: 'Ejemplos esperados: "No hablar en todo el Sprint", "Lanzar sin probar con nadie", "Ignorar las guías de diseño y la latencia del backend".'
+                    },
+                    {
+                        title: "2. Ejercicio del Espejo (5 min)",
+                        desc: "Pedir a cada pareja que marque con un punto rojo los comportamientos que se parecen sospechadamente a lo que el equipo está haciendo hoy. Esto permite aceptar disfunciones con humor y sin culpar a nadie."
+                    }
+                ]
+            },
+            3: {
+                title: "Fase 3: Dinámica de Sinergia y Evaluación de Riesgos",
+                time: "25 Minutos (00:35 - 01:00)",
+                badge: "Estructura Liberadora 1-2-4-All",
+                steps: [
+                    {
+                        title: "1. Selección de una Iniciativa de IA Real del Backlog (3 min)",
+                        desc: "Elegir un caso real de la Super App (ej. 'Búsqueda Predictiva con IA' o 'Chatbot de Maquillaje')."
+                    },
+                    {
+                        title: "2. Trabajo bajo la Estructura 1-2-4-All (12 min)",
+                        desc: "• 1 (Silencio individual - 2m): Cada miembro anota los mayores riesgos de usabilidad y latencia.\n• 2 (Parejas Dev-UX - 3m): Fusionan y priorizan sus listas.\n• 4 (Cuartetos - 7m): Crean un consenso de los principales bloqueos."
+                    },
+                    {
+                        title: "3. Plenaria y Criterios Basados en Hechos (10 min)",
+                        desc: "Acordar una métrica imparcial: Las discusiones futuras no se basarán en gustos. 'Si 4 de 5 usuarios no entienden la respuesta de la IA en el test, el ajuste de UX es mandatario antes de liberar código'."
+                    }
+                ]
+            },
+            4: {
+                title: "Fase 4: Clarificación de Flujos y Eficiencia",
+                time: "15 Minutos (01:00 - 01:15)",
+                badge: "Alineación de Metodología",
+                steps: [
+                    {
+                        title: "1. Desmitificando el UX Research (7 min)",
+                        desc: "El líder de UX explica que las pruebas no toman meses: con la regla de los 5 usuarios (Nielsen Norman Group) se detecta el 85% de los errores de usabilidad en prototipos de Figma sin frenar el ritmo del Sprint."
+                    },
+                    {
+                        title: "2. Presentación del Dual-Track Agile (8 min)",
+                        desc: "El gerente establece la nueva regla: UX investiga y diseña 1 o 2 Sprints por delante del trabajo de desarrollo. El backlog entregado a Devs estará depurado y validado, eliminando cambios de última hora."
+                    }
+                ]
+            },
+            5: {
+                title: "Fase 5: Consolidación de Acuerdos de Trabajo y Cierre",
+                time: "15 Minutos (01:15 - 01:30)",
+                badge: "Compromiso & Salida",
+                steps: [
+                    {
+                        title: "1. Co-creación y Votación de Working Agreements (10 min)",
+                        desc: "Utilizar el generador interactivo de acuerdos (Tab 5) para que el equipo apruebe por votación rápida (pulgar arriba/abajo) las normas operativas definitivas."
+                    },
+                    {
+                        title: "2. Cierre y Compromisos de Seguimiento (5 min)",
+                        desc: "Anunciar que los acuerdos se integrarán a la Definition of Done (DoD) en Jira y agendar una breve revisión de 15 minutos en la siguiente retrospectiva para evaluar el cumplimiento."
+                    }
+                ]
+            }
+        };
+
+        const agreementsList = [
+            { id: 1, text: "UX entregará diseños documentados y prototipos validados contemplando todos los estados (carga, error de IA, éxito).", category: "Entregables" },
+            { id: 2, text: "Desarrollo priorizará e integrará ajustes de UI cuando estén respaldados por datos de usabilidad (Regla de 4/5 usuarios).", category: "Evidencia" },
+            { id: 3, text: "Adopción estricta de Dual-Track Agile: UX trabajará de 1 a 2 Sprints por delante del equipo de ingeniería.", category: "Proceso" },
+            { id: 4, text: "Toda limitación técnica o de latencia de IA será comunicada por Desarrollo en las etapas iniciales de diseño.", category: "Transparencia" },
+            { id: 5, text: "Uso de Design Tokens para la automatización de estilos y handoff sin inspección manual pesada.", category: "Herramientas" },
+            { id: 6, text: "Los desacuerdos de usabilidad se resolverán mediante pruebas relámpago con usuarios reales, no por jerarquía ni opiniones.", category: "Cultura" }
+        ];
+
+        // CHART INITIALIZATION
+        let costChartInstance = null;
+        let userChartInstance = null;
+
+        function initCharts() {
+            // Cost Chart
+            const ctxCost = document.getElementById('costChart').getContext('2d');
+            costChartInstance = new Chart(ctxCost, {
+                type: 'bar',
+                data: {
+                    labels: ['Fase de Diseño (Prototipo)', 'Fase de Código (Desarrollo)', 'Fase de Producción (Lanzado)'],
+                    datasets: [{
+                        label: 'Multiplicador de Costo / Tiempo de Corrección',
+                        data: [1, 10, 100],
+                        backgroundColor: ['#96CCEE', '#DA7AB0', '#DB0080'],
+                        borderRadius: 8,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` Costo relativo: ${context.raw}x respecto al prototipo`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            type: 'logarithmic',
+                            title: { display: true, text: 'Costo / Esfuerzo (Escala Log 1x-100x)', font: { size: 10 } }
+                        },
+                        x: {
+                            ticks: {
+                                callback: function(val, index) {
+                                    let label = this.getLabelForValue(index);
+                                    return label.length > 16 ? label.substr(0, 16) + '...' : label;
+                                },
+                                font: { size: 10 }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // User Testing Curve Chart
+            const ctxUser = document.getElementById('userChart').getContext('2d');
+            userChartInstance = new Chart(ctxUser, {
+                type: 'line',
+                data: {
+                    labels: ['0 Usr', '1 Usr', '2 Usr', '3 Usr', '4 Usr', '5 Usr', '10 Usr'],
+                    datasets: [{
+                        label: '% de Errores de Usabilidad Detectados',
+                        data: [0, 35, 55, 68, 78, 85, 95],
+                        borderColor: '#DB0080',
+                        backgroundColor: 'rgba(219, 0, 128, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 5,
+                        pointBackgroundColor: '#DB0080'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` Errores hallados: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            max: 100,
+                            title: { display: true, text: '% Errores Detectados', font: { size: 10 } }
+                        },
+                        x: {
+                            ticks: { font: { size: 10 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        // TAB NAVIGATION
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-slate-800', 'text-white', 'border-b-2', 'border-brand-500');
+                btn.classList.add('text-slate-300');
+            });
+
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.add('bg-slate-800', 'text-white', 'border-b-2', 'border-brand-500');
+                activeNav.classList.remove('text-slate-300');
+            }
+
+            // Sync mobile buttons
+            document.querySelectorAll('[id^="mobile-nav-"]').forEach(btn => {
+                btn.classList.remove('bg-slate-800', 'text-white');
+                btn.classList.add('text-slate-300');
+            });
+            const mobileBtn = document.getElementById(`mobile-nav-${tabId}`);
+            if(mobileBtn) mobileBtn.classList.add('bg-slate-800', 'text-white');
+
+            // Resize charts on view switch
+            if(tabId === 'roi') {
+                setTimeout(() => {
+                    if(costChartInstance) costChartInstance.resize();
+                    if(userChartInstance) userChartInstance.resize();
+                }, 50);
+            }
+        }
+
+        // PHASE RENDERER (TAB 1)
+        function renderPhaseDetail(phaseNum) {
+            const data = phasesData[phaseNum];
+            const container = document.getElementById('phase-detail-content');
+            
+            let html = `
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                        <div>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-extrabold uppercase bg-brand-50 text-brand-700 border border-brand-200">
+                                ${data.badge}
+                            </span>
+                            <h3 class="text-xl font-bold text-slate-900 mt-1">${data.title}</h3>
+                        </div>
+                        <span class="text-xs font-mono font-bold bg-slate-900 text-white px-3 py-1 rounded-full shrink-0">
+                            ${data.time}
+                        </span>
+                    </div>
+
+                    <div class="space-y-4 text-xs text-slate-700">
+            `;
+
+            data.steps.forEach((step, idx) => {
+                html += `
+                    <div class="p-3.5 rounded-lg bg-slate-50 border border-slate-200 space-y-1.5">
+                        <h4 class="font-bold text-slate-900 text-sm">${step.title}</h4>
+                        <p class="text-slate-600 leading-relaxed whitespace-pre-line">${step.desc}</p>
+                        ${step.script ? `<div class="p-2.5 bg-amber-50 border-l-4 border-amber-400 text-amber-900 italic rounded-r font-medium mt-2">${step.script}</div>` : ''}
+                    </div>
+                `;
+            });
+
+            html += `</div></div>`;
+            container.innerHTML = html;
+
+            // Update counter and buttons
+            document.getElementById('phase-counter').innerText = `Fase ${phaseNum} de 5`;
+            document.getElementById('btn-prev-phase').disabled = phaseNum === 1;
+            document.getElementById('btn-next-phase').disabled = phaseNum === 5;
+
+            // Highlight left phase list buttons
+            document.querySelectorAll('.phase-btn').forEach((btn, idx) => {
+                if (idx + 1 === phaseNum) {
+                    btn.classList.add('border-brand-500', 'shadow-md');
+                    btn.classList.remove('border-slate-200');
+                } else {
+                    btn.classList.remove('border-brand-500', 'shadow-md');
+                    btn.classList.add('border-slate-200');
+                }
+            });
+        }
+
+        function selectPhase(num) {
+            currentPhase = num;
+            renderPhaseDetail(currentPhase);
+        }
+
+        function prevPhase() {
+            if (currentPhase > 1) {
+                currentPhase--;
+                renderPhaseDetail(currentPhase);
+            }
+        }
+
+        function nextPhase() {
+            if (currentPhase < 5) {
+                currentPhase++;
+                renderPhaseDetail(currentPhase);
+            }
+        }
+
+        // MATRIX FILTER (TAB 2)
+        function filterMatrix(type) {
+            const cards = document.querySelectorAll('.matrix-card');
+            const btns = document.querySelectorAll('.matrix-btn');
+
+            btns.forEach(b => {
+                b.classList.remove('bg-brand-600', 'text-white', 'border-brand-600');
+                b.classList.add('bg-slate-100', 'text-slate-700', 'border-slate-300');
+            });
+
+            const activeBtn = document.getElementById(`mbtn-${type}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-brand-600', 'text-white', 'border-brand-600');
+                activeBtn.classList.remove('bg-slate-100', 'text-slate-700');
+            }
+
+            cards.forEach(card => {
+                if (type === 'all') {
+                    card.classList.remove('hidden');
+                } else {
+                    if (card.classList.contains(type)) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                }
+            });
+        }
+
+        // WORKFLOW TOGGLE (TAB 4)
+        function toggleTrackView(type) {
+            const box = document.getElementById('workflow-render-box');
+            const btnTrad = document.getElementById('track-btn-trad');
+            const btnDual = document.getElementById('track-btn-dual');
+
+            if (type === 'traditional') {
+                btnTrad.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+                btnTrad.classList.remove('text-slate-600');
+                btnDual.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+                btnDual.classList.add('text-slate-600');
+
+                box.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex items-center space-x-2 text-rose-700 font-bold text-xs uppercase">
+                            <span>&#9888; Modelo Tradicional (Cascada en Miniatura)</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                            <div class="p-3 bg-white rounded border border-rose-200">
+                                <strong>Semana 1:</strong> UX diseña apresuradamente dentro del mismo Sprint.
+                            </div>
+                            <div class="p-3 bg-white rounded border border-rose-200">
+                                <strong>Semana 2:</strong> Devs reciben pantallas y rechazan ajustes por falta de tiempo.
+                            </div>
+                            <div class="p-3 bg-white rounded border border-rose-200">
+                                <strong>Lanzamiento:</strong> Aplicación enviada con deuda de UX y fricción interpersonal.
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                btnDual.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+                btnDual.classList.remove('text-slate-600');
+                btnTrad.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+                btnTrad.classList.add('text-slate-600');
+
+                box.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-2 text-emerald-700 font-bold text-xs uppercase">
+                            <span>&#10003; Modelo Dual-Track Agile (Sincrónico & Desacoplado)</span>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <div class="p-3 bg-ux-50 border border-ux-200 rounded flex items-center justify-between">
+                                <div>
+                                    <span class="font-bold text-ux-900 block">Discovery Track (UX Lead + PM + Tech Lead):</span>
+                                    <span class="text-slate-600">Investigación, prototipado rápido y validación con 5 usuarios. (Sprint N-1)</span>
+                                </div>
+                                <span class="text-xs font-mono font-bold bg-ux-200 text-ux-800 px-2 py-0.5 rounded">Adelantado</span>
+                            </div>
+                            <div class="p-3 bg-dev-50 border border-dev-200 rounded flex items-center justify-between">
+                                <div>
+                                    <span class="font-bold text-dev-900 block">Delivery Track (Equipo de Desarrollo e Ingeniería IA):</span>
+                                    <span class="text-slate-600">Construcción de producción con backlog purgado de inconsistencias. (Sprint N)</span>
+                                </div>
+                                <span class="text-xs font-mono font-bold bg-dev-200 text-dev-800 px-2 py-0.5 rounded">Sin retrabajo</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // AGREEMENTS GENERATOR (TAB 5)
+        function renderAgreementsChecklist() {
+            const container = document.getElementById('agreements-checklist-container');
+            let html = '';
+
+            agreementsList.forEach((item, idx) => {
+                const isChecked = selectedAgreements.includes(item.id);
+                html += `
+                    <label class="flex items-start space-x-3 p-3 rounded-lg border ${isChecked ? 'border-brand-300 bg-brand-50/50' : 'border-slate-200 bg-white'} hover:border-brand-300 cursor-pointer transition-all">
+                        <input type="checkbox" onchange="toggleAgreement(${item.id})" ${isChecked ? 'checked' : ''} class="mt-0.5 h-4 w-4 text-brand-600 rounded border-slate-300 focus:ring-brand-500">
+                        <div class="text-xs">
+                            <span class="font-bold text-slate-900">[${item.category}]</span>
+                            <span class="text-slate-700">${item.text}</span>
+                        </div>
+                    </label>
+                `;
+            });
+
+            container.innerHTML = html;
+            renderAgreementsOutput();
+        }
+
+        function toggleAgreement(id) {
+            if (selectedAgreements.includes(id)) {
+                selectedAgreements = selectedAgreements.filter(i => i !== id);
+            } else {
+                selectedAgreements.push(id);
+            }
+            renderAgreementsChecklist();
+        }
+
+        function addCustomAgreement() {
+            const input = document.getElementById('custom-agreement-input');
+            const val = input.value.trim();
+            if (val) {
+                const newId = agreementsList.length + 101;
+                agreementsList.push({
+                    id: newId,
+                    text: val,
+                    category: "Equipo"
+                });
+                selectedAgreements.push(newId);
+                input.value = '';
+                renderAgreementsChecklist();
+            }
+        }
+
+        function renderAgreementsOutput() {
+            const box = document.getElementById('agreements-output-box');
+            const selectedItems = agreementsList.filter(item => selectedAgreements.includes(item.id));
+
+            if (selectedItems.length === 0) {
+                box.innerHTML = `<p class="text-slate-500 italic">No hay acuerdos seleccionados aún. Marca las casillas de la izquierda para construir el documento.</p>`;
+                return;
+            }
+
+            let html = '<ol class="list-decimal list-inside space-y-2 leading-relaxed">';
+            selectedItems.forEach(item => {
+                html += `<li><strong class="text-white">${item.category}:</strong> ${item.text}</li>`;
+            });
+            html += '</ol>';
+
+            box.innerHTML = html;
+        }
+
+        function copyAgreements() {
+            const selectedItems = agreementsList.filter(item => selectedAgreements.includes(item.id));
+            let text = "ACUERDOS DE TRABAJO (WORKING AGREEMENTS) - SUPER APP UX & DEV\n\n";
+            selectedItems.forEach((item, i) => {
+                text += `${i + 1}. [${item.category}] ${item.text}\n`;
+            });
+
+            navigator.clipboard.writeText(text).then(() => {
+                alert("¡Acuerdos copiados exitosamente al portapapeles!");
+            }).catch(err => {
+                console.error("Error al copiar: ", err);
+            });
+        }
+
+        // INITIAL ON LOAD
+        window.addEventListener('DOMContentLoaded', () => {
+            renderPhaseDetail(1);
+            toggleTrackView('dual');
+            renderAgreementsChecklist();
+            initCharts();
+        });
+    </script>
+</body>
+</html>

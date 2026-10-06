@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-zinc-100 text-zinc-900">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión Presupuestal y Contratación UX - El Puerto de Liverpool</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            liverpool: {
+              main: '#833177',
+              accent: '#FF6A13',
+              dark: '#5a2152',
+              light: '#fdf4fc',
+              border: '#dfb0d7'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(244, 244, 245, 0.8);
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(161, 161, 170, 0.5);
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(113, 113, 122, 0.7);
+    }
+    .toast-animate {
+      animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%) scale(0.95); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+    /* Purple tone for native date picker calendar icon on light background */
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(24%) sepia(65%) saturate(2800%) hue-rotate(285deg) brightness(88%) contrast(105%);
+      cursor: pointer;
+    }
+    
+    /* Styles for the Password Overlay */
+    #passwordOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #833177;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.4s ease;
+    }
+    
+    body.unlocked {
+      overflow: auto;
+    }
+    
+    body.locked {
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body class="locked h-full font-sans antialiased bg-zinc-100 text-zinc-900 flex flex-col custom-scrollbar">
+
+  <!-- ================= OVERLAY DE CONTRASEÑA ================= -->
+  <div id="passwordOverlay">
+    <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-sm w-full mx-4 text-center">
+      <div class="w-16 h-16 bg-pink-50 text-[#833177] rounded-full flex items-center justify-center mx-auto mb-4 text-2xl shadow-sm">
+        🔒
+      </div>
+      <h2 class="text-xl font-bold text-zinc-900 mb-2">Acceso Restringido</h2>
+      <p class="text-xs text-zinc-500 mb-6">Ingresa la contraseña para visualizar las plantillas de contrato UX.</p>
+      
+      <form id="loginForm" onsubmit="checkPassword(event)" class="space-y-4">
+        <div>
+          <input type="password" id="passwordInput" placeholder="Contraseña..." required
+                 class="w-full bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-sm text-center text-zinc-900 focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none transition">
+          <p id="errorMsg" class="text-red-500 text-[10px] mt-2 hidden font-semibold">Contraseña incorrecta. Intenta de nuevo.</p>
+        </div>
+        <button type="submit" class="w-full bg-[#833177] hover:bg-[#5a2152] text-white font-semibold py-3 rounded-xl transition shadow-md text-sm">
+          Desbloquear
+        </button>
+      </form>
+    </div>
+  </div>
+  <!-- ======================================================= -->
+
+  <!-- Header -->
+  <header class="border-b border-purple-900/20 bg-[#833177] text-white sticky top-0 z-50 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="h-10 w-10 rounded-xl bg-[#FF6A13] flex items-center justify-center font-bold text-white text-xl shadow-lg">
+          ✉️
+        </div>
+        <div>
+          <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+            Gestión Presupuestal y Contratación UX
+          </h1>
+          <p class="text-xs text-pink-100">Proveedor Obligatorio: <span class="font-semibold text-[#FF6A13] bg-white px-1.5 py-0.5 rounded text-[11px] shadow-sm">ISOL - INGENIERIA DE SOLUCIONES SA DE CV (153878)</span></p>
+        </div>
+      </div>
+
+      <!-- Copy Action Button -->
+      <div class="flex items-center gap-2.5">
+        <button onclick="copyRichText()" class="inline-flex items-center gap-2 bg-[#FF6A13] hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-xs font-semibold shadow-md transition active:scale-95">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 012-2h2a2 2 0 02-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+          Copiar Correo Enriquecido (para Outlook/Gmail)
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs for the 3 Independent Mail Workflows -->
+  <div class="bg-white border-b border-zinc-200 sticky top-[65px] z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav class="flex space-x-2 sm:space-x-4 overflow-x-auto py-2.5 custom-scrollbar" aria-label="Steps">
+        
+        <button onclick="switchTab(1)" id="tab-btn-1" class="step-tab flex-1 min-w-[220px] px-3.5 py-2.5 rounded-xl border text-xs font-semibold flex items-center justify-between transition bg-[#833177] text-white border-[#833177] shadow">
+          <div class="flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-[#FF6A13] text-white flex items-center justify-center font-bold text-[10px]">1</span>
+            <span>Solicitud de Presupuesto</span>
+          </div>
+          <span class="text-[10px] bg-white/20 px-1.5 py-0.5 rounded text-white font-mono">Paso 1</span>
+        </button>
+
+        <button onclick="switchTab(2)" id="tab-btn-2" class="step-tab flex-1 min-w-[220px] px-3.5 py-2.5 rounded-xl border text-xs font-semibold flex items-center justify-between transition bg-zinc-50 text-zinc-600 border-zinc-200 hover:bg-zinc-100 hover:text-zinc-900">
+          <div class="flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-zinc-200 text-zinc-700 flex items-center justify-center font-bold text-[10px]">2</span>
+            <span>Confirmación & Solicitud Anexo</span>
+          </div>
+          <span class="text-[10px] bg-zinc-200 px-1.5 py-0.5 rounded text-zinc-600 font-mono">Paso 2</span>
+        </button>
+
+        <button onclick="switchTab(3)" id="tab-btn-3" class="step-tab flex-1 min-w-[220px] px-3.5 py-2.5 rounded-xl border text-xs font-semibold flex items-center justify-between transition bg-zinc-50 text-zinc-600 border-zinc-200 hover:bg-zinc-100 hover:text-zinc-900">
+          <div class="flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-zinc-200 text-zinc-700 flex items-center justify-center font-bold text-[10px]">3</span>
+            <span>Solicitud de Pago</span>
+          </div>
+          <span class="text-[10px] bg-zinc-200 px-1.5 py-0.5 rounded text-zinc-600 font-mono">Paso 3</span>
+        </button>
+
+      </nav>
+    </div>
+  </div>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- Left Column: Form Section -->
+    <aside class="lg:col-span-5 bg-white border border-zinc-200 shadow-sm rounded-2xl p-5 space-y-5 custom-scrollbar overflow-y-auto max-h-[calc(100vh-140px)]">
+      
+      <div class="border-b border-zinc-200 pb-3 flex justify-between items-center">
+        <div>
+          <h2 id="formStepTitle" class="text-sm font-bold text-zinc-900 flex items-center gap-2">
+            <!-- Dynamic step title inserted by JS -->
+          </h2>
+          <p id="formStepSubtitle" class="text-[11px] text-zinc-500">Captura la información requerida para este correo</p>
+        </div>
+        <button type="button" onclick="resetCurrentForm()" class="text-[11px] text-zinc-500 hover:text-zinc-800 underline">Restablecer</button>
+      </div>
+
+      <!-- FORM PASO 1 -->
+      <form id="formStep1" class="space-y-4 text-xs">
+        <!-- Información General del Proyecto -->
+        <div class="space-y-3 bg-zinc-50 p-3.5 rounded-xl border border-zinc-200">
+          <span class="font-bold text-[#833177] uppercase tracking-wider text-[10px] flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-[#833177]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+            Información General del Proyecto
+          </span>
+          <div>
+            <label class="block text-zinc-600 font-medium mb-1">Nombre del Proyecto</label>
+            <input type="text" id="s1_projectName" value="" oninput="syncSharedField('projectName', this.value)" placeholder="Ej. Migración Portal Seller" class="w-full bg-white border border-zinc-300 rounded-lg px-3 py-1.5 text-zinc-900 placeholder-zinc-400 focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-zinc-600 font-medium mb-1">Nombre PM (Para:)</label>
+              <input type="text" id="s1_pmName" value="" oninput="syncSharedField('pmName', this.value)" placeholder="Ej. Alejandro Suro" class="w-full bg-white border border-zinc-300 rounded-lg px-3 py-1.5 text-zinc-900 placeholder-zinc-400 focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-zinc-600 font-medium mb-1">Coordinador IT / Finanzas</label>
+              <input type="text" id="s1_financeName" value="" oninput="syncSharedField('financeName', this.value)" placeholder="Ej. Jose Rodrigo Ascencio" class="w-full bg-white border border-zinc-300 rounded-lg px-3 py-1.5 text-zinc-900 placeholder-zinc-400 focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+            </div>
+          </div>
+        </div>
+
+        <!-- Período de Proyecto y Cálculo de Presupuesto -->
+        <div class="space-y-3 bg-zinc-50 p-3.5 rounded-xl border border-zinc-200">
+          <span class="font-bold text-[#833177] uppercase tracking-wider text-[10px] flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-[#833177]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            Período de Proyecto y Cálculo de Presupuesto
+          </span>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-zinc-600 font-medium mb-1 flex items-center gap-1">
+                <svg class="w-3 h-3 text-[#833177]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                Fecha Inicio
+              </label>
+              <input type="date" id="s1_startDate" value="" oninput="syncSharedField('startDate', this.value); calculateBudgetStep1()" onchange="syncSharedField('startDate', this.value); calculateBudgetStep1()" class="w-full bg-white border border-zinc-300 rounded-lg px-2.5 py-1.5 text-zinc-900 focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-zinc-600 font-medium mb-1 flex items-center gap-1">
+                <svg class="w-3 h-3 text-[#833177]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                Fecha Fin
+              </label>
+              <input type="date" id="s1_endDate" value="" oninput="syncSharedField('endDate', this.value); calculateBudgetStep1()" onchange="syncSharedField('endDate', this.value); calculateBudgetStep1()" class="w-full bg-white border border-zinc-300 rounded-lg px-2.5 py-1.5 text-zinc-900 focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-zinc-600 font-medium mb-1">Perfil Consultor UX (ISOL)</label>
+            <select id="s1_resourceProfile" onchange="syncSharedField('resourceProfile', this.value); calculateBudgetStep1()" class="w-full bg-white border border-zinc-300 rounded-lg px-2.5 py-1.5 text-zinc-900 focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+              <option value="UX/UI Sr Designer" data-rate="96228">UX/UI Sr Designer ($96,228.00 / mes)</option>
+              <option value="UX/UI Designer" data-rate="89100">UX/UI Designer ($89,100.00 / mes)</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="block text-zinc-600 font-medium mb-1">Meses Cerrados</label>
+              <input type="text" id="s1_monthsDisplay" readonly value="0 Meses" class="w-full bg-zinc-100 border border-zinc-200 rounded-lg px-2 py-1.5 text-[#833177] font-mono font-bold text-center">
+            </div>
+            <div>
+              <label class="block text-zinc-600 font-medium mb-1">Tarifa Mensual</label>
+              <input type="text" id="s1_monthlyRateDisplay" value="$96,228.00" readonly class="w-full bg-zinc-100 border border-zinc-200 rounded-lg px-2 py-1.5 text-zinc-700 font-mono text-center cursor-not-allowed">
+            </div>
+            <div>
+              <label class="block text-zinc-600 font-medium mb-1">Presupuesto Total</label>
+              <input type="text" id="s1_budgetDisplay" readonly value="$0.00 MXN" class="w-full bg-emerald-50 border border-emerald-200 rounded-lg px-2 py-1.5 text-emerald-700 font-mono font-bold text-center">
+            </div>
+          </div>
+        </div>
+
+        <!-- Entregables UX Esperados -->
+        <div class="space-y-3 bg-zinc-50 p-3.5 rounded-xl border border-zinc-200">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-[#833177] uppercase tracking-wider text-[10px] flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-[#833177]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              Entregables UX Esperados (Mín 1, Máx 3)
+            </span>
+            <button type="button" id="btnAddDeliverable" onclick="addDeliverable()" class="text-[11px] bg-[#833177] hover:bg-[#5a2152] text-white px-2.5 py-1 rounded-lg font-medium transition shadow-sm flex items-center gap-1">
+              <span>+</span> Agregar
+            </button>
+          </div>
+          <div id="deliverablesContainer" class="space-y-2">
+            <!-- Dynamic Deliverables -->
+          </div>
+        </div>
+      </form>
+
+      <!-- FORM PASO 2 -->
+      <form id="formStep2" class="space-y-4 text-xs hidden">
+        <!-- Información General del Proyecto -->
+        <div class="space-y-3 bg-zinc-50 p-3.5 rounded-xl border border-zinc-200">
+          <span class="font-bold text-[#833177] uppercase tracking-wider text-[10px] flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-[#833177]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+            Información General del Proyecto
+          </span>
+          <div>
+            <label class="block text-zinc-600 font-medium mb-1">Nombre del Proyecto</label>
+            <input type="text" id="s2_projectName" value="" oninput="syncSharedField('projectName', this.value)" placeholder="Ej. Migración Portal Seller" class="w-full bg-white border border-zinc-300 rounded-lg px-3 py-1.5 text-zinc-900 placeholder-zinc-400 focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-zinc-600 font-medium mb-1">Nombre PM (Para:)</label>
+              <input type="text" id="s2_pmName" value="" oninput="syncSharedField('pmName', this.value)" placeholder="Ej. Alejandro Suro" class="w-full bg-white border border-zinc-300 rounded-lg px-3 py-1.5 text-zinc-900 placeholder-zinc-400 focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-zinc-600 font-medium mb-1">Coordinador IT / Finanzas</label>
+              <input type="text" id="s2_financeName" value="" oninput="syncSharedField('financeName', this.value)" placeholder="Ej. Jose Rodrigo Ascencio" class="w-full bg-white border border-zinc-300 rounded-lg px-3 py-1.5 text-zinc-900 placeholder-zinc-400 focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+            </div>
+          </div>
+        </div>
+
+        <!-- Período de Proyecto y Cálculo de Presupuesto -->
+        <div class="space-y-3 bg-zinc-50 p-3.5 rounded-xl border border-zinc-200">
+          <span class="font-bold text-[#833177] uppercase tracking-wider text-[10px] flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-[#833177]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            Período de Proyecto y Cálculo de Presupuesto
+          </span>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-zinc-600 font-medium mb-1 flex items-center gap-1">
+                <svg class="w-3 h-3 text-[#833177]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                Fecha Inicio
+              </label>
+              <input type="date" id="s2_startDate" value="" oninput="syncSharedField('startDate', this.value); calculateBudgetStep2()" onchange="syncSharedField('startDate', this.value); calculateBudgetStep2()" class="w-full bg-white border border-zinc-300 rounded-lg px-2.5 py-1.5 text-zinc-900 focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-zinc-600 font-medium mb-1 flex items-center gap-1">
+                <svg class="w-3 h-3 text-[#833177]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                Fecha Fin
+              </label>
+              <input type="date" id="s2_endDate" value="" oninput="syncSharedField('endDate', this.value); calculateBudgetStep2()" onchange="syncSharedField('endDate', this.value); calculateBudgetStep2()" class="w-full bg-white border border-zinc-300 rounded-lg px-2.5 py-1.5 text-zinc-900 focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-zinc-600 font-medium mb-1">Perfil Consultor UX (ISOL)</label>
+            <select id="s2_resourceProfile" onchange="syncSharedField('resourceProfile', this.value); calculateBudgetStep2()" class="w-full bg-white border border-zinc-300 rounded-lg px-2.5 py-1.5 text-zinc-900 focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+              <option value="UX/UI Sr Designer" data-rate="96228">UX/UI Sr Designer ($96,228.00 / mes)</option>
+              <option value="UX/UI Designer" data-rate="89100">UX/UI Designer ($89,100.00 / mes)</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="block text-zinc-600 font-medium mb-1">Meses Cerrados</label>
+              <input type="text" id="s2_monthsDisplay" readonly value="0 Meses" class="w-full bg-zinc-100 border border-zinc-200 rounded-lg px-2 py-1.5 text-[#833177] font-mono font-bold text-center">
+            </div>
+            <div>
+              <label class="block text-zinc-600 font-medium mb-1">Tarifa Mensual</label>
+              <input type="text" id="s2_monthlyRateDisplay" value="$96,228.00" readonly class="w-full bg-zinc-100 border border-zinc-200 rounded-lg px-2 py-1.5 text-zinc-700 font-mono text-center cursor-not-allowed">
+            </div>
+            <div>
+              <label class="block text-zinc-600 font-medium mb-1">Presupuesto Total</label>
+              <input type="text" id="s2_budgetDisplay" readonly value="$0.00 MXN" class="w-full bg-emerald-50 border border-emerald-200 rounded-lg px-2 py-1.5 text-emerald-700 font-mono font-bold text-center">
+            </div>
+          </div>
+        </div>
+
+        <!-- Campos de Confirmación, PEP y Consultor -->
+        <div class="space-y-3 bg-zinc-50 p-3.5 rounded-xl border border-zinc-200">
+          <span class="font-bold text-[#833177] uppercase tracking-wider text-[10px] flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-[#833177]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+            Campos de Confirmación, PEP y Consultor
+          </span>
+          <div>
+            <label class="block text-zinc-600 font-medium mb-1">Nombre del Consultor Externo</label>
+            <input type="text" id="s2_consultantName" value="" oninput="syncSharedField('consultantName', this.value)" placeholder="Ej. Axel O. Cortés" class="w-full bg-white border border-zinc-300 rounded-lg px-3 py-1.5 text-zinc-900 placeholder-zinc-400 focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-zinc-600 font-medium mb-1">Número de PEP Asignado (Recibido de PM/IT)</label>
+            <input type="text" id="s2_pepCode" value="" oninput="syncSharedField('pepCode', this.value)" placeholder="Ej. PRO IT/0487-25-04-6-003" class="w-full bg-white border border-zinc-300 rounded-lg px-3 py-1.5 text-[#833177] font-mono font-bold focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-zinc-600 font-medium mb-1">Notas Importantes / Observaciones (Opcional)</label>
+            <textarea id="s2_importantNotes" rows="2" oninput="renderStep2Mail()" placeholder="Agregar detalles sobre la orden de compra, refrendos o especificaciones..." class="w-full bg-white border border-zinc-300 rounded-lg px-3 py-1.5 text-zinc-900 placeholder-zinc-400 focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none"></textarea>
+          </div>
+        </div>
+      </form>
+
+      <!-- FORM PASO 3 -->
+      <form id="formStep3" class="space-y-4 text-xs hidden">
+        <!-- Información General del Proyecto -->
+        <div class="space-y-3 bg-zinc-50 p-3.5 rounded-xl border border-zinc-200">
+          <span class="font-bold text-[#833177] uppercase tracking-wider text-[10px] flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-[#833177]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+            Información General del Proyecto
+          </span>
+          <div>
+            <label class="block text-zinc-600 font-medium mb-1">Nombre del Proyecto</label>
+            <input type="text" id="s3_projectName" value="" oninput="syncSharedField('projectName', this.value)" placeholder="Ej. Migración Portal Seller" class="w-full bg-white border border-zinc-300 rounded-lg px-3 py-1.5 text-zinc-900 placeholder-zinc-400 focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-zinc-600 font-medium mb-1">Nombre PM (Para:)</label>
+              <input type="text" id="s3_pmName" value="" oninput="syncSharedField('pmName', this.value)" placeholder="Ej. Alejandro Suro" class="w-full bg-white border border-zinc-300 rounded-lg px-3 py-1.5 text-zinc-900 placeholder-zinc-400 focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-zinc-600 font-medium mb-1">Coordinador IT / Finanzas</label>
+              <input type="text" id="s3_financeName" value="" oninput="syncSharedField('financeName', this.value)" placeholder="Ej. Jose Rodrigo Ascencio" class="w-full bg-white border border-zinc-300 rounded-lg px-3 py-1.5 text-zinc-900 placeholder-zinc-400 focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+            </div>
+          </div>
+        </div>
+
+        <!-- Solicitud de Pago & Datos del Anexo -->
+        <div class="space-y-3 bg-zinc-50 p-3.5 rounded-xl border border-zinc-200">
+          <span class="font-bold text-[#833177] uppercase tracking-wider text-[10px] flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-[#833177]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            Solicitud de Pago & Datos del Anexo
+          </span>
+          <div>
+            <label class="block text-zinc-600 font-medium mb-1">Nombre del Consultor Externo</label>
+            <input type="text" id="s3_consultantName" value="" oninput="syncSharedField('consultantName', this.value)" placeholder="Ej. Axel O. Cortés" class="w-full bg-white border border-zinc-300 rounded-lg px-3 py-1.5 text-zinc-900 placeholder-zinc-400 focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-zinc-600 font-medium mb-1">Número de PEP Asignado</label>
+            <input type="text" id="s3_pepCode" value="" oninput="syncSharedField('pepCode', this.value)" placeholder="Ej. PRO IT/0487-25-04-6-003" class="w-full bg-white border border-zinc-300 rounded-lg px-3 py-1.5 text-[#833177] font-mono font-bold focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-zinc-600 font-medium mb-1">ID de Anexo Asignado</label>
+              <input type="text" id="s3_anexoId" value="" oninput="renderStep3Mail()" placeholder="Ej. ANX-2026-0487-ISOL" class="w-full bg-white border border-zinc-300 rounded-lg px-3 py-1.5 text-[#FF6A13] font-mono font-bold focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+            </div>
+            <div>
+              <label class="block text-zinc-600 font-medium mb-1 flex items-center gap-1">
+                <svg class="w-3 h-3 text-[#833177]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                Fecha Solicitud de Contrato
+              </label>
+              <input type="date" id="s3_contractRequestDate" value="" oninput="renderStep3Mail()" onchange="renderStep3Mail()" class="w-full bg-white border border-zinc-300 rounded-lg px-2.5 py-1.5 text-zinc-900 focus:border-[#833177] focus:ring-1 focus:ring-[#833177] focus:outline-none">
+            </div>
+          </div>
+        </div>
+      </form>
+    </aside>
+
+    <!-- Right Column: Interactive Email Preview -->
+    <section class="lg:col-span-7 bg-white border border-zinc-200 shadow-sm rounded-2xl p-4 flex flex-col justify-between space-y-4">
+      
+      <!-- Top Subject & Step Bar -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-zinc-200 pb-3 gap-2">
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-zinc-300"></span>
+          <span class="w-3 h-3 rounded-full bg-zinc-400"></span>
+          <span class="w-3 h-3 rounded-full bg-zinc-500"></span>
+          <span class="text-xs font-mono text-zinc-500 ml-2">Vista Previa (<span id="activeStepBadge" class="text-[#833177] font-semibold">Paso 1</span>)</span>
+        </div>
+        <div class="text-[11px] text-zinc-700 bg-zinc-50 px-2.5 py-1 rounded-lg border border-zinc-200 truncate max-w-md">
+          Asunto: <span id="subjectPreviewText" class="text-[#FF6A13] font-mono font-semibold">[SOLICITUD PRESUPUESTO UX]</span>
+        </div>
+      </div>
+
+      <!-- Scrollable Email Canvas Container -->
+      <div class="flex-1 custom-scrollbar overflow-y-auto bg-zinc-100/90 rounded-xl p-4 sm:p-6 border border-zinc-200 min-h-[540px]">
+        
+        <!-- ================= EMAIL CONTAINER PASO 1 ================= -->
+        <div id="emailContainerStep1" class="max-w-[620px] mx-auto bg-white text-zinc-800 rounded-lg shadow-xl overflow-hidden font-sans border border-zinc-200">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #833177; padding: 22px 24px;">
+            <tr>
+              <td>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td align="left" style="vertical-align: middle;">
+                      <span style="display: inline-block; background-color: #FF6A13; color: #ffffff; font-weight: 800; font-size: 12px; padding: 4px 10px; border-radius: 4px; letter-spacing: 0.5px; font-family: Inter, Helvetica, Arial, sans-serif;">
+                        EL PUERTO DE LIVERPOOL
+                      </span>
+                    </td>
+                    <td align="right" style="vertical-align: middle;">
+                      <span style="display: inline-block; background-color: rgba(255, 255, 255, 0.2); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.4); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; font-family: Inter, Helvetica, Arial, sans-serif;">
+                        SOLICITUD PRESUPUESTO
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+                <h2 style="color: #ffffff; font-size: 18px; font-weight: 700; margin: 14px 0 4px 0; font-family: Inter, Helvetica, Arial, sans-serif;">
+                  Solicitud Presupuestal UX
+                </h2>
+                <p style="color: #fdf4fc; font-size: 12px; margin: 0; font-family: Inter, Helvetica, Arial, sans-serif;">
+                  Proyecto: <strong style="color: #ffffff;" id="p1_resProjName">[Nombre del proyecto]</strong>
+                </p>
+              </td>
+            </tr>
+          </table>
+
+          <div style="padding: 24px; color: #334155; font-size: 13px; line-height: 1.6;">
+            <p style="margin-top: 0; color: #1e293b; font-size: 14px;">
+              Estimados <strong id="p1_resPmName" style="color: #0f172a;">[Nombre PM]</strong> y <strong id="p1_resFinName" style="color: #0f172a;">[Coordinador IT/Finanzas]</strong>,
+            </p>
+
+            <p id="p1_resOpeningText" style="color: #475569; margin-bottom: 18px;">
+              Espero que se encuentren muy bien. Con el objetivo de garantizar la continuidad operativa, la entrega de maquetados y el cumplimiento del roadmap del proyecto "<strong style="color: #0f172a;" class="p1_inlineProjName">[Nombre del proyecto]</strong>", solicitamos la aprobación y liberación del presupuesto correspondiente al periodo.
+            </p>
+
+            <!-- Summary Table -->
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #fcf8fc; border: 1px solid #e8d5e5; border-radius: 8px; margin-bottom: 20px;">
+              <tr>
+                <td style="padding: 16px;">
+                  <div style="font-size: 11px; font-weight: 700; color: #833177; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; border-bottom: 1px solid #e8d5e5; padding-bottom: 6px;">
+                    📊 Ficha Resumen de Contratación UX
+                  </div>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="4" style="font-size: 12px;">
+                    <tr>
+                      <td width="40%" style="color: #64748b;"><strong>Proveedor Autorizado:</strong></td>
+                      <td style="color: #FF6A13; font-weight: 700; font-size: 11px;">ISOL - INGENIERIA DE SOLUCIONES SA DE CV (153878)</td>
+                    </tr>
+                    <tr>
+                      <td style="color: #64748b;"><strong>Perfil Solicitado:</strong></td>
+                      <td style="color: #0f172a;" id="p1_resProfile">UX/UI Sr Designer</td>
+                    </tr>
+                    <tr>
+                      <td style="color: #64748b;"><strong>Periodo de Trabajo:</strong></td>
+                      <td style="color: #0f172a;" id="p1_resPeriod">[Por definir]</td>
+                    </tr>
+                    <tr>
+                      <td style="color: #64748b;"><strong>Presupuesto Requerido:</strong></td>
+                      <td style="color: #059669; font-weight: 700; font-family: monospace;" id="p1_resAmount">$0.00 MXN</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+
+            <!-- Deliverables -->
+            <div style="margin-bottom: 20px;">
+              <div style="font-size: 13px; font-weight: 700; color: #833177; margin-bottom: 8px;">
+                🎯 Alcance y Entregables UX Esperados
+              </div>
+              <ul id="p1_resDeliverablesList" style="margin: 0; padding-left: 20px; color: #334155;">
+                <!-- Rendered deliverable bullets -->
+              </ul>
+            </div>
+
+            <!-- Next Steps -->
+            <div style="border: 1px dashed #cbd5e1; padding: 14px; border-radius: 8px; background-color: #fafafa; margin-bottom: 24px;">
+              <strong style="color: #FF6A13; font-size: 12px; display: block; margin-bottom: 6px;">🚀 Próximos Pasos:</strong>
+              <ol style="margin: 0; padding-left: 18px; font-size: 12px; color: #475569;">
+                <li style="margin-bottom: 4px;">Confirmación y asignación de la clave de elemento <strong>PEP</strong> por parte de PM y Finanzas.</li>
+                <li style="margin-bottom: 4px;">Visto bueno formal para proceder con el trámite presupuestal ante el proveedor <strong>ISOL</strong>.</li>
+                <li>Emisión de la solicitud de servicio correspondiente.</li>
+              </ol>
+            </div>
+
+            <p style="margin-bottom: 0; color: #475569;">
+              Quedamos atentos a sus comentarios para continuar con el proceso.<br><br>
+              Saludos cordiales,
+            </p>
+          </div>
+        </div>
+
+        <!-- ================= EMAIL CONTAINER PASO 2 ================= -->
+        <div id="emailContainerStep2" class="max-w-[620px] mx-auto bg-white text-zinc-800 rounded-lg shadow-xl overflow-hidden font-sans border border-zinc-200 hidden">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #833177; padding: 22px 24px;">
+            <tr>
+              <td>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td align="left" style="vertical-align: middle;">
+                      <span style="display: inline-block; background-color: #FF6A13; color: #ffffff; font-weight: 800; font-size: 12px; padding: 4px 10px; border-radius: 4px; letter-spacing: 0.5px; font-family: Inter, Helvetica, Arial, sans-serif;">
+                        EL PUERTO DE LIVERPOOL
+                      </span>
+                    </td>
+                    <td align="right" style="vertical-align: middle;">
+                      <span style="display: inline-block; background-color: rgba(255, 255, 255, 0.2); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.4); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; font-family: Inter, Helvetica, Arial, sans-serif;">
+                        CONFIRMACIÓN & SOLICITUD ANEXO
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+                <h2 style="color: #ffffff; font-size: 18px; font-weight: 700; margin: 14px 0 4px 0; font-family: Inter, Helvetica, Arial, sans-serif;">
+                  Confirmación de PEP y Solicitud de Anexo a Proveedor
+                </h2>
+                <p style="color: #fdf4fc; font-size: 12px; margin: 0; font-family: Inter, Helvetica, Arial, sans-serif;">
+                  Proyecto: <strong style="color: #ffffff;" id="p2_resProjName">[Nombre del proyecto]</strong>
+                </p>
+              </td>
+            </tr>
+          </table>
+
+          <div style="padding: 24px; color: #334155; font-size: 13px; line-height: 1.6;">
+            <p style="margin-top: 0; color: #1e293b; font-size: 14px;">
+              Estimados <strong id="p2_resPmName" style="color: #0f172a;">[Nombre PM]</strong> y <strong id="p2_resFinName" style="color: #0f172a;">[Coordinador IT/Finanzas]</strong>,<br>
+              <span style="font-size: 12px; color: #64748b;">CC: Equipo <strong>ISOL (Ingeniería de Soluciones)</strong></span>
+            </p>
+
+            <p style="color: #475569; margin-bottom: 18px;">
+              Espero que se encuentren muy bien.<br><br>
+              Con el objetivo de asegurar la continuidad del diseño UX/UI en el proyecto "<strong style="color: #0f172a;" class="p2_inlineProjName">[Nombre del proyecto]</strong>", solicitamos su amable apoyo para compartirnos el número de PEP asignado junto con su visto bueno formal para la liberación de estos fondos en el periodo señalado.
+            </p>
+
+            <!-- Summary Table Step 2 -->
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #fcf8fc; border: 1px solid #e8d5e5; border-radius: 8px; margin-bottom: 20px;">
+              <tr>
+                <td style="padding: 16px;">
+                  <div style="font-size: 11px; font-weight: 700; color: #833177; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; border-bottom: 1px solid #e8d5e5; padding-bottom: 6px;">
+                    📊 Ficha Resumen de Confirmación & PEP
+                  </div>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="4" style="font-size: 12px;">
+                    <tr>
+                      <td width="40%" style="color: #64748b;"><strong>Proveedor Autorizado:</strong></td>
+                      <td style="color: #FF6A13; font-weight: 700; font-size: 11px;">ISOL - INGENIERIA DE SOLUCIONES SA DE CV (153878)</td>
+                    </tr>
+                    <tr>
+                      <td style="color: #64748b;"><strong>Consultor A Contratar:</strong></td>
+                      <td style="color: #0f172a; font-weight: 700;" id="p2_resConsultant">[Por definir]</td>
+                    </tr>
+                    <tr>
+                      <td style="color: #64748b;"><strong>Perfil Solicitado:</strong></td>
+                      <td style="color: #0f172a;" id="p2_resProfile">UX/UI Sr Designer</td>
+                    </tr>
+                    <tr>
+                      <td style="color: #64748b;"><strong>Periodo de Trabajo:</strong></td>
+                      <td style="color: #0f172a;" id="p2_resPeriod">[Por definir]</td>
+                    </tr>
+                    <tr>
+                      <td style="color: #64748b;"><strong>Presupuesto Requerido:</strong></td>
+                      <td style="color: #059669; font-weight: 700; font-family: monospace;" id="p2_resAmount">$0.00 MXN</td>
+                    </tr>
+                    <tr>
+                      <td style="color: #64748b;"><strong>Elemento / Clave PEP:</strong></td>
+                      <td style="color: #833177; font-family: monospace; font-weight: 700;" id="p2_resPep">[Por definir]</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+
+            <!-- Optional Important Notes Box -->
+            <div id="p2_resNotesBox" style="background-color: #fdf4fc; border-left: 4px solid #833177; padding: 12px 16px; border-radius: 0 6px 6px 0; margin-bottom: 20px; font-size: 12px; color: #334155; display: none;">
+              <strong style="color: #833177; display: block; margin-bottom: 4px;">📌 Notas Importantes / Observaciones:</strong>
+              <span id="p2_resNotesBody"></span>
+            </div>
+
+            <!-- Next Steps Step 2 -->
+            <div style="border: 1px dashed #cbd5e1; padding: 14px; border-radius: 8px; background-color: #fafafa; margin-bottom: 24px;">
+              <strong style="color: #FF6A13; font-size: 12px; display: block; margin-bottom: 6px;">🚀 Próximos Pasos:</strong>
+              <ol style="margin: 0; padding-left: 18px; font-size: 12px; color: #475569;">
+                <li style="margin-bottom: 4px;">El proveedor <strong>ISOL</strong> elabora y formaliza el documento de <strong>Anexo de Servicio</strong>.</li>
+                <li style="margin-bottom: 4px;">Revisión y visto bueno del Anexo por parte de Coordinación IT / Finanzas.</li>
+                <li>Asignación de ID de Anexo formal para posterior solicitud de pago.</li>
+              </ol>
+            </div>
+
+            <p style="margin-bottom: 0; color: #475569;">
+              Quedamos atentos a sus comentarios para continuar con el proceso.<br><br>
+              Saludos cordiales,
+            </p>
+          </div>
+        </div>
+
+        <!-- ================= EMAIL CONTAINER PASO 3 ================= -->
+        <div id="emailContainerStep3" class="max-w-[620px] mx-auto bg-white text-zinc-800 rounded-lg shadow-xl overflow-hidden font-sans border border-zinc-200 hidden">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #833177; padding: 22px 24px;">
+            <tr>
+              <td>
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td align="left" style="vertical-align: middle;">
+                      <span style="display: inline-block; background-color: #FF6A13; color: #ffffff; font-weight: 800; font-size: 12px; padding: 4px 10px; border-radius: 4px; letter-spacing: 0.5px; font-family: Inter, Helvetica, Arial, sans-serif;">
+                        EL PUERTO DE LIVERPOOL
+                      </span>
+                    </td>
+                    <td align="right" style="vertical-align: middle;">
+                      <span style="display: inline-block; background-color: rgba(255, 255, 255, 0.2); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.4); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; font-family: Inter, Helvetica, Arial, sans-serif;">
+                        SOLICITUD DE PAGO
+                      </span>
+                    </td>
+                  </tr>
+                </table>
+                <h2 style="color: #ffffff; font-size: 18px; font-weight: 700; margin: 14px 0 4px 0; font-family: Inter, Helvetica, Arial, sans-serif;">
+                  Aviso de Solicitud de Pago e ID de Anexo Asignado
+                </h2>
+                <p style="color: #fdf4fc; font-size: 12px; margin: 0; font-family: Inter, Helvetica, Arial, sans-serif;">
+                  Proyecto: <strong style="color: #ffffff;" id="p3_resProjName">[Nombre del proyecto]</strong>
+                </p>
+              </td>
+            </tr>
+          </table>
+
+          <div style="padding: 24px; color: #334155; font-size: 13px; line-height: 1.6;">
+            <p style="margin-top: 0; color: #1e293b; font-size: 14px;">
+              Estimados <strong id="p3_resPmName" style="color: #0f172a;">[Nombre PM]</strong>, <strong id="p3_resFinName" style="color: #0f172a;">[Coordinador IT/Finanzas]</strong> y Equipo <strong style="color: #0f172a;">ISOL</strong>,
+            </p>
+
+            <p style="color: #475569; margin-bottom: 18px;">
+              Les notificamos que se ha realizado formalmente la solicitud de pago correspondiente al proyecto "<strong style="color: #0f172a;" class="p3_inlineProjName">[Nombre del proyecto]</strong>" con el ID de Anexo asignado <strong style="color: #FF6A13; font-family: monospace;" id="p3_resInlineAnexo">[ID de Anexo]</strong> y fecha de solicitud <strong style="color: #0f172a; font-family: monospace;" id="p3_resInlineDate">[Fecha de Solicitud]</strong>.
+            </p>
+
+            <!-- Summary Table Step 3 -->
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #fcf8fc; border: 1px solid #e8d5e5; border-radius: 8px; margin-bottom: 20px;">
+              <tr>
+                <td style="padding: 16px;">
+                  <div style="font-size: 11px; font-weight: 700; color: #833177; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; border-bottom: 1px solid #e8d5e5; padding-bottom: 6px;">
+                    💳 Ficha Resumen de Solicitud de Pago
+                  </div>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="4" style="font-size: 12px;">
+                    <tr>
+                      <td width="40%" style="color: #64748b;"><strong>Proyecto:</strong></td>
+                      <td style="color: #0f172a; font-weight: 700;" id="p3_resSummaryProjName">[Nombre del proyecto]</td>
+                    </tr>
+                    <tr>
+                      <td style="color: #64748b;"><strong>Proveedor Autorizado:</strong></td>
+                      <td style="color: #FF6A13; font-weight: 700; font-size: 11px;">ISOL - INGENIERIA DE SOLUCIONES SA DE CV (153878)</td>
+                    </tr>
+                    <tr>
+                      <td style="color: #64748b;"><strong>Consultor A Contratar:</strong></td>
+                      <td style="color: #0f172a; font-weight: 700;" id="p3_resConsultant">[Por definir]</td>
+                    </tr>
+                    <tr>
+                      <td style="color: #64748b;"><strong>Elemento / Clave PEP:</strong></td>
+                      <td style="color: #833177; font-family: monospace; font-weight: 700;" id="p3_resPep">[Por definir]</td>
+                    </tr>
+                    <tr>
+                      <td style="color: #64748b;"><strong>ID Anexo Asignado:</strong></td>
+                      <td style="color: #FF6A13; font-family: monospace; font-weight: 700;" id="p3_resAnexoId">[Por definir]</td>
+                    </tr>
+                    <tr>
+                      <td style="color: #64748b;"><strong>Fecha Solicitud Contrato:</strong></td>
+                      <td style="color: #0f172a; font-family: monospace;" id="p3_resContractDate">[Por definir]</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+
+            <!-- Next Steps Step 3 -->
+            <div style="border: 1px dashed #cbd5e1; padding: 14px; border-radius: 8px; background-color: #fafafa; margin-bottom: 24px;">
+              <strong style="color: #FF6A13; font-size: 12px; display: block; margin-bottom: 6px;">🚀 Próximos Pasos:</strong>
+              <ol style="margin: 0; padding-left: 18px; font-size: 12px; color: #475569;">
+                <li style="margin-bottom: 4px;">Registro formal del <strong>ID de Anexo (<span id="p3_resNextStepAnexo">[ID Anexo]</span>)</strong> en el portal de proveedores ISOL.</li>
+                <li style="margin-bottom: 4px;">Procesamiento de facturación y seguimiento en el sistema de pagos.</li>
+                <li>Seguimiento periódico a la ejecución del proyecto.</li>
+              </ol>
+            </div>
+
+            <p style="margin-bottom: 0; color: #475569;">
+              Quedamos atentos a cualquier duda o seguimiento.<br><br>
+              Saludos cordiales,
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer Tip -->
+      <div class="text-xs text-zinc-500 text-center flex items-center justify-between px-2 pt-2 border-t border-zinc-200">
+        <span>💡 Copia el correo y pégalo directamente en tu cliente (<kbd class="bg-zinc-100 border border-zinc-200 px-1.5 py-0.5 rounded text-zinc-700 font-mono">Ctrl + V</kbd>). Agregará tu firma automáticamente.</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="toast" class="fixed bottom-6 right-6 hidden bg-[#FF6A13] text-white font-semibold text-xs px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 z-50 toast-animate">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+    <span id="toastMessage">¡Correo copiado al portapapeles!</span>
+  </div>
+
+  <script>
+    // ================= PASSWORD LOGIC =================
+    function checkPassword(e) {
+      e.preventDefault();
+      const input = document.getElementById('passwordInput').value;
+      if (input === 'UX_TeamAll_66') {
+        const overlay = document.getElementById('passwordOverlay');
+        overlay.style.opacity = '0';
+        setTimeout(() => {
+          overlay.style.display = 'none';
+          document.body.classList.remove('locked');
+          document.body.classList.add('unlocked');
+        }, 400); // match transition time
+      } else {
+        document.getElementById('errorMsg').classList.remove('hidden');
+        document.getElementById('passwordInput').classList.add('border-red-500', 'ring-red-500');
+      }
+    }
+    // ===================================================
+
+    // Global shared application state
+    const globalState = {
+      projectName: '',
+      pmName: '',
+      financeName: '',
+      consultantName: '',
+      pepCode: '',
+      startDate: '',
+      endDate: '',
+      resourceProfile: 'UX/UI Sr Designer',
+      monthlyRate: 96228,
+      months: 0,
+      totalBudget: 0
+    };
+
+    let deliverables = [""];
+    let activeStep = 1;
+
+    // Currency Formatter
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('es-MX', {
+        style: 'currency',
+        currency: 'MXN',
+        minimumFractionDigits: 2
+      }).format(amount);
+    }
+
+    // Date Formatter (dd-mmm-yyyy)
+    function formatDateDisplay(dateStr) {
+      if (!dateStr) return '';
+      const parts = dateStr.split('-');
+      if (parts.length !== 3) return dateStr;
+      const d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+      return d.toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    // Closed Months Calculator (always whole months)
+    function calculateClosedMonths(startStr, endStr) {
+      if (!startStr || !endStr) return 0;
+      const start = new Date(startStr + 'T00:00:00');
+      const end = new Date(endStr + 'T00:00:00');
+      if (isNaN(start.getTime()) || isNaN(end.getTime()) || end <= start) return 0;
+
+      const diffTime = end.getTime() - start.getTime();
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // inclusive
+      const m = Math.round(diffDays / 30.4375);
+      return Math.max(1, m);
+    }
+
+    // Sync shared fields across forms and update previews in real-time
+    function syncSharedField(field, value) {
+      globalState[field] = value;
+
+      // Synchronize input elements across all steps
+      if (field === 'projectName') {
+        const i1 = document.getElementById('s1_projectName');
+        const i2 = document.getElementById('s2_projectName');
+        const i3 = document.getElementById('s3_projectName');
+        if (i1 && i1.value !== value) i1.value = value;
+        if (i2 && i2.value !== value) i2.value = value;
+        if (i3 && i3.value !== value) i3.value = value;
+      } else if (field === 'pmName') {
+        const i1 = document.getElementById('s1_pmName');
+        const i2 = document.getElementById('s2_pmName');
+        const i3 = document.getElementById('s3_pmName');
+        if (i1 && i1.value !== value) i1.value = value;
+        if (i2 && i2.value !== value) i2.value = value;
+        if (i3 && i3.value !== value) i3.value = value;
+      } else if (field === 'financeName') {
+        const i1 = document.getElementById('s1_financeName');
+        const i2 = document.getElementById('s2_financeName');
+        const i3 = document.getElementById('s3_financeName');
+        if (i1 && i1.value !== value) i1.value = value;
+        if (i2 && i2.value !== value) i2.value = value;
+        if (i3 && i3.value !== value) i3.value = value;
+      } else if (field === 'consultantName') {
+        const i2 = document.getElementById('s2_consultantName');
+        const i3 = document.getElementById('s3_consultantName');
+        if (i2 && i2.value !== value) i2.value = value;
+        if (i3 && i3.value !== value) i3.value = value;
+      } else if (field === 'pepCode') {
+        const i2 = document.getElementById('s2_pepCode');
+        const i3 = document.getElementById('s3_pepCode');
+        if (i2 && i2.value !== value) i2.value = value;
+        if (i3 && i3.value !== value) i3.value = value;
+      } else if (field === 'startDate') {
+        const i1 = document.getElementById('s1_startDate');
+        const i2 = document.getElementById('s2_startDate');
+        if (i1 && i1.value !== value) i1.value = value;
+        if (i2 && i2.value !== value) i2.value = value;
+      } else if (field === 'endDate') {
+        const i1 = document.getElementById('s1_endDate');
+        const i2 = document.getElementById('s2_endDate');
+        if (i1 && i1.value !== value) i1.value = value;
+        if (i2 && i2.value !== value) i2.value = value;
+      } else if (field === 'resourceProfile') {
+        const i1 = document.getElementById('s1_resourceProfile');
+        const i2 = document.getElementById('s2_resourceProfile');
+        if (i1 && i1.value !== value) i1.value = value;
+        if (i2 && i2.value !== value) i2.value = value;
+      }
+
+      // Re-render the active email preview immediately
+      if (activeStep === 1) renderStep1Mail();
+      else if (activeStep === 2) renderStep2Mail();
+      else if (activeStep === 3) renderStep3Mail();
+    }
+
+    // Budget & Month calculation for Step 1
+    function calculateBudgetStep1() {
+      const startVal = document.getElementById('s1_startDate').value;
+      const endVal = document.getElementById('s1_endDate').value;
+      const profileSelect = document.getElementById('s1_resourceProfile');
+      const rate = parseFloat(profileSelect.options[profileSelect.selectedIndex].getAttribute('data-rate')) || 96228;
+
+      const months = calculateClosedMonths(startVal, endVal);
+      const totalBudget = months * rate;
+
+      globalState.startDate = startVal;
+      globalState.endDate = endVal;
+      globalState.resourceProfile = profileSelect.value;
+      globalState.monthlyRate = rate;
+      globalState.months = months;
+      globalState.totalBudget = totalBudget;
+
+      document.getElementById('s1_monthsDisplay').value = `${months} ${months === 1 ? 'Mes' : 'Meses'}`;
+      document.getElementById('s1_monthlyRateDisplay').value = formatCurrency(rate);
+      document.getElementById('s1_budgetDisplay').value = `${formatCurrency(totalBudget)} MXN`;
+
+      // Mirror to Step 2 inputs if exists
+      const s2Start = document.getElementById('s2_startDate');
+      const s2End = document.getElementById('s2_endDate');
+      const s2Profile = document.getElementById('s2_resourceProfile');
+      if (s2Start && s2Start.value !== startVal) s2Start.value = startVal;
+      if (s2End && s2End.value !== endVal) s2End.value = endVal;
+      if (s2Profile && s2Profile.value !== profileSelect.value) s2Profile.value = profileSelect.value;
+      document.getElementById('s2_monthsDisplay').value = `${months} ${months === 1 ? 'Mes' : 'Meses'}`;
+      document.getElementById('s2_monthlyRateDisplay').value = formatCurrency(rate);
+      document.getElementById('s2_budgetDisplay').value = `${formatCurrency(totalBudget)} MXN`;
+
+      renderStep1Mail();
+    }
+
+    // Budget & Month calculation for Step 2
+    function calculateBudgetStep2() {
+      const startVal = document.getElementById('s2_startDate').value;
+      const endVal = document.getElementById('s2_endDate').value;
+      const profileSelect = document.getElementById('s2_resourceProfile');
+      const rate = parseFloat(profileSelect.options[profileSelect.selectedIndex].getAttribute('data-rate')) || 96228;
+
+      const months = calculateClosedMonths(startVal, endVal);
+      const totalBudget = months * rate;
+
+      globalState.startDate = startVal;
+      globalState.endDate = endVal;
+      globalState.resourceProfile = profileSelect.value;
+      globalState.monthlyRate = rate;
+      globalState.months = months;
+      globalState.totalBudget = totalBudget;
+
+      document.getElementById('s2_monthsDisplay').value = `${months} ${months === 1 ? 'Mes' : 'Meses'}`;
+      document.getElementById('s2_monthlyRateDisplay').value = formatCurrency(rate);
+      document.getElementById('s2_budgetDisplay').value = `${formatCurrency(totalBudget)} MXN`;
+
+      // Mirror to Step 1 inputs
+      const s1Start = document.getElementById('s1_startDate');
+      const s1End = document.getElementById('s1_endDate');
+      const s1Profile = document.getElementById('s1_resourceProfile');
+      if (s1Start && s1Start.value !== startVal) s1Start.value = startVal;
+      if (s1End && s1End.value !== endVal) s1End.value = endVal;
+      if (s1Profile && s1Profile.value !== profileSelect.value) s1Profile.value = profileSelect.value;
+      document.getElementById('s1_monthsDisplay').value = `${months} ${months === 1 ? 'Mes' : 'Meses'}`;
+      document.getElementById('s1_monthlyRateDisplay').value = formatCurrency(rate);
+      document.getElementById('s1_budgetDisplay').value = `${formatCurrency(totalBudget)} MXN`;
+
+      renderStep2Mail();
+    }
+
+    // Dynamic Deliverables Inputs (Step 1)
+    function renderDeliverablesInputs() {
+      const container = document.getElementById('deliverablesContainer');
+      container.innerHTML = '';
+
+      deliverables.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = "flex items-center gap-2";
+        div.innerHTML = `
+          <input type="text" value="${item}" oninput="updateDeliverableText(${index}, this.value)" class="flex-1 bg-white border border-zinc-300 rounded-lg px-3 py-1.5 text-zinc-900 placeholder-zinc-400 text-xs focus:border-[#833177] focus:outline-none" placeholder="Entregable ${index + 1}">
+          ${deliverables.length > 1 ? `
+            <button type="button" onclick="removeDeliverable(${index})" class="text-red-500 hover:text-red-700 p-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 border border-zinc-200 transition" title="Eliminar entregable">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+            </button>
+          ` : ''}
+        `;
+        container.appendChild(div);
+      });
+
+      const btnAdd = document.getElementById('btnAddDeliverable');
+      if (deliverables.length >= 3) {
+        btnAdd.classList.add('opacity-50', 'cursor-not-allowed');
+        btnAdd.disabled = true;
+      } else {
+        btnAdd.classList.remove('opacity-50', 'cursor-not-allowed');
+        btnAdd.disabled = false;
+      }
+    }
+
+    function addDeliverable() {
+      if (deliverables.length < 3) {
+        deliverables.push("");
+        renderDeliverablesInputs();
+        renderStep1Mail();
+      }
+    }
+
+    function removeDeliverable(index) {
+      if (deliverables.length > 1) {
+        deliverables.splice(index, 1);
+        renderDeliverablesInputs();
+        renderStep1Mail();
+      }
+    }
+
+    function updateDeliverableText(index, val) {
+      deliverables[index] = val;
+      renderStep1Mail();
+    }
+
+    // ================= RENDER EMAIL PASO 1 =================
+    function renderStep1Mail() {
+      const projName = globalState.projectName.trim() || '[Nombre del proyecto]';
+      const pmName = globalState.pmName.trim() || '[Nombre PM]';
+      const financeName = globalState.financeName.trim() || '[Coordinador IT/Finanzas]';
+
+      const startDateRaw = globalState.startDate || document.getElementById('s1_startDate').value;
+      const endDateRaw = globalState.endDate || document.getElementById('s1_endDate').value;
+      const startDateFormatted = formatDateDisplay(startDateRaw);
+      const endDateFormatted = formatDateDisplay(endDateRaw);
+
+      const months = globalState.months || 0;
+      const monthsDisplay = `${months} ${months === 1 ? 'Mes' : 'Meses'}`;
+      const resourceProfile = globalState.resourceProfile || document.getElementById('s1_resourceProfile').value;
+      const budgetAmount = `${formatCurrency(globalState.totalBudget || 0)} MXN`;
+
+      document.getElementById('subjectPreviewText').textContent = `[SOLICITUD PRESUPUESTO UX] - ${projName} | Solicitud PEP & Aprobación`;
+
+      document.getElementById('p1_resProjName').textContent = projName;
+      document.getElementById('p1_resPmName').textContent = pmName;
+      document.getElementById('p1_resFinName').textContent = financeName;
+
+      const periodText = (startDateFormatted && endDateFormatted && months > 0)
+        ? `del <strong>${startDateFormatted} al ${endDateFormatted} (${monthsDisplay})</strong>`
+        : `al periodo señalado`;
+
+      document.getElementById('p1_resOpeningText').innerHTML = `Espero que se encuentren muy bien. Con el objetivo de garantizar la continuidad operativa, la entrega de maquetados y el cumplimiento del roadmap del proyecto "<strong style="color: #0f172a;">${projName}</strong>", solicitamos la aprobación y liberación del presupuesto correspondiente al periodo ${periodText}.`;
+
+      document.getElementById('p1_resProfile').textContent = resourceProfile;
+      document.getElementById('p1_resPeriod').textContent = (startDateFormatted && endDateFormatted && months > 0) 
+        ? `${startDateFormatted} al ${endDateFormatted} (${monthsDisplay})` 
+        : '[Por definir]';
+      document.getElementById('p1_resAmount').textContent = budgetAmount;
+
+      const delivContainer = document.getElementById('p1_resDeliverablesList');
+      delivContainer.innerHTML = '';
+      const validDelivs = deliverables.filter(d => d.trim().length > 0);
+
+      if (validDelivs.length > 0) {
+        validDelivs.forEach(d => {
+          const li = document.createElement('li');
+          li.style.marginBottom = '6px';
+          li.textContent = d;
+          delivContainer.appendChild(li);
+        });
+      } else {
+        const li = document.createElement('li');
+        li.style.marginBottom = '6px';
+        li.style.color = '#94a3b8';
+        li.textContent = '[Entregables por definir en el formulario]';
+        delivContainer.appendChild(li);
+      }
+    }
+
+    // ================= RENDER EMAIL PASO 2 =================
+    function renderStep2Mail() {
+      const projName = globalState.projectName.trim() || '[Nombre del proyecto]';
+      const pmName = globalState.pmName.trim() || '[Nombre PM]';
+      const financeName = globalState.financeName.trim() || '[Coordinador IT/Finanzas]';
+      const consultantName = globalState.consultantName.trim() || '[Nombre del Consultor]';
+      const pepCode = globalState.pepCode.trim() || '[Número de PEP]';
+
+      const startDateRaw = globalState.startDate || document.getElementById('s2_startDate').value;
+      const endDateRaw = globalState.endDate || document.getElementById('s2_endDate').value;
+      const startDateFormatted = formatDateDisplay(startDateRaw);
+      const endDateFormatted = formatDateDisplay(endDateRaw);
+
+      const months = globalState.months || 0;
+      const monthsDisplay = `${months} ${months === 1 ? 'Mes' : 'Meses'}`;
+      const resourceProfile = globalState.resourceProfile || document.getElementById('s2_resourceProfile').value;
+      const budgetAmount = `${formatCurrency(globalState.totalBudget || 0)} MXN`;
+      const importantNotes = (document.getElementById('s2_importantNotes').value || '').trim();
+
+      document.getElementById('subjectPreviewText').textContent = `[CONFIRMACIÓN & SOLICITUD ANEXO] - ${projName} | PEP: ${pepCode} | Consultor: ${consultantName}`;
+
+      document.getElementById('p2_resProjName').textContent = projName;
+      document.getElementById('p2_resPmName').textContent = pmName;
+      document.getElementById('p2_resFinName').textContent = financeName;
+
+      document.querySelectorAll('.p2_inlineProjName').forEach(el => el.textContent = projName);
+
+      document.getElementById('p2_resConsultant').textContent = consultantName;
+      document.getElementById('p2_resProfile').textContent = resourceProfile;
+      document.getElementById('p2_resPeriod').textContent = (startDateFormatted && endDateFormatted && months > 0) 
+        ? `${startDateFormatted} al ${endDateFormatted} (${monthsDisplay})` 
+        : '[Por definir]';
+      document.getElementById('p2_resAmount').textContent = budgetAmount;
+      document.getElementById('p2_resPep').textContent = pepCode;
+
+      const notesBox = document.getElementById('p2_resNotesBox');
+      if (importantNotes) {
+        notesBox.style.display = 'block';
+        document.getElementById('p2_resNotesBody').textContent = importantNotes;
+      } else {
+        notesBox.style.display = 'none';
+      }
+    }
+
+    // ================= RENDER EMAIL PASO 3 =================
+    function renderStep3Mail() {
+      const projName = globalState.projectName.trim() || '[Nombre del proyecto]';
+      const pmName = globalState.pmName.trim() || '[Nombre PM]';
+      const financeName = globalState.financeName.trim() || '[Coordinador IT/Finanzas]';
+      const consultantName = globalState.consultantName.trim() || '[Nombre del Consultor]';
+      const pepCode = globalState.pepCode.trim() || '[Número de PEP]';
+
+      const anexoInput = document.getElementById('s3_anexoId');
+      const anexoId = (anexoInput ? anexoInput.value.trim() : '') || '[ID de Anexo]';
+      const contractReqDateRaw = document.getElementById('s3_contractRequestDate').value;
+      const contractReqDateFormatted = formatDateDisplay(contractReqDateRaw) || '[Fecha de Solicitud]';
+
+      document.getElementById('subjectPreviewText').textContent = `[SOLICITUD DE PAGO] - ${projName} | Anexo: ${anexoId} | Fecha: ${contractReqDateFormatted}`;
+
+      document.getElementById('p3_resProjName').textContent = projName;
+      document.getElementById('p3_resPmName').textContent = pmName;
+      document.getElementById('p3_resFinName').textContent = financeName;
+
+      document.querySelectorAll('.p3_inlineProjName').forEach(el => el.textContent = projName);
+      document.getElementById('p3_resInlineAnexo').textContent = anexoId;
+      document.getElementById('p3_resInlineDate').textContent = contractReqDateFormatted;
+
+      document.getElementById('p3_resSummaryProjName').textContent = projName;
+      document.getElementById('p3_resConsultant').textContent = consultantName;
+      document.getElementById('p3_resPep').textContent = pepCode;
+      document.getElementById('p3_resAnexoId').textContent = anexoId;
+      document.getElementById('p3_resContractDate').textContent = contractReqDateFormatted;
+
+      document.getElementById('p3_resNextStepAnexo').textContent = anexoId;
+    }
+
+    // Tab Switching Logic
+    function switchTab(step) {
+      activeStep = step;
+
+      // Update Navigation Tab Styles
+      for (let i = 1; i <= 3; i++) {
+        const btn = document.getElementById(`tab-btn-${i}`);
+        if (i === step) {
+          btn.className = "step-tab flex-1 min-w-[220px] px-3.5 py-2.5 rounded-xl border text-xs font-semibold flex items-center justify-between transition bg-[#833177] text-white border-[#833177] shadow";
+        } else {
+          btn.className = "step-tab flex-1 min-w-[220px] px-3.5 py-2.5 rounded-xl border text-xs font-semibold flex items-center justify-between transition bg-zinc-50 text-zinc-600 border-zinc-200 hover:bg-zinc-100 hover:text-zinc-900";
+        }
+      }
+
+      // Update Form Titles & Visibility
+      const titleEl = document.getElementById('formStepTitle');
+      const subtitleEl = document.getElementById('formStepSubtitle');
+      const badgeEl = document.getElementById('activeStepBadge');
+
+      if (step === 1) {
+        titleEl.innerHTML = `<svg class="w-4 h-4 text-[#833177]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg> Paso 1: Solicitud de Presupuesto`;
+        subtitleEl.textContent = 'Solicita la aprobación y liberación del presupuesto correspondiente.';
+        badgeEl.textContent = 'Paso 1: Solicitud de Presupuesto';
+        
+        document.getElementById('formStep1').classList.remove('hidden');
+        document.getElementById('formStep2').classList.add('hidden');
+        document.getElementById('formStep3').classList.add('hidden');
+
+        document.getElementById('emailContainerStep1').classList.remove('hidden');
+        document.getElementById('emailContainerStep2').classList.add('hidden');
+        document.getElementById('emailContainerStep3').classList.add('hidden');
+
+        renderStep1Mail();
+      } else if (step === 2) {
+        titleEl.innerHTML = `<svg class="w-4 h-4 text-[#833177]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Paso 2: Confirmación & Solicitud Anexo`;
+        subtitleEl.textContent = 'Confirma el PEP asignado y solicita emisión de Anexo a ISOL.';
+        badgeEl.textContent = 'Paso 2: Confirmación & Solicitud Anexo';
+
+        document.getElementById('formStep1').classList.add('hidden');
+        document.getElementById('formStep2').classList.remove('hidden');
+        document.getElementById('formStep3').classList.add('hidden');
+
+        document.getElementById('emailContainerStep1').classList.add('hidden');
+        document.getElementById('emailContainerStep2').classList.remove('hidden');
+        document.getElementById('emailContainerStep3').classList.add('hidden');
+
+        renderStep2Mail();
+      } else if (step === 3) {
+        titleEl.innerHTML = `<svg class="w-4 h-4 text-[#833177]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 002 2h2a2 2 0 002-2"></path></svg> Paso 3: Solicitud de Pago`;
+        subtitleEl.textContent = 'Notificación general con el ID de Anexo asignado para pago.';
+        badgeEl.textContent = 'Paso 3: Solicitud de Pago';
+
+        document.getElementById('formStep1').classList.add('hidden');
+        document.getElementById('formStep2').classList.add('hidden');
+        document.getElementById('formStep3').classList.remove('hidden');
+
+        document.getElementById('emailContainerStep1').classList.add('hidden');
+        document.getElementById('emailContainerStep2').classList.add('hidden');
+        document.getElementById('emailContainerStep3').classList.remove('hidden');
+
+        renderStep3Mail();
+      }
+    }
+
+    // Copy Rich Text Functionality (supports Outlook, Gmail, Apple Mail)
+    async function copyRichText() {
+      let targetElement;
+      if (activeStep === 1) targetElement = document.getElementById('emailContainerStep1');
+      if (activeStep === 2) targetElement = document.getElementById('emailContainerStep2');
+      if (activeStep === 3) targetElement = document.getElementById('emailContainerStep3');
+
+      try {
+        const range = document.createRange();
+        range.selectNode(targetElement);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+        const htmlContent = targetElement.outerHTML;
+        const textContent = targetElement.innerText;
+
+        const blobHtml = new Blob([htmlContent], { type: 'text/html' });
+        const blobText = new Blob([textContent], { type: 'text/plain' });
+
+        const clipboardItem = new ClipboardItem({
+          'text/html': blobHtml,
+          'text/plain': blobText
+        });
+
+        await navigator.clipboard.write([clipboardItem]);
+        selection.removeAllRanges();
+        showToast('¡Correo del Paso ' + activeStep + ' copiado al portapapeles! Listo para pegar (Ctrl+V) en Outlook o Gmail.');
+      } catch (err) {
+        console.warn('ClipboardItem failed, using fallback copy:', err);
+        try {
+          document.execCommand('copy');
+          showToast('¡Correo del Paso ' + activeStep + ' copiado!');
+        } catch (fallbackErr) {
+          showToast('Por favor selecciona y copia manualmente el contenido del correo.');
+        }
+      }
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMessage');
+      toastMsg.textContent = message;
+      toast.classList.remove('hidden');
+
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3500);
+    }
+
+    function resetCurrentForm() {
+      if (activeStep === 1) {
+        document.getElementById('formStep1').reset();
+        deliverables = [""];
+        renderDeliverablesInputs();
+        calculateBudgetStep1();
+      } else if (activeStep === 2) {
+        document.getElementById('formStep2').reset();
+        calculateBudgetStep2();
+      } else if (activeStep === 3) {
+        document.getElementById('formStep3').reset();
+        renderStep3Mail();
+      }
+      showToast('Formulario del Paso ' + activeStep + ' restablecido.');
+    }
+
+    // Initialize application on load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderDeliverablesInputs();
+      calculateBudgetStep1();
+      calculateBudgetStep2();
+      switchTab(1);
+    });
+  </script>
+</body>
+</html>

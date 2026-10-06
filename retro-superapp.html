@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retrospectiva: Sobreviviendo a la Horda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Fuente tipo Zombie/Horror -->
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            50: '#fdf0f7',
+                            100: '#fbe1f0',
+                            500: '#DB0080', /* Rosa Liverpool */
+                            600: '#b90069',
+                            900: '#65033a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; overflow-x: hidden; }
+        .theme-bg-zombie { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); }
+        .zombie-accent { color: #16a34a; }
+        .liverpool-pink { color: #DB0080; }
+        .bg-liverpool-pink { background-color: #DB0080; }
+        .border-liverpool-pink { border-color: #DB0080; }
+        
+        /* Tipografía Zombie y Efectos de Emergencia */
+        .font-zombie { font-family: 'Creepster', cursive; letter-spacing: 3px; }
+        .warning-tape {
+            background: repeating-linear-gradient(
+              45deg,
+              #fbbf24,
+              #fbbf24 15px,
+              #111827 15px,
+              #111827 30px
+            );
+        }
+        .emergency-glow {
+            text-shadow: 0 0 10px rgba(220, 38, 38, 0.8), 0 0 20px rgba(220, 38, 38, 0.4);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #DB0080; border-radius: 5px; }
+        ::-webkit-scrollbar-thumb:hover { background: #b90069; }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 1rem; /* rounded-2xl equivalent */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg equivalent */
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <!-- Incluir Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Header Liverpool -->
+    <header class="bg-brand-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-white p-1 rounded shadow-sm flex items-center justify-center">
+                   <span class="text-brand-900 font-bold text-xl leading-none block px-2">S</span>
+                </div>
+                <h1 class="text-lg font-bold hidden sm:block">Retrospectiva Estratégica UX & Dev</h1>
+            </div>
+            <div class="text-sm font-medium px-4 py-1.5 bg-white/10 rounded-full border border-white/20 shadow-inner flex items-center gap-2">
+                <span class="text-lg">🧟‍♂️</span> Operación: Refugio Seguro
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow flex flex-col theme-bg-zombie">
+        
+        <!-- Sección 1: Rompehielos (Movido al principio) -->
+        <section class="w-full py-24 px-6 flex flex-col justify-center items-center bg-slate-900 border-b-8 border-brand-500 relative overflow-hidden">
+            <!-- Decoración de fondo de emergencia -->
+            <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/grunge-wall.png')] mix-blend-overlay"></div>
+            <div class="absolute top-0 left-0 w-full h-3 warning-tape shadow-lg z-10"></div>
+            <div class="absolute bottom-0 left-0 w-full h-3 warning-tape shadow-lg z-10"></div>
+            
+            <div class="max-w-4xl w-full text-center relative z-10 mt-4">
+                <div class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-red-900/40 text-red-400 text-sm font-bold mb-6 border border-red-500/50 shadow-[0_0_15px_rgba(220,38,38,0.5)] backdrop-blur-sm">
+                    <span class="animate-pulse text-lg">☣️</span> 
+                    <span class="tracking-widest">PROTOCOLO DE DESINFECCIÓN INICIAL</span> 
+                    <span class="animate-pulse text-lg">☣️</span>
+                </div>
+                
+                <h2 class="text-5xl md:text-7xl font-zombie text-white mb-10 emergency-glow">
+                    KIT DE SUPERVIVENCIA
+                </h2>
+                
+                <div class="bg-slate-800 p-1 md:p-2 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform rotate-1 hover:rotate-0 transition-transform duration-300">
+                    <div class="bg-slate-900 p-8 md:p-12 rounded-2xl border-2 border-brand-500 text-center relative overflow-hidden">
+                        
+                        <!-- Marca de agua de zombie en la esquina -->
+                        <div class="absolute -bottom-10 -right-6 text-[150px] opacity-10 rotate-12 select-none pointer-events-none">🧟‍♂️</div>
+                        <div class="absolute -top-6 -left-6 text-7xl opacity-10 -rotate-12 select-none pointer-events-none">🩸</div>
+                        
+                        <h3 class="text-xl md:text-2xl font-bold mb-4 text-white uppercase tracking-widest flex items-center justify-center gap-3">
+                            <span>🚨</span> Escenario de Crisis <span>🚨</span>
+                        </h3>
+                        
+                        <p class="text-2xl md:text-3xl text-gray-300 font-medium italic mb-8 leading-relaxed">
+                            "¡Alarma! 📻 Comienza la invasión en la oficina. La horda se acerca y solo tienes <span class="text-brand-500 font-bold border-b-2 border-brand-500 px-1">1 minuto</span> para prepararte..."
+                        </p>
+                        
+                        <div class="bg-gradient-to-r from-brand-900/40 via-slate-800 to-brand-900/40 border border-brand-500/30 p-6 rounded-xl mb-8 shadow-inner relative">
+                            <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 flex gap-2 text-3xl">
+                                <span>🧊</span><span>🪓</span>
+                            </div>
+                            <p class="text-xl md:text-2xl font-bold text-white mt-4">
+                                ¿Qué <span class="text-green-400 underline decoration-wavy decoration-green-500/50">habilidad personal o técnica</span> tienes hoy que te ayudaría a sobrevivir?
+                            </p>
+                        </div>
+                        
+                        <div class="inline-block text-xs md:text-sm text-gray-400 italic bg-black/50 px-6 py-4 rounded-lg border border-slate-700 shadow-sm relative z-10">
+                            <strong>🎯 Objetivo del escaneo:</strong> Bajar las defensas, reconocer nuestras fortalezas individuales y afilar las herramientas antes de planear la defensa grupal de la Super App.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 2: Bienvenida, Contexto y Video Nuevo -->
+        <section class="w-full py-16 px-6 lg:px-12 flex justify-center items-center min-h-[85vh] border-b border-green-200">
+            <div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <!-- Columna Izquierda: Textos y Objetivo -->
+                <div class="flex flex-col justify-center text-center lg:text-left">
+                    <div class="flex justify-center lg:justify-start gap-4 mb-6 text-5xl sm:text-6xl">
+                        <span class="animate-pulse">🧟‍♂️</span>
+                        <span>🚧</span>
+                        <span class="animate-bounce">🏃‍♂️</span>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight leading-tight">
+                        Sobreviviendo a la Horda
+                    </h2>
+                    
+                    <div class="bg-white/80 p-6 sm:p-8 rounded-2xl border border-green-200 shadow-lg text-left mb-6 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-2 h-full bg-brand-500"></div>
+                        <h3 class="text-xl sm:text-2xl font-bold text-brand-900 mb-4 flex items-center gap-2">
+                            <span>🎯</span> Objetivo de la Sesión
+                        </h3>
+                        <p class="text-gray-800 leading-relaxed text-sm sm:text-base">
+                            El refugio está bajo asedio constante. Las hordas de <strong>"Deuda Técnica"</strong> y <strong>"Deuda de Experiencia"</strong> amenazan nuestros muros. Si construimos rápido pero a ciegas, la horda entrará.
+                        </p>
+                        <p class="text-gray-800 leading-relaxed text-sm sm:text-base mt-4">
+                            Esta sesión busca crear un pacto de supervivencia: sincronizar a los Exploradores (UX) que mapean el terreno seguro, con los Defensores (Dev IA) que levantan los muros a súper velocidad. 
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Video Intro Actualizado -->
+                <div class="w-full max-w-2xl mx-auto lg:mx-0">
+                    <div class="bg-gray-900 rounded-3xl p-2 sm:p-4 shadow-2xl relative">
+                        <!-- Decoración del marco -->
+                        <div class="absolute -top-3 -right-3 text-3xl animate-bounce hidden sm:block">🚨</div>
+                        <div class="video-container bg-black">
+                            <!-- El link de Drive actualizado convertido a modo preview -->
+                            <iframe src="https://drive.google.com/file/d/1HDyS1LoUhpAz6dee4zodkuxSrJyP1qNi/preview" allow="autoplay; fullscreen" frameborder="0"></iframe>
+                        </div>
+                        <div class="text-center mt-3">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-900/50 text-red-200 text-xs font-bold border border-red-700/50">
+                                <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                                TRANSMISIÓN DE EMERGENCIA
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Sección 3: Datos Duros - La importancia del Mapa (UX) -->
+        <section class="w-full py-20 px-6 flex flex-col justify-center items-center border-b border-green-200">
+            <div class="max-w-5xl w-full">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-100 text-brand-800 text-sm font-bold mb-6 border border-brand-200 shadow-sm">
+                    <span>📊</span> Inteligencia de Combate (Datos Duros)
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">¿Por qué no podemos simplemente construir rápido?</h2>
+                <p class="text-lg text-gray-600 mb-10">La IA acelera la construcción de la barricada, pero <strong>sin el mapa de UX, estamos acelerando el desperdicio</strong>. Construir rápido pero a ciegas garantiza que la horda entrará.</p>
+                
+                <!-- Gráficas -->
+                <div class="grid md:grid-cols-2 gap-10 items-center mb-12">
+                    <!-- Gráfica 1-10-100 -->
+                    <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 h-full flex flex-col">
+                        <div class="mb-4">
+                            <h3 class="font-bold text-lg text-gray-800 mb-2">El Costo de una Mordida (Regla 1-10-100)</h3>
+                            <p class="text-sm text-gray-500">Corregir el rumbo cuando ya estamos construyendo (código) nos cuesta energía vital.</p>
+                        </div>
+                        <div class="chart-container flex-grow">
+                            <canvas id="costoMordidaChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Gráfica 5 Usuarios -->
+                    <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 h-full flex flex-col">
+                        <div class="mb-4">
+                            <h3 class="font-bold text-lg text-gray-800 mb-2">Escaneo Rápido de Infección</h3>
+                            <p class="text-sm text-gray-500">No necesitamos meses de estudio. Probar prototipos con 5 humanos detecta el 85% de las trampas mortales antes de programar.</p>
+                        </div>
+                        <div class="chart-container flex-grow">
+                            <canvas id="escaneoUsuariosChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabla Comparativa IA vs UX -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg border-l-4 border-brand-500">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">El Arsenal: IA (Velocidad) vs. UX (Protección)</h3>
+                    <p class="text-sm text-gray-600 mb-6">Si delegamos todo a la maquinaria de la IA y eliminamos a los exploradores humanos, el refugio caerá desde adentro por falsas suposiciones.</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm border-collapse">
+                            <thead>
+                                <tr class="bg-gray-100 text-gray-700">
+                                    <th class="p-3 border-b font-bold rounded-tl-lg">Fase de Combate</th>
+                                    <th class="p-3 border-b font-bold text-green-700">Velocidad (Lo que hace la IA)</th>
+                                    <th class="p-3 border-b font-bold text-brand-600 rounded-tr-lg">Protección (Lo que perdemos sin UX)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="p-3 font-semibold text-gray-800">Discovery & Estrategia</td>
+                                    <td class="p-3 bg-green-50/50 text-green-900">Sintetiza requerimientos y genera código/wireframes en segundos.</td>
+                                    <td class="p-3 bg-brand-50/50 text-brand-900">El <strong>contexto real</strong>. Riesgo de construir rápido la solución perfecta para el <em>problema equivocado</em>.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-gray-800">Validación (Testing)</td>
+                                    <td class="p-3 bg-green-50/50 text-green-900">Simula pruebas sintéticas o análisis predictivos sin contexto.</td>
+                                    <td class="p-3 bg-brand-50/50 text-brand-900"><strong>Contacto humano directo</strong>. Descubrir comportamientos inesperados que la IA no predijo.</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 font-semibold text-gray-800">Diseño Visual & Flujos</td>
+                                    <td class="p-3 bg-green-50/50 text-green-900">Genera pantallas base respetando patrones visuales.</td>
+                                    <td class="p-3 bg-brand-50/50 text-brand-900">Juicio sobre excepciones reales y <strong>estados de error</strong> que generan desconfianza si fallan.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 4: Dinámica Central (Las 3 Fases) -->
+        <section class="w-full py-20 px-6 flex flex-col justify-center items-center bg-gray-900 text-white border-b border-gray-700 relative">
+            <div class="max-w-5xl w-full">
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gray-800 text-brand-400 text-sm font-bold mb-4 border border-gray-700">
+                            <span>⚙️</span> Plan de Supervivencia (Dinámica)
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-bold">Misión: Sellar las Brechas en 3 Fases</h2>
+                    </div>
+                    <!-- Botón para ir a Figma -->
+                    <a href="https://www.figma.com/board/m2zG2cICBdCBWjDh9rLhRc/Retrospectiva-Estrat%C3%A9gica-UX---Dev?node-id=0-1&t=jwe8XjJEBCKjVK0S-1" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white font-bold rounded-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 w-full md:w-auto">
+                        <span>🎨</span>
+                        Ir a la Dinámica
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                          <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                          <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                        </svg>
+                    </a>
+                </div>
+                
+                <div class="space-y-8">
+                    <!-- Fase 1: Dolores -->
+                    <div class="bg-gray-800 p-8 rounded-2xl shadow-xl border-l-8 border-red-500 relative transform transition hover:scale-[1.01]">
+                        <div class="absolute -left-5 top-8 w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center font-bold text-lg shadow-lg">1</div>
+                        <h3 class="font-bold text-2xl text-white mb-3 ml-6 flex items-center gap-2">
+                            <span>🚨</span> Fase 1: ¿Por dónde entran los zombies? (Dolores Actuales)
+                        </h3>
+                        <div class="ml-6">
+                            <p class="text-gray-300 mb-4">Debemos identificar honestamente las fricciones actuales en nuestra colaboración. ¿Qué "mordidas" estamos sufriendo?</p>
+                            <div class="bg-gray-900 p-5 rounded-xl border border-gray-700">
+                                <strong class="block mb-2 text-red-400 uppercase tracking-wide text-xs">Acción de la sesión:</strong> 
+                                <ul class="list-disc list-inside text-sm text-gray-400 space-y-2 mt-2">
+                                    <li>Lluvia de ideas en Post-its (Miro/Figma).</li>
+                                    <li><em>Ej: "Dev cambia el diseño por rapidez", "UX entrega pantallas tarde sin considerar latencia", "Construimos sin saber si el usuario lo necesita".</em></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fase 2: Backlog -->
+                    <div class="bg-gray-800 p-8 rounded-2xl shadow-xl border-l-8 border-yellow-500 relative transform transition hover:scale-[1.01]">
+                        <div class="absolute -left-5 top-8 w-10 h-10 rounded-full bg-yellow-500 text-gray-900 flex items-center justify-center font-bold text-lg shadow-lg">2</div>
+                        <h3 class="font-bold text-2xl text-white mb-3 ml-6 flex items-center gap-2">
+                            <span>📋</span> Fase 2: Análisis de Zona Segura (Priorización del Backlog)
+                        </h3>
+                        <div class="ml-6">
+                            <p class="text-gray-300 mb-4">No podemos salir a explorar todo a la vez. Decidiremos qué misiones requieren el "Mapa de UX" urgentemente y cuáles pueden avanzar rápido.</p>
+                            <div class="bg-gray-900 p-5 rounded-xl border border-gray-700">
+                                <strong class="block mb-2 text-yellow-400 uppercase tracking-wide text-xs">Acción de la sesión:</strong> 
+                                <ul class="list-disc list-inside text-sm text-gray-400 space-y-2 mt-2">
+                                    <li>Proyectar los próximos tickets del Backlog.</li>
+                                    <li>Clasificar usando Dual-Track Agile: ¿Qué iniciativas requieren Discovery/Research de UX <em>1 Sprint antes</em> para no codificar a ciegas?</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fase 3: Acuerdos -->
+                    <div class="bg-gray-800 p-8 rounded-2xl shadow-xl border-l-8 border-green-500 relative transform transition hover:scale-[1.01]">
+                        <div class="absolute -left-5 top-8 w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center font-bold text-lg shadow-lg">3</div>
+                        <h3 class="font-bold text-2xl text-white mb-3 ml-6 flex items-center gap-2">
+                            <span>🤝</span> Fase 3: Pacto de Supervivencia (Acuerdos y Plan)
+                        </h3>
+                        <div class="ml-6">
+                            <p class="text-gray-300 mb-4">Transformamos los dolores identificados en la Fase 1 en <strong>reglas inquebrantables</strong> para nuestro refugio.</p>
+                            <div class="bg-gray-900 p-5 rounded-xl border border-gray-700">
+                                <strong class="block mb-2 text-green-400 uppercase tracking-wide text-xs">Acción de la sesión:</strong> 
+                                <ul class="list-disc list-inside text-sm text-gray-400 space-y-2 mt-2">
+                                    <li>Acordar las normas que integrarán el <em>Definition of Done (DoD)</em>.</li>
+                                    <li>Compromiso mutuo: Velocidad de Ejecución Técnica + Protección y Validación de UX.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección 5: Acuerdos Finales Interactivos -->
+        <section class="w-full py-20 px-6 flex flex-col justify-center items-center bg-white border-b border-green-200">
+            <div class="max-w-4xl w-full">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-100 text-brand-800 text-sm font-bold mb-6 border border-brand-200 shadow-sm">
+                    <span>📜</span> El Contrato Social
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Las Reglas de Zombieland</h2>
+                <p class="text-lg text-gray-600 mb-10">Estos son nuestros acuerdos clave extraídos de las Operaciones UX y el enfoque HCAI para agregar al Definition of Done (DoD). <strong>Edita, elimina o agrega nuevas reglas según lo acuerde el equipo en la sesión.</strong></p>
+                
+                <div class="bg-gray-50 p-6 md:p-8 rounded-2xl shadow-xl border border-gray-200">
+                    
+                    <div id="acuerdos-list" class="space-y-4 mb-8">
+                        <!-- Reglas por defecto -->
+                        <div class="acuerdo-item flex items-start gap-4 p-4 bg-white rounded-xl border border-gray-200 shadow-sm relative group hover:border-brand-300 transition-colors">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold mt-1 numeral">1</div>
+                            <div class="flex-grow w-full">
+                                <input type="text" class="acuerdo-titulo font-bold text-gray-900 block text-lg w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-brand-500 focus:outline-none focus:bg-white transition-colors pb-1 mb-2" value="No salir sin el Mapa (Problema Definido):">
+                                <textarea class="acuerdo-desc text-gray-700 w-full bg-transparent border border-transparent hover:border-gray-300 focus:border-brand-500 focus:outline-none focus:bg-white rounded p-2 resize-y min-h-[60px] transition-colors text-sm">Ninguna iniciativa técnica inicia desarrollo sin un problema y objetivo de negocio validado por UX. No construimos solo "por construir rápido".</textarea>
+                            </div>
+                            <button onclick="eliminarAcuerdo(this)" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1 bg-white rounded-full shadow-sm border border-gray-100" title="Eliminar regla">
+                                ✖
+                            </button>
+                        </div>
+                        
+                        <div class="acuerdo-item flex items-start gap-4 p-4 bg-white rounded-xl border border-gray-200 shadow-sm relative group hover:border-brand-300 transition-colors">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold mt-1 numeral">2</div>
+                            <div class="flex-grow w-full">
+                                <input type="text" class="acuerdo-titulo font-bold text-gray-900 block text-lg w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-brand-500 focus:outline-none focus:bg-white transition-colors pb-1 mb-2" value="Regla de los 5 Exploradores (Validación):">
+                                <textarea class="acuerdo-desc text-gray-700 w-full bg-transparent border border-transparent hover:border-gray-300 focus:border-brand-500 focus:outline-none focus:bg-white rounded p-2 resize-y min-h-[60px] transition-colors text-sm">Los desacuerdos de usabilidad o diseño se prueban con al menos 5 usuarios reales antes de programar, evaluando hechos, no opiniones.</textarea>
+                            </div>
+                            <button onclick="eliminarAcuerdo(this)" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1 bg-white rounded-full shadow-sm border border-gray-100" title="Eliminar regla">
+                                ✖
+                            </button>
+                        </div>
+
+                        <div class="acuerdo-item flex items-start gap-4 p-4 bg-white rounded-xl border border-gray-200 shadow-sm relative group hover:border-brand-300 transition-colors">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold mt-1 numeral">3</div>
+                            <div class="flex-grow w-full">
+                                <input type="text" class="acuerdo-titulo font-bold text-gray-900 block text-lg w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-brand-500 focus:outline-none focus:bg-white transition-colors pb-1 mb-2" value="Dual-Track Activo (Sincronización):">
+                                <textarea class="acuerdo-desc text-gray-700 w-full bg-transparent border border-transparent hover:border-gray-300 focus:border-brand-500 focus:outline-none focus:bg-white rounded p-2 resize-y min-h-[60px] transition-colors text-sm">UX investiga y diseña flujos completos (incluyendo errores) al menos 1 Sprint por delante del equipo de Desarrollo para limpiar el camino.</textarea>
+                            </div>
+                            <button onclick="eliminarAcuerdo(this)" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1 bg-white rounded-full shadow-sm border border-gray-100" title="Eliminar regla">
+                                ✖
+                            </button>
+                        </div>
+
+                        <!-- Regla de Contacto con Usuario (Añadida anteriormente y mantenida) -->
+                        <div class="acuerdo-item flex items-start gap-4 p-4 bg-brand-50/30 rounded-xl border border-brand-200 shadow-sm relative group hover:border-brand-300 transition-colors">
+                            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-bold mt-1 numeral">4</div>
+                            <div class="flex-grow w-full">
+                                <input type="text" class="acuerdo-titulo font-bold text-gray-900 block text-lg w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-brand-500 focus:outline-none focus:bg-white transition-colors pb-1 mb-2" value="Escolta Obligatoria (Contacto con Usuarios):">
+                                <textarea class="acuerdo-desc text-gray-700 w-full bg-transparent border border-transparent hover:border-gray-300 focus:border-brand-500 focus:outline-none focus:bg-white rounded p-2 resize-y min-h-[60px] transition-colors text-sm">Cada vez que haya necesidad de 'tocar base' o interactuar con el usuario final para validar algo, debe estar forzosamente presente el equipo de UX guiando la sesión.</textarea>
+                            </div>
+                            <button onclick="eliminarAcuerdo(this)" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1 bg-white rounded-full shadow-sm border border-gray-100" title="Eliminar regla">
+                                ✖
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Botón Agregar -->
+                    <div class="mb-10 flex justify-center">
+                        <button onclick="agregarAcuerdo()" class="flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-gray-50 text-gray-700 font-semibold rounded-xl transition-all shadow-sm border-2 border-dashed border-gray-300 hover:border-brand-400 hover:text-brand-600">
+                            <span class="text-lg">➕</span> Añadir Nueva Regla a la Lista
+                        </button>
+                    </div>
+
+                    <div class="pt-8 border-t border-gray-200 flex flex-col items-center">
+                        <p class="text-sm text-gray-500 mb-4 text-center">Exporta estos acuerdos listos para pegar en tu correo, Jira o Confluence manteniendo el formato temático.</p>
+                        <button onclick="copiarAcuerdosEstiloZombie()" class="group relative px-8 py-4 bg-gray-900 text-white font-bold rounded-xl overflow-hidden shadow-xl hover:shadow-2xl transition-all w-full max-w-md">
+                            <div class="absolute inset-0 bg-brand-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 ease-out"></div>
+                            <div class="relative flex items-center justify-center gap-3">
+                                <span class="text-xl">🧟‍♂️</span> 
+                                <span>Copiar "Reglas de Zombieland"</span>
+                                <span class="text-xl">📋</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Scripts para Gráficas y Dinámica de Acuerdos -->
+    <script>
+        // --- 1. Inicialización de Gráficas Chart.js ---
+        document.addEventListener("DOMContentLoaded", function() {
+            // Chart 1: Costo (1-10-100)
+            const ctxCost = document.getElementById('costoMordidaChart').getContext('2d');
+            new Chart(ctxCost, {
+                type: 'bar',
+                data: {
+                    labels: ['Fase Diseño (Figma)', 'Fase Código (Dev)', 'Producción (Lanzado)'],
+                    datasets: [{
+                        label: 'Costo Multiplicador',
+                        data: [1, 10, 100],
+                        backgroundColor: ['#96CCEE', '#DA7AB0', '#DB0080'],
+                        borderRadius: 6,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) { return ` Costo: ${context.raw}x`; }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { 
+                            type: 'logarithmic',
+                            title: { display: true, text: 'Costo Logarítmico (Esfuerzo)' }
+                        }
+                    }
+                }
+            });
+
+            // Chart 2: 5 Usuarios
+            const ctxUser = document.getElementById('escaneoUsuariosChart').getContext('2d');
+            new Chart(ctxUser, {
+                type: 'line',
+                data: {
+                    labels: ['0', '1', '2', '3', '4', '5', '8', '10'],
+                    datasets: [{
+                        label: '% Errores Detectados',
+                        data: [0, 33, 50, 66, 75, 85, 95, 100],
+                        borderColor: '#DB0080',
+                        backgroundColor: 'rgba(219, 0, 128, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#DB0080',
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) { return ` ${context.raw}% Detectado`; }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { 
+                            max: 100,
+                            title: { display: true, text: '% Usabilidad Resuelta' }
+                        },
+                        x: {
+                            title: { display: true, text: 'Cantidad de Usuarios Evaluados' }
+                        }
+                    }
+                }
+            });
+        });
+
+        // --- 2. Lógica de Lista de Acuerdos Editables ---
+        
+        function actualizarNumeracion() {
+            const numerales = document.querySelectorAll('.acuerdo-item .numeral');
+            numerales.forEach((el, index) => {
+                el.innerText = index + 1;
+            });
+        }
+
+        function eliminarAcuerdo(btn) {
+            const items = document.querySelectorAll('.acuerdo-item');
+            if (items.length > 1) {
+                // Animación de salida opcional
+                const item = btn.closest('.acuerdo-item');
+                item.style.opacity = '0';
+                item.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    item.remove();
+                    actualizarNumeracion();
+                }, 200);
+            } else {
+                alert("El refugio necesita al menos una regla para no colapsar. 🧟‍♂️");
+            }
+        }
+
+        function agregarAcuerdo() {
+            const list = document.getElementById('acuerdos-list');
+            const nuevoItem = document.createElement('div');
+            nuevoItem.className = 'acuerdo-item flex items-start gap-4 p-4 bg-white rounded-xl border border-brand-200 shadow-sm relative group hover:border-brand-300 transition-colors animate-fade-in-up';
+            // Simple fade in class simulation
+            nuevoItem.style.animation = 'fadeInUp 0.3s ease-out forwards';
+            
+            nuevoItem.innerHTML = `
+                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-bold mt-1 numeral"></div>
+                <div class="flex-grow w-full">
+                    <input type="text" class="acuerdo-titulo font-bold text-gray-900 block text-lg w-full bg-transparent border-b border-gray-300 focus:border-brand-500 focus:outline-none focus:bg-white transition-colors pb-1 mb-2" placeholder="Ej. Regla de Comunicación..." value="Nueva Regla de Supervivencia:">
+                    <textarea class="acuerdo-desc text-gray-700 w-full bg-transparent border border-gray-200 focus:border-brand-500 focus:outline-none focus:bg-white rounded p-2 resize-y min-h-[60px] transition-colors text-sm" placeholder="Describe los detalles del acuerdo de trabajo para el equipo..."></textarea>
+                </div>
+                <button onclick="eliminarAcuerdo(this)" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1 bg-white rounded-full shadow-sm border border-gray-100" title="Eliminar regla">
+                    ✖
+                </button>
+            `;
+            list.appendChild(nuevoItem);
+            actualizarNumeracion();
+            
+            // Hacer scroll suave hacia la nueva regla y enfocar el input
+            nuevoItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            setTimeout(() => {
+                nuevoItem.querySelector('.acuerdo-titulo').focus();
+                nuevoItem.querySelector('.acuerdo-titulo').select();
+            }, 300);
+        }
+
+        // --- 3. Lógica de Copiado con Estilo Rich Text Temático ---
+        
+        function copiarAcuerdosEstiloZombie() {
+            const acuerdosItems = document.querySelectorAll('.acuerdo-item');
+            
+            // Construir el HTML enriquecido diseñado específicamente para correos/Jira
+            let richText = `
+                <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 680px; margin: 0 auto; border: 2px solid #1f2937; border-radius: 12px; overflow: hidden; background-color: #f3f4f6; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    
+                    <!-- Header Temático -->
+                    <div style="background-color: #111827; padding: 24px; text-align: center; border-bottom: 4px solid #DB0080;">
+                        <h2 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">
+                            <span style="font-size: 28px; vertical-align: text-bottom; margin-right: 8px;">🧟‍♂️</span> 
+                            Reglas de Zombieland
+                            <span style="font-size: 28px; vertical-align: text-bottom; margin-left: 8px;">🚧</span>
+                        </h2>
+                        <p style="color: #9ca3af; margin: 8px 0 0 0; font-size: 14px; font-style: italic;">
+                            Pacto de Supervivencia: UX & Desarrollo (Definition of Done)
+                        </p>
+                    </div>
+                    
+                    <!-- Cuerpo del Mensaje -->
+                    <div style="padding: 30px 24px;">
+                        <p style="color: #374151; font-size: 15px; margin-top: 0; margin-bottom: 24px; line-height: 1.6;">
+                            Equipo, para mantener nuestro refugio a salvo de la <strong>Deuda Técnica</strong> y la <strong>Deuda de UX</strong>, hemos acordado en nuestra sesión de retrospectiva cumplir con las siguientes directivas de colaboración:
+                        </p>
+                        
+                        <ul style="list-style: none; padding: 0; margin: 0;">
+            `;
+            
+            // Iterar sobre los acuerdos actuales en el DOM
+            acuerdosItems.forEach((item, index) => {
+                const title = item.querySelector('.acuerdo-titulo').value.trim() || 'Regla sin título';
+                const desc = item.querySelector('.acuerdo-desc').value.trim() || 'Sin descripción';
+                
+                richText += `
+                            <li style="margin-bottom: 20px; background-color: #ffffff; border-left: 6px solid #10b981; padding: 18px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-top: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb;">
+                                <div style="display: flex; align-items: flex-start;">
+                                    <!-- Círculo Numérico -->
+                                    <div style="background-color: #dcfce7; color: #047857; border: 1px solid #a7f3d0; border-radius: 50%; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; margin-right: 16px; flex-shrink: 0; text-align: center; line-height: 30px;">
+                                        ${index + 1}
+                                    </div>
+                                    <!-- Contenido de la Regla -->
+                                    <div>
+                                        <h3 style="color: #111827; margin: 0 0 6px 0; font-size: 16px; font-weight: bold;">${title}</h3>
+                                        <p style="color: #4b5563; margin: 0; font-size: 14px; line-height: 1.6;">${desc}</p>
+                                    </div>
+                                </div>
+                            </li>
+                `;
+            });
+            
+            // Footer del HTML copiado
+            richText += `
+                        </ul>
+                    </div>
+                    
+                    <!-- Footer Temático -->
+                    <div style="background-color: #e5e7eb; padding: 16px; text-align: center; border-top: 1px solid #d1d5db;">
+                        <p style="color: #4b5563; font-size: 13px; margin: 0; font-weight: 600;">
+                            ⚔️ Sinergia de Exploradores (UX) y Defensores (Dev) ⚔️
+                        </p>
+                        <p style="color: #DB0080; font-size: 12px; margin: 4px 0 0 0; font-weight: bold;">
+                            Super App 
+                        </p>
+                    </div>
+                </div>
+            `;
+
+            // Lógica de inyección temporal y copiado
+            const tempDiv = document.createElement("div");
+            tempDiv.innerHTML = richText;
+            // Ocultar el div para no afectar el layout actual
+            tempDiv.style.position = "absolute";
+            tempDiv.style.left = "-9999px";
+            tempDiv.style.top = "0";
+            document.body.appendChild(tempDiv);
+
+            // Seleccionar el contenido
+            const range = document.createRange();
+            range.selectNodeContents(tempDiv);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    // Feedback visual en el botón
+                    const btn = document.querySelector('button[onclick="copiarAcuerdosEstiloZombie()"]');
+                    const originalContent = btn.innerHTML;
+                    
+                    btn.innerHTML = `
+                        <div class="relative flex items-center justify-center gap-3 w-full h-full">
+                            <span class="text-xl">✅</span> 
+                            <span>¡Reglas Copiadas con Éxito!</span>
+                        </div>
+                    `;
+                    btn.classList.replace('bg-gray-900', 'bg-green-600');
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = originalContent;
+                        btn.classList.replace('bg-green-600', 'bg-gray-900');
+                    }, 3000);
+                } else {
+                    alert("Lo siento, tu navegador no soportó la función de copiar automática.");
+                }
+            } catch (err) {
+                alert("Hubo un error al intentar copiar los acuerdos. Por favor intenta seleccionar el texto manualmente.");
+                console.error(err);
+            }
+            
+            // Limpieza
+            document.body.removeChild(tempDiv);
+            selection.removeAllRanges();
+        }
+
+        // Estilo extra para la animación de añadir regla
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fadeInUp {
+                from { opacity: 0; transform: translateY(15px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

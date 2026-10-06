@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UX Insights: Hackathon IT 2026 | El Puerto de Liverpool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        liverpool: {
+                            pink: '#e10098',
+                            dark: '#121212',
+                            card: '#1e1e24',
+                            light: '#f8f9fa'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #121212;
+            color: #f8f9fa;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #e10098 0%, #ff4d6d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(225, 0, 152, 0.3);
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-liverpool-pink selection:text-white">
+
+    <nav class="fixed w-full z-50 bg-liverpool-dark/90 backdrop-blur-md border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <i class="fa-solid fa-code text-liverpool-pink text-2xl"></i>
+                    <span class="font-bold text-xl tracking-tight">Hackathon<span class="text-liverpool-pink">26</span> UX Brief</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#contexto" class="hover:text-liverpool-pink transition-colors px-3 py-2 rounded-md text-sm font-medium">Contexto e IA</a>
+                        <a href="#recursos" class="hover:text-liverpool-pink transition-colors px-3 py-2 rounded-md text-sm font-medium">Documentos</a>
+                        <a href="#finalistas" class="bg-liverpool-pink text-white hover:bg-pink-600 transition-colors px-4 py-2 rounded-full text-sm font-bold shadow-lg shadow-liverpool-pink/30">Proyectos y Finalistas</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section id="contexto" class="pt-32 pb-16 bg-liverpool-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal active">
+            <div class="text-center mb-12">
+                <span class="inline-block py-1 px-3 rounded-full bg-white/10 border border-liverpool-pink/30 text-liverpool-pink text-sm font-semibold mb-6 tracking-wider">
+                    Septiembre 4-5, 2026 | El Puerto de Liverpool
+                </span>
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6">
+                    De la Idea al Código en <br/>
+                    <span class="gradient-text">48 Horas con IA</span>
+                </h1>
+                <p class="mt-4 max-w-3xl mx-auto text-xl text-gray-300">
+                    Resumen ejecutivo para el <strong>Equipo UX/UI</strong>. Descubre cómo las soluciones del Hackathon de IT abren nuevas fronteras para el diseño de experiencias, interfaces adaptativas y flujos impulsados por Inteligencia Artificial.
+                </p>
+            </div>
+            <div class="bg-liverpool-card rounded-3xl p-8 md:p-12 border border-white/5 relative overflow-hidden mt-8">
+                <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-liverpool-pink/20 rounded-full blur-3xl"></div>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-bold mb-6">El papel de la IA y cómo impacta el Prototipado UX</h2>
+                        <p class="text-gray-300 mb-4 leading-relaxed">
+                            Durante los 2 días del evento, los equipos integraron modelos como <strong>Gemini Enterprise, Claude y GitHub Copilot</strong>. Esto les permitió generar código, automatizar pruebas y crear MVPs (Mínimos Productos Viables) funcionales a una velocidad sin precedentes.
+                        </p>
+                        <p class="text-gray-300 leading-relaxed font-semibold">
+                            ¿Qué significa esto para UX/UI?
+                        </p>
+                        <ul class="mt-4 space-y-3 text-gray-400">
+                            <li class="flex items-start gap-3">
+                                <i class="fa-solid fa-bolt text-liverpool-pink mt-1"></i>
+                                <span><strong>Reducción de fricción técnica:</strong> Las ideas de diseño ahora pueden ser prototipadas funcionalmente casi al instante.</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <i class="fa-solid fa-bolt text-liverpool-pink mt-1"></i>
+                                <span><strong>Nuevos paradigmas de interacción:</strong> Debemos diseñar para experiencias donde el usuario colabora con la IA, no solo da instrucciones.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-black/50 p-6 rounded-2xl border border-white/10 text-center">
+                            <i class="fa-solid fa-robot text-4xl text-liverpool-pink mb-3"></i>
+                            <h4 class="font-bold">Agentes IA</h4>
+                            <p class="text-xs text-gray-400 mt-2">Roles autónomos (Arq, Dev, QA)</p>
+                        </div>
+                        <div class="bg-black/50 p-6 rounded-2xl border border-white/10 text-center">
+                            <i class="fa-solid fa-code-compare text-4xl text-liverpool-pink mb-3"></i>
+                            <h4 class="font-bold">Generación Rápida</h4>
+                            <p class="text-xs text-gray-400 mt-2">De requerimiento a PR documentado</p>
+                        </div>
+                        <div class="bg-black/50 p-6 rounded-2xl border border-white/10 text-center col-span-2">
+                            <i class="fa-solid fa-stopwatch text-4xl text-liverpool-pink mb-3"></i>
+                            <h4 class="font-bold">Ciclos de 48h</h4>
+                            <p class="text-xs text-gray-400 mt-2">Idealización, Construcción, Despliegue y Demo</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="recursos" class="py-20 bg-liverpool-card relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4"><i class="fa-brands fa-google-drive text-liverpool-pink mr-3"></i>Enlaces Clave</h2>
+                <p class="text-xl text-gray-400">Recursos, bases y presentaciones del Hackathon 2026.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Documento 1 -->
+                <a href="https://docs.google.com/presentation/d/1xVp211QU6uf0vMuzK__FeuFRvB7DUzQZtD_JCPd3l4g/edit?usp=drive_link" target="_blank" class="bg-black/40 p-6 rounded-2xl border border-white/10 hover:border-liverpool-pink/50 card-hover group flex flex-col h-full">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-3 bg-blue-500/10 rounded-lg">
+                            <i class="fa-solid fa-file-powerpoint text-2xl text-blue-400 group-hover:scale-110 transition-transform"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-liverpool-pink transition-colors">Kick Off</h3>
+                    </div>
+                    <p class="text-sm text-gray-400 flex-grow">Presentación de arranque con la introducción al evento, dinámicas y objetivos principales.</p>
+                    <span class="text-xs text-blue-400 mt-4 font-semibold flex items-center gap-1"><i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir Presentación</span>
+                </a>
+
+                <!-- Documento 2 -->
+                <a href="https://docs.google.com/spreadsheets/d/17hppwiw8itGMraNvSsUjFOaBhzvLl_Fdp9KAK8WW_-0/edit?usp=sharing" target="_blank" class="bg-black/40 p-6 rounded-2xl border border-white/10 hover:border-liverpool-pink/50 card-hover group flex flex-col h-full">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-3 bg-green-500/10 rounded-lg">
+                            <i class="fa-solid fa-table-list text-2xl text-green-400 group-hover:scale-110 transition-transform"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-liverpool-pink transition-colors">Links a Demo por Equipo</h3>
+                    </div>
+                    <p class="text-sm text-gray-400 flex-grow">Directorio con los enlaces a los repositorios y demos funcionales de cada una de las células participantes.</p>
+                    <span class="text-xs text-green-400 mt-4 font-semibold flex items-center gap-1"><i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir Sheet</span>
+                </a>
+
+                <!-- Documento 3 -->
+                <a href="https://drive.google.com/file/d/1J6rS6R19QUlBMnboeD2fIUUYZm2aMyF4/view?usp=sharing" target="_blank" class="bg-black/40 p-6 rounded-2xl border border-white/10 hover:border-liverpool-pink/50 card-hover group flex flex-col h-full">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="p-3 bg-yellow-500/10 rounded-lg">
+                            <i class="fa-solid fa-file-video text-2xl text-yellow-400 group-hover:scale-110 transition-transform"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-liverpool-pink transition-colors">Presentación de Proyectos</h3>
+                    </div>
+                    <p class="text-sm text-gray-400 flex-grow">Archivo general con la presentación de los resultados y proyectos desarrollados durante el hackathon.</p>
+                    <span class="text-xs text-yellow-400 mt-4 font-semibold flex items-center gap-1"><i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir Archivo</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="finalistas" class="py-20 bg-liverpool-dark border-t border-white/10 relative overflow-hidden">
+        <div class="absolute -left-40 bottom-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative reveal">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-liverpool-pink text-4xl mb-4 block"><i class="fa-solid fa-trophy"></i></span>
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">Rumbo a la TechWeek 2026</h2>
+                <p class="text-gray-400 text-lg">
+                    El pasado 4 de Septiembre, tras la deliberación del jurado (incluyendo a nuestra Gerente UX UI Digital, Casandra Abreu), se seleccionaron a los equipos finalistas.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 items-center max-w-4xl mx-auto">
+                <div class="bg-gradient-to-br from-liverpool-card to-black p-8 rounded-2xl border border-white/10 shadow-xl">
+                    <h3 class="text-2xl font-bold mb-4">Top 5 Finalistas</h3>
+                    <p class="text-gray-400 mb-6 text-sm leading-relaxed">
+                        Los 5 equipos con las puntuaciones más altas en Funcionalidad, UX/UI, Alineación al reto y Arquitectura, obtuvieron su pase directo para exhibir sus prototipos funcionales en un stand exclusivo durante la <strong>TechWeek 2026</strong>.
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex items-center gap-3 text-sm text-gray-300"><i class="fa-solid fa-check-circle text-green-400"></i> Premio 1er Lugar: Viaje a Google Cloud Next 2027</li>
+                        <li class="flex items-center gap-3 text-sm text-gray-300"><i class="fa-solid fa-check-circle text-green-400"></i> AirPods + Vouchers de Certificación</li>
+                        <li class="flex items-center gap-3 text-sm text-gray-300"><i class="fa-solid fa-check-circle text-green-400"></i> Monederos Electrónicos</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-liverpool-pink/10 border border-liverpool-pink/30 p-8 rounded-2xl text-center flex flex-col items-center justify-center h-full">
+                    <i class="fa-solid fa-file-csv text-5xl text-white mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">Base de Datos de Equipos</h3>
+                    <p class="text-sm text-gray-400 mb-6">Accede a la integración completa de las células técnicas, participantes y mentores del evento.</p>
+                    
+                    <!-- Botón de descarga/referencia -->
+                    <button onclick="downloadCSVInfo()" class="bg-white text-liverpool-dark font-bold py-3 px-6 rounded-lg hover:bg-gray-200 transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(225,0,152,0.4)]">
+                        <i class="fa-solid fa-download"></i> Consultar EQUIPOS_IT_Hackathon_2026.csv
+                    </button>
+                    <p id="download-msg" class="text-xs text-green-400 mt-3 opacity-0 transition-opacity">¡Archivo referenciado en sistema!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-black py-10 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+            <div>
+                <p>&copy; 2026 El Puerto de Liverpool. Uso Interno Dirección IT / Digital.</p>
+            </div>
+            <div class="flex gap-4 text-xl">
+                <i class="fa-brands fa-google text-gray-600 hover:text-white transition-colors cursor-pointer" title="Google Cloud Partner"></i>
+                <i class="fa-brands fa-github text-gray-600 hover:text-white transition-colors cursor-pointer" title="GitHub Copilot"></i>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animación de aparición al hacer scroll
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Trigger on load
+
+        // Simulador de botón CSV
+        function downloadCSVInfo() {
+            const msg = document.getElementById('download-msg');
+            msg.style.opacity = '1';
+            setTimeout(() => {
+                msg.style.opacity = '0';
+            }, 3000);
+            console.log("Referencia al archivo local: EQUIPOS_IT_Hackathon_2026.csv lista para su uso.");
+        }
+    </script>
+</body>
+</html>
