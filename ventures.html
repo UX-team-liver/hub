@@ -22,7 +22,7 @@
         body {
             font-family: 'Poppins', sans-serif;
             color: var(--negro-texto);
-            background-color: var(--blanco);
+            background-color: var(--gris-claro); /* Fondo gris claro para resaltar los bloques blancos */
             margin: 0;
             padding: 0;
             line-height: 1.6;
@@ -33,7 +33,7 @@
             position: sticky;
             top: 0;
             background-color: var(--blanco);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
             padding: 15px 40px;
             z-index: 9999;
             display: flex;
@@ -55,8 +55,12 @@
             padding: 40px 20px;
         }
 
-        /* General Section Styles */
-        section {
+        /* Bloques blancos modulares (Next.js components feel) */
+        .white-block {
+            background-color: var(--blanco);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             margin-bottom: 60px;
         }
 
@@ -66,6 +70,7 @@
             border-bottom: 2px solid var(--rosa);
             padding-bottom: 10px;
             display: inline-block;
+            margin-top: 0;
             margin-bottom: 30px;
         }
         
@@ -236,6 +241,7 @@
             padding: 60px 40px;
             border-radius: 8px;
             text-align: center;
+            margin-bottom: 60px;
         }
 
         .seccion-inversion h2 {
@@ -288,7 +294,7 @@
     <div class="container">
         
         <!-- Objetivo y Alcances -->
-        <section id="objetivo-alcances" class="grid-2">
+        <section id="objetivo-alcances" class="white-block grid-2">
             <div>
                 <h2>Objetivo Estratégico</h2>
                 <p>Evolucionar la plataforma corporativa de inversión "Liverpool Venture" hacia una arquitectura robusta orientada a <strong>Next.js</strong>. Mediante la implementación de un enfoque de diseño híbrido y metodologías atómicas (piezas de Lego), garantizaremos interfaces de alta eficiencia ejecutiva, facilitando la escalabilidad visual y técnica a lo largo de todo el ecosistema.</p>
@@ -305,7 +311,7 @@
         </section>
 
         <!-- Impacto de la Solución (KPIs) -->
-        <section id="kpis">
+        <section id="kpis" class="white-block">
             <h2>Impacto de la Solución (KPIs)</h2>
             <div class="grid-3">
                 <div class="card">
@@ -327,7 +333,7 @@
         </section>
 
         <!-- Diccionario de Capacidades y Sub-tareas UX por Módulo -->
-        <section id="capacidades">
+        <section id="capacidades" class="white-block">
             <h2>Capacidades a Desarrollar (Por Módulo)</h2>
             <div class="grid-3">
                 
@@ -395,7 +401,7 @@
         </section>
 
         <!-- Cronograma de Construcción -->
-        <section id="cronograma">
+        <section id="cronograma" class="white-block">
             <h2>Cronogramas Operativos (Escenarios UX)</h2>
             <div class="leyenda">
                 <strong>Sinergia Estratégica:</strong> Los bloques con degradado (Morado/Rosa) indican fases de estrategia conjunta y medición. El color rosa señala el trabajo interno de diseño iterativo, y el morado representa procesos de validación OPEN UX, especificaciones externas y comunicación con Devs.
@@ -592,7 +598,7 @@
         </section>
 
         <!-- Dependencias Técnicas -->
-        <section id="dependencias" class="grid-2">
+        <section id="dependencias" class="white-block grid-2">
             <div>
                 <h2>Dependencias Técnicas</h2>
                 <p>El éxito de esta implementación requiere una alineación perfecta con las áreas de ingeniería. Supervisaremos la viabilidad transversal con Devs y QA, evaluando riesgos técnicos y trade-offs en conjunto con Stakeholders (SH) para garantizar que las especificaciones UX sean viables en el framework <span class="cite">[cite: 2]</span>.</p>
@@ -607,12 +613,12 @@
         <!-- Sección de Inversión (Comparativa) -->
         <section id="inversion" class="seccion-inversion">
             <h2>Estructura de Inversión (Opciones)</h2>
-            <p style="margin-bottom: 40px;">Presupuesto proyectado para la célula de diseño estratégico (Research, UI/UX, Design Systems). Permite al negocio flexibilizar el tiempo o los recursos.</p>
+            <p style="margin-bottom: 40px; color: #E0E0E0;">Presupuesto proyectado para la célula de diseño estratégico (Research, UI/UX, Design Systems). Permite al negocio flexibilizar el tiempo o los recursos.</p>
             
             <div class="grid-2">
                 <div class="plan-box" style="border-color: var(--rosa);">
                     <h3 style="color: var(--rosa); margin-top: 0;">PLAN 1: Recomendado</h3>
-                    <p style="font-size: 0.9rem;">Operación Acelerada (2 UXers)</p>
+                    <p style="font-size: 0.9rem; color: #E0E0E0;">Operación Acelerada (2 UXers)</p>
                     <div class="cifra-inversion" style="font-size: 2.5rem;">$96,228.00 <span style="font-size:1rem;">MXN/mes</span></div>
                     <div class="cifra-sub" style="font-size: 1.2rem;">Inversión Total: $384,912.00 MXN</div>
                     <div class="cifra-sub" style="font-size: 1rem; font-weight: 400; color: #CCC;">Duración: 4 Meses</div>
@@ -620,8 +626,8 @@
                 
                 <div class="plan-box" style="border-color: var(--morado);">
                     <h3 style="color: var(--morado); margin-top: 0;">PLAN 2: Extendido</h3>
-                    <p style="font-size: 0.9rem;">Operación Exclusiva (1 UXer)</p>
-                    <div class="cifra-inversion" style="font-size: 2.5rem;">Sin Costo <span style="font-size:1rem;">Adicional</span></div>
+                    <p style="font-size: 0.9rem; color: #E0E0E0;">Operación Exclusiva (1 UXer)</p>
+                    <div class="cifra-inversion" style="font-size: 2.5rem;">Sin costo</div>
                     <div class="cifra-sub" style="font-size: 1.2rem;">Inversión Total: $0.00 MXN</div>
                     <div class="cifra-sub" style="font-size: 1rem; font-weight: 400; color: #CCC;">Duración: 8 Meses</div>
                 </div>
