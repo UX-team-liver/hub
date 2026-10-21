@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vista Previa: Confluence Native Render</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#F4F5F7] text-[#172B4D] min-h-screen">
+
+    <!-- Top Atlassian Simulation Navigation Header -->
+    <header class="bg-[#0052CC] text-white px-6 py-2.5 flex items-center justify-between shadow-sm">
+        <div class="flex items-center space-x-4">
+            <div class="flex items-center gap-2 font-bold text-lg tracking-tight">
+                <svg class="w-6 h-6 fill-current text-white" viewBox="0 0 24 24"><path d="M11.53 2c0 2.4-1.97 4.35-4.35 4.35H3.58C1.6 6.35 0 7.95 0 9.93v3.58c0 2.38 1.95 4.33 4.33 4.33h3.6c2.38 0 4.33 1.95 4.33 4.33v-1.78c0-2.38 1.95-4.33 4.33-4.33h3.6c1.98 0 3.58-1.6 3.58-3.58V9.26c0-2.38-1.95-4.33-4.33-4.33h-3.6C13.48 4.93 11.53 2.98 11.53.6v1.4z"/></svg>
+                <span>Confluence</span>
+            </div>
+            <span class="text-xs bg-blue-700/60 px-2 py-1 rounded text-blue-100">UX Chapter Space / Pages</span>
+        </div>
+        <div class="text-xs text-blue-100 flex items-center gap-3">
+            <span class="bg-emerald-500 text-white font-semibold px-2.5 py-0.5 rounded-full text-[11px]">Vista Previa Editor Nativo</span>
+        </div>
+    </header>
+
+    <!-- Main Confluence Workspace Container -->
+    <div class="max-w-6xl mx-auto my-6 px-4">
+        
+        <!-- Confluence Breadcrumb & Meta -->
+        <div class="text-xs text-[#5E6C84] mb-3 flex items-center gap-2">
+            <span>Spaces</span> &rsaquo; <span>UX & Design System</span> &rsaquo; <span>Standards</span> &rsaquo; <span class="text-[#172B4D] font-medium">WoW Calidad UI</span>
+        </div>
+
+        <!-- Confluence White Page Canvas -->
+        <main class="bg-white rounded-lg border border-[#DFE1E6] p-8 md:p-12 shadow-sm min-h-[800px]">
+
+            <!-- Page Title -->
+            <div class="border-b border-[#EBECF0] pb-4 mb-6">
+                <div class="flex items-center gap-2 mb-2">
+                    <!-- Confluence Status Lozenges -->
+                    <span class="bg-[#E3FCEF] text-[#006644] font-bold text-xs px-2.5 py-1 rounded border border-[#ABF5D1] inline-flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-[#36B37E]"></span> ≥ 85% MÍNIMO PARA GO
+                    </span>
+                    <span class="bg-[#DEEBFF] text-[#0747A6] font-bold text-xs px-2.5 py-1 rounded border border-[#B3D4FF]">
+                        VFS SCORE STANDARD
+                    </span>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold text-[#172B4D] tracking-tight">
+                    WAYS OF WORKING: CALIDAD UI
+                </h1>
+                <p class="text-[#5E6C84] text-sm mt-1">Estándar de validación visual de Figma a Código para entregas a Producción</p>
+            </div>
+
+            <!-- Confluence Info Panel (/info) -->
+            <div class="bg-[#DEEBFF] border-l-4 border-[#0747A6] p-4 rounded-r-md mb-8 flex items-start gap-3">
+                <div class="text-[#0747A6] mt-0.5">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                </div>
+                <div class="text-sm text-[#0747A6]">
+                    <strong class="font-semibold block mb-0.5">Macro /info: ¿Cómo funciona este estándar?</strong>
+                    El equipo de UX/UI evalúa cada release frente a Figma utilizando los 5 pilares de calidad. El puntaje base es de 100 puntos y los hallazgos restan según su severidad. Un puntaje <strong>≥ 85%</strong> otorga el <strong>GO</strong> para producción.
+                </div>
+            </div>
+
+            <!-- Confluence Layout 2 Columns (60% / 40%) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8">
+                
+                <!-- Left Column: Native Table (60%) -->
+                <div class="lg:col-span-7">
+                    <h3 class="text-base font-bold text-[#172B4D] mb-3 flex items-center gap-2">
+                        <span class="bg-[#F4F5F7] text-[#42526E] text-xs font-bold px-2 py-0.5 rounded border border-[#DFE1E6]">Sección 1</span>
+                        Los 5 Pilares de Evaluación (100 Pts)
+                    </h3>
+                    
+                    <div class="overflow-x-auto border border-[#DFE1E6] rounded-md">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-[#F4F5F7] border-b border-[#DFE1E6] text-[#5E6C84] font-semibold">
+                                    <th class="p-2.5">Peso</th>
+                                    <th class="p-2.5">Pilar</th>
+                                    <th class="p-2.5">¿Qué se evalúa?</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-[#DFE1E6] text-[#172B4D]">
+                                <tr class="hover:bg-[#FAFBFC]">
+                                    <td class="p-2.5 font-bold text-[#0747A6] bg-[#DEEBFF]/30">25%</td>
+                                    <td class="p-2.5 font-semibold">Design Tokens & Color</td>
+                                    <td class="p-2.5 text-[#5E6C84]">Variables de color, tipografía, bordes e íconos.</td>
+                                </tr>
+                                <tr class="hover:bg-[#FAFBFC]">
+                                    <td class="p-2.5 font-bold text-[#0747A6] bg-[#DEEBFF]/30">25%</td>
+                                    <td class="p-2.5 font-semibold">Layout & Spacing</td>
+                                    <td class="p-2.5 text-[#5E6C84]">Márgenes, paddings, alineación y Grid.</td>
+                                </tr>
+                                <tr class="hover:bg-[#FAFBFC]">
+                                    <td class="p-2.5 font-bold text-[#0747A6] bg-[#DEEBFF]/30">25%</td>
+                                    <td class="p-2.5 font-semibold">Componentes & Estados</td>
+                                    <td class="p-2.5 text-[#5E6C84]">Estados Hover, Active, Focus, Disabled, Error.</td>
+                                </tr>
+                                <tr class="hover:bg-[#FAFBFC]">
+                                    <td class="p-2.5 font-bold text-[#006644] bg-[#E3FCEF]/40">15%</td>
+                                    <td class="p-2.5 font-semibold">Responsividad</td>
+                                    <td class="p-2.5 text-[#5E6C84]">Adaptabilidad en Mobile, Tablet y Desktop.</td>
+                                </tr>
+                                <tr class="hover:bg-[#FAFBFC]">
+                                    <td class="p-2.5 font-bold text-[#403294] bg-[#EAE6FF]/40">10%</td>
+                                    <td class="p-2.5 font-semibold">Animaciones</td>
+                                    <td class="p-2.5 text-[#5E6C84]">Transiciones (ms) y curvas (easing).</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Right Column: Panel Severity Macros (40%) -->
+                <div class="lg:col-span-5 space-y-3">
+                    <h3 class="text-base font-bold text-[#172B4D] mb-3 flex items-center gap-2">
+                        <span class="bg-[#F4F5F7] text-[#42526E] text-xs font-bold px-2 py-0.5 rounded border border-[#DFE1E6]">Sección 2</span>
+                        Matriz de Severidad
+                    </h3>
+
+                    <!-- /error macro -->
+                    <div class="bg-[#FFEBE6] border-l-4 border-[#DE350B] p-3 rounded-r-md">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs font-bold text-[#BF2600]">🔴 Blocker P. Alta</span>
+                            <span class="bg-[#DE350B] text-white text-[11px] font-bold px-2 py-0.5 rounded">-25 pts</span>
+                        </div>
+                        <p class="text-xs text-[#172B4D]">Rompe usabilidad o marca (ej. texto ilegible, botón principal roto, faltas de ortografía severas).</p>
+                    </div>
+
+                    <!-- /warning macro -->
+                    <div class="bg-[#FFFAE6] border-l-4 border-[#FFAB00] p-3 rounded-r-md">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs font-bold text-[#172B4D]">🟠 Blocker P. Media</span>
+                            <span class="bg-[#FFAB00] text-[#172B4D] text-[11px] font-bold px-2 py-0.5 rounded">-20 pts</span>
+                        </div>
+                        <p class="text-xs text-[#172B4D]">Desalineación notoria o falta de estados (ej. sin hover, padding 8px en vez de 24px).</p>
+                    </div>
+
+                    <!-- /success macro -->
+                    <div class="bg-[#E3FCEF] border-l-4 border-[#36B37E] p-3 rounded-r-md">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs font-bold text-[#006644]">🔵 Major</span>
+                            <span class="bg-[#36B37E] text-white text-[11px] font-bold px-2 py-0.5 rounded">-5 pts</span>
+                        </div>
+                        <p class="text-xs text-[#172B4D]">Detalles micro-visuales (ej. desviación sutil 2px-4px, border-radius o tildes secundarias).</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Confluence Layout 2 Equal Columns (50% / 50%) -->
+            <div class="mb-8">
+                <h3 class="text-base font-bold text-[#172B4D] mb-3 flex items-center gap-2">
+                    <span class="bg-[#F4F5F7] text-[#42526E] text-xs font-bold px-2 py-0.5 rounded border border-[#DFE1E6]">Sección 3</span>
+                    Criterio de Decisión en Sesión Go / No-Go (UX Lead)
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    
+                    <!-- Success Panel (/success) -->
+                    <div class="bg-[#E3FCEF] border border-[#ABF5D1] p-4 rounded-md">
+                        <div class="flex items-center gap-2 mb-2 border-b border-[#ABF5D1] pb-2">
+                            <span class="bg-[#36B37E] text-white p-1 rounded-full text-xs">✓</span>
+                            <div>
+                                <h4 class="font-bold text-[#006644] text-sm">PASO A PRODUCCIÓN (GO)</h4>
+                                <span class="text-xs text-[#006644] font-medium">Puntaje VFS ≥ 85%</span>
+                            </div>
+                        </div>
+                        <ul class="text-xs text-[#172B4D] space-y-1.5 list-disc pl-4">
+                            <li>El UX Lead emite la <strong>Aprobación Formal (Sign-off)</strong>.</li>
+                            <li>Se aprueba la salida a Producción.</li>
+                            <li>Bugs majors se registran como <em>Deuda Técnica Visual</em>.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Error Panel (/error) -->
+                    <div class="bg-[#FFEBE6] border border-[#FFBDAD] p-4 rounded-md">
+                        <div class="flex items-center gap-2 mb-2 border-b border-[#FFBDAD] pb-2">
+                            <span class="bg-[#DE350B] text-white p-1 rounded-full text-xs">✕</span>
+                            <div>
+                                <h4 class="font-bold text-[#BF2600] text-sm">RELEASE BLOQUEADO (NO GO)</h4>
+                                <span class="text-xs text-[#BF2600] font-medium">Puntaje VFS &lt; 85%</span>
+                            </div>
+                        </div>
+                        <ul class="text-xs text-[#172B4D] space-y-1.5 list-disc pl-4">
+                            <li>El UX Lead veta la liberación en el comité.</li>
+                            <li>Se abren tickets de corrección en Jira/Azure.</li>
+                            <li>Se realiza sesión de <strong>Pair Coding (15 min)</strong> UX ↔ Dev.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Confluence Note Box (/note) -->
+            <div class="bg-[#EAE6FF] border-l-4 border-[#403294] p-4 rounded-r-md flex items-start gap-3 mb-8">
+                <div class="text-[#403294] mt-0.5">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg>
+                </div>
+                <div class="text-xs text-[#403294]">
+                    <strong class="font-bold block mb-0.5">💡 Regla de Oro del UX Chapter:</strong>
+                    Sé cuantitativo. En lugar de indicar <em>"se ve mal"</em>, señala <em>"el padding es de 8px en lugar de 24px ($spacing-6)"</em> o <em>"el color es #1A1A1A en lugar del token $color-text-primary"</em>.
+                </div>
+            </div>
+
+            <!-- SECTION 4: VFS CALCULATOR IN CONFLUENCE (NEW) -->
+            <div class="border-t border-[#EBECF0] pt-6 mb-8">
+                <h3 class="text-base font-bold text-[#172B4D] mb-3 flex items-center gap-2">
+                    <span class="bg-[#F4F5F7] text-[#42526E] text-xs font-bold px-2 py-0.5 rounded border border-[#DFE1E6]">Sección 4</span>
+                    Simulador del Cálculo Rápido de VFS en Confluence
+                </h3>
+
+                <!-- Sub-option A: iFrame / User Macro Widget Simulation -->
+                <div class="bg-[#FAFBFC] border border-[#DFE1E6] rounded-md p-5 mb-6">
+                    <div class="flex items-center justify-between mb-3 border-b border-[#EBECF0] pb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="bg-[#0747A6] text-white text-[10px] font-bold px-2 py-0.5 rounded">OPCIÓN A: WIDGET / iFRAME</span>
+                            <span class="text-xs font-semibold text-[#172B4D]">Calculadora Interactiva de VFS</span>
+                        </div>
+                        <span id="vfsDemoBadge" class="bg-[#36B37E] text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                            100% — GO 🟢
+                        </span>
+                    </div>
+
+                    <p class="text-xs text-[#5E6C84] mb-4">
+                        Modifica los contadores para calcular dinámicamente la nota visual antes de tu sesión de Go/No-Go:
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="bg-white p-3 rounded border border-[#DFE1E6] text-center shadow-xs">
+                            <span class="text-xs font-bold text-[#BF2600] block mb-1">🔴 Blocker P. Alta (-25)</span>
+                            <div class="flex items-center justify-center gap-3 mt-2">
+                                <button onclick="calcDemo('b', -1)" class="w-7 h-7 bg-[#EBECF0] hover:bg-[#DFE1E6] text-[#172B4D] font-bold rounded flex items-center justify-center">-</button>
+                                <span id="cntB" class="text-base font-extrabold text-[#172B4D]">0</span>
+                                <button onclick="calcDemo('b', 1)" class="w-7 h-7 bg-[#EBECF0] hover:bg-[#DFE1E6] text-[#172B4D] font-bold rounded flex items-center justify-center">+</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-3 rounded border border-[#DFE1E6] text-center shadow-xs">
+                            <span class="text-xs font-bold text-[#172B4D] block mb-1">🟠 Blocker P. Media (-20)</span>
+                            <div class="flex items-center justify-center gap-3 mt-2">
+                                <button onclick="calcDemo('m', -1)" class="w-7 h-7 bg-[#EBECF0] hover:bg-[#DFE1E6] text-[#172B4D] font-bold rounded flex items-center justify-center">-</button>
+                                <span id="cntM" class="text-base font-extrabold text-[#172B4D]">0</span>
+                                <button onclick="calcDemo('m', 1)" class="w-7 h-7 bg-[#EBECF0] hover:bg-[#DFE1E6] text-[#172B4D] font-bold rounded flex items-center justify-center">+</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-3 rounded border border-[#DFE1E6] text-center shadow-xs">
+                            <span class="text-xs font-bold text-[#006644] block mb-1">🔵 Major (-5)</span>
+                            <div class="flex items-center justify-center gap-3 mt-2">
+                                <button onclick="calcDemo('n', -1)" class="w-7 h-7 bg-[#EBECF0] hover:bg-[#DFE1E6] text-[#172B4D] font-bold rounded flex items-center justify-center">-</button>
+                                <span id="cntN" class="text-base font-extrabold text-[#172B4D]">0</span>
+                                <button onclick="calcDemo('n', 1)" class="w-7 h-7 bg-[#EBECF0] hover:bg-[#DFE1E6] text-[#172B4D] font-bold rounded flex items-center justify-center">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub-option B: Native Confluence Lookup Table (No JS / Native Editor) -->
+                <div class="border border-[#DFE1E6] rounded-md p-4 bg-white">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="bg-[#42526E] text-white text-[10px] font-bold px-2 py-0.5 rounded">OPCIÓN B: SIN CÓDIGO</span>
+                        <span class="text-xs font-semibold text-[#172B4D]">Tabla Nativa de Consulta Rápida (Lookup Matrix)</span>
+                    </div>
+                    <p class="text-xs text-[#5E6C84] mb-3">
+                        Si tu Confluence no permite macros con JavaScript, utiliza esta tabla nativa de referencia rápida para determinar el estado inmediatamente:
+                    </p>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse border border-[#DFE1E6]">
+                            <thead>
+                                <tr class="bg-[#F4F5F7] border-b border-[#DFE1E6] text-[#5E6C84]">
+                                    <th class="p-2 border-r border-[#DFE1E6]">Combinación de Bugs</th>
+                                    <th class="p-2 border-r border-[#DFE1E6]">Deducción Total</th>
+                                    <th class="p-2 border-r border-[#DFE1E6]">Puntaje VFS</th>
+                                    <th class="p-2">Dictamen Final</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-[#DFE1E6] text-[#172B4D]">
+                                <tr>
+                                    <td class="p-2 border-r border-[#DFE1E6]">0 Blockers, 0-3 Majors</td>
+                                    <td class="p-2 border-r border-[#DFE1E6]">0 a -15 pts</td>
+                                    <td class="p-2 border-r border-[#DFE1E6] font-bold text-[#006644]">100% a 85%</td>
+                                    <td class="p-2"><span class="bg-[#E3FCEF] text-[#006644] font-bold px-2 py-0.5 rounded">GO 🟢</span></td>
+                                </tr>
+                                <tr class="bg-[#FFEBE6]/40">
+                                    <td class="p-2 border-r border-[#DFE1E6]"><strong>1 Blocker P. Alta</strong> (-25 pts)</td>
+                                    <td class="p-2 border-r border-[#DFE1E6]">-25 pts</td>
+                                    <td class="p-2 border-r border-[#DFE1E6] font-bold text-[#BF2600]">75%</td>
+                                    <td class="p-2"><span class="bg-[#FFEBE6] text-[#BF2600] font-bold px-2 py-0.5 rounded">NO GO 🔴</span></td>
+                                </tr>
+                                <tr class="bg-[#FFEBE6]/40">
+                                    <td class="p-2 border-r border-[#DFE1E6]"><strong>1 Blocker P. Media</strong> (-20 pts)</td>
+                                    <td class="p-2 border-r border-[#DFE1E6]">-20 pts</td>
+                                    <td class="p-2 border-r border-[#DFE1E6] font-bold text-[#BF2600]">80%</td>
+                                    <td class="p-2"><span class="bg-[#FFEBE6] text-[#BF2600] font-bold px-2 py-0.5 rounded">NO GO 🔴</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confluence Script for Preview Demo -->
+            <script>
+                let b = 0, m = 0, n = 0;
+                function calcDemo(t, val) {
+                    if (t === 'b') b = Math.max(0, b + val);
+                    if (t === 'm') m = Math.max(0, m + val);
+                    if (t === 'n') n = Math.max(0, n + val);
+                    document.getElementById('cntB').innerText = b;
+                    document.getElementById('cntM').innerText = m;
+                    document.getElementById('cntN').innerText = n;
+                    let score = Math.max(0, 100 - (b * 25 + m * 20 + n * 5));
+                    let badge = document.getElementById('vfsDemoBadge');
+                    if (score >= 85) {
+                        badge.className = "bg-[#36B37E] text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm";
+                        badge.innerText = score + "% — GO 🟢";
+                    } else {
+                        badge.className = "bg-[#DE350B] text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm animate-pulse";
+                        badge.innerText = score + "% — NO GO 🔴";
+                    }
+                }
+            </script>
+
+        </main>
+    </div>
+
+</body>
+</html>
