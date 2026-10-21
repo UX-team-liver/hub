@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flyer Informativo - Licenciamiento de Tipografías</title>
+    <!-- Tailwind CSS para la interfaz del generador -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .liverpool-bg {
+            background-color: #843077;
+        }
+        .liverpool-text {
+            color: #843077;
+        }
+        .liverpool-border {
+            border-color: #843077;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <header class="liverpool-bg text-white py-4 px-6 shadow-md flex justify-between items-center">
+        <div class="flex items-center space-x-4">
+            <div class="h-8 flex items-center font-bold text-xl tracking-tight text-white font-['Montserrat']">
+                El Puerto de Liverpool
+            </div>
+            <span class="text-xs bg-white/20 px-2.5 py-1 rounded-full uppercase font-semibold tracking-wider text-[10px]">Brand Compliance</span>
+        </div>
+        <div class="text-xs font-semibold opacity-90 hidden md:block uppercase tracking-wider">
+            Comunicación Interna Ejecutiva
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-5xl w-full mx-auto p-4 md:p-8 flex flex-col items-center">
+        <!-- Vista Previa Única (Centrada) -->
+        <div class="w-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+            <div class="bg-gray-100 px-6 py-3 border-b border-gray-200 flex justify-between items-center shrink-0">
+                <div class="flex items-center space-x-2">
+                    <span class="w-3 h-3 bg-red-400 rounded-full"></span>
+                    <span class="w-3 h-3 bg-yellow-400 rounded-full"></span>
+                    <span class="w-3 h-3 bg-green-400 rounded-full"></span>
+                    <span class="text-xs text-gray-500 font-semibold ml-2">Monitor del Correo Electrónico</span>
+                </div>
+                <span class="text-xs text-gray-400 font-medium">Ancho optimizado: 680px</span>
+            </div>
+            
+            <div class="p-4 md:p-8 overflow-y-auto bg-gray-100 flex-1 flex justify-center items-start">
+                <div id="flyerContainer" class="w-full max-w-[680px] bg-white shadow-lg rounded-lg overflow-hidden">
+                    <!-- Renderización en tiempo real del flyer -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-gray-400 py-6 text-center text-xs mt-auto flex flex-col items-center justify-center space-y-2">
+        <div class="font-bold text-base text-white tracking-tight font-['Montserrat']">
+            El Puerto de Liverpool
+        </div>
+        <span>© 2026 - Dirección de Identidad de Marca Digital. Para uso exclusivo interno.</span>
+    </footer>
+
+    <script>
+        function generarEmailHTML() {
+            return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Lineamientos de Marca - Licencias Tipográficas</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #f5f2f7; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased;">
+    <!-- Tabla Envolvente Principal con Fondo Texturizado y Márgenes Laterales (25px) para Garantizar Centrado en Gmail -->
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f5f2f7; background-image: radial-gradient(#843077 0.75px, transparent 0.75px); background-size: 16px 16px; padding: 40px 25px; min-width: 100%;">
+        <tr>
+            <td align="center" style="padding: 0;">
+                <!-- Caja Contenedora Principal Centrada (Max 680px) con Sombra y Marco -->
+                <table border="0" cellpadding="0" cellspacing="0" width="680" style="width: 100%; max-width: 680px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px -5px rgba(132, 48, 119, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.05); border: 1px solid #e7dbe7;">
+                    
+                    <!-- Encabezado Corporativo (Texto Tipográfico Nativo Siempre Visible al Copiar/Pegar) -->
+                    <tr>
+                        <td align="center" style="background-color: #843077; padding: 32px 40px; text-align: center;">
+                            
+                            <!-- Marca en Texto HTML Directo de Alta Densidad -->
+                            <div style="font-family: 'Montserrat', 'Century Gothic', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 27px; font-weight: 700; color: #ffffff; letter-spacing: -0.5px; margin: 0 auto 12px auto; text-align: center; text-transform: none;">
+                                El Puerto de Liverpool
+                            </div>
+
+                            <h1 style="margin: 0; color: #ffffff; font-size: 20px; font-weight: 300; line-height: 1.2; letter-spacing: 0.5px; text-transform: uppercase; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Lineamientos de Identidad</h1>
+                            <p style="margin: 5px 0 0 0; color: #fdf4ff; font-size: 13px; font-weight: bold; opacity: 0.9; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">Friendly Reminder: Cumplimiento de Licencias Tipográficas</p>
+                        </td>
+                    </tr>
+
+                    <!-- Cuerpo de Correo -->
+                    <tr>
+                        <td style="padding: 30px 35px 25px 35px;">
+                            
+                            <!-- Mensaje de Introducción Breve -->
+                            <p style="margin: 0 0 20px 0; font-size: 14.5px; line-height: 1.5; color: #1e293b;">
+                                Estimado equipo directivo y gerencial:
+                                <br/><br/>
+                                Para proteger nuestra propiedad intelectual y evitar riesgos financieros imprevistos, les compartimos una actualización puntual y prioritaria sobre el uso y verificación de <strong>licencias de tipografías</strong> en todas nuestras marcas.
+                            </p>
+
+                            <!-- MÓDULO 1: El Riesgo (Rojo) -->
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom: 20px; border-radius: 8px; background-color: #fef2f2; border-left: 4px solid #ef4444;">
+                                <tr>
+                                    <td style="padding: 18px 20px;">
+                                        <p style="margin: 0 0 12px 0; font-size: 12.5px; font-weight: bold; color: #991b1b; text-transform: uppercase; letter-spacing: 0.5px;">⚠️ EL RIESGO: AUDITORÍAS Y COSTOS EXTORSIVOS</p>
+                                        
+                                        <p style="margin: 0 0 8px 0; font-size: 13px; line-height: 1.55; color: #7f1d1d;">
+                                            • <strong>Caso Reciente:</strong> Una firma proveedora auditó y reportó formalmente el uso de la fuente <strong>"Gotham" en Suburbia</strong>.
+                                        </p>
+                                        
+                                        <p style="margin: 0; font-size: 13px; line-height: 1.55; color: #7f1d1d;">
+                                            • <strong>Impacto:</strong> Las omisiones en licencias o desvíos de uso pueden escalar de inmediato a penalizaciones de <strong>cientos de miles de dólares</strong> por marca.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- MÓDULO 2: El Alcance (Azul Grisáceo) -->
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom: 20px; border-radius: 8px; background-color: #f8fafc; border-left: 4px solid #475569;">
+                                <tr>
+                                    <td style="padding: 18px 20px;">
+                                        <p style="margin: 0 0 12px 0; font-size: 12.5px; font-weight: bold; color: #334155; text-transform: uppercase; letter-spacing: 0.5px;">📢 ÁMBITO DE APLICACIÓN (OMNICANAL)</p>
+                                        
+                                        <p style="margin: 0 0 10px 0; font-size: 13px; line-height: 1.55; color: #475569;">
+                                            La regulación de marcas abarca obligatoriamente dos frentes:
+                                        </p>
+
+                                        <p style="margin: 0 0 8px 0; font-size: 13px; line-height: 1.55; color: #475569;">
+                                            1. <strong>Ecosistema Digital:</strong> Sitios web transaccionales, apps móviles, newsletters y campañas de marketing.
+                                        </p>
+
+                                        <p style="margin: 0; font-size: 13px; line-height: 1.55; color: #475569;">
+                                            2. <strong>Puntos de Venta (Tiendas Físicas):</strong> En el diseño de <strong>cartulinas de precios</strong>, promociones impresas en el piso de venta y material POP.
+                                        </p>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- MÓDULO 3: Las Soluciones (Verde y Morado en columnas lado a lado) -->
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom: 25px;">
+                                <tr>
+                                    <td colspan="3" style="padding-bottom: 10px;">
+                                        <p style="margin: 0; font-size: 13px; font-weight: bold; color: #1e293b; text-transform: uppercase; letter-spacing: 0.5px;">💡 ALTERNATIVAS ESTRATÉGICAS:</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <!-- Solución A: Open Source -->
+                                    <td width="48%" valign="top">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; height: 100%;">
+                                            <tr>
+                                                <td style="padding: 14px 14px;" valign="top">
+                                                    <span style="font-size: 10.5px; font-weight: bold; color: #166534; background-color: #dcfce7; padding: 3px 6px; border-radius: 4px; text-transform: uppercase; display: inline-block; margin-bottom: 8px;">OPCIÓN A: LIBRE COSTO</span>
+                                                    <p style="margin: 0; font-size: 12.5px; line-height: 1.45; color: #14532d;">
+                                                        <strong>Fuentes Open Source (ej. Roboto):</strong> Emplear fuentes gratuitas de Google Fonts. Sin costo de mantenimiento ni pago de regalías recurrentes.
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+
+                                    <!-- Espaciador -->
+                                    <td width="4%">&nbsp;</td>
+
+                                    <!-- Solución B: Tipografía Propia -->
+                                    <td width="48%" valign="top">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #faf5ff; border: 1px solid #e9d5ff; border-radius: 8px; height: 100%;">
+                                            <tr>
+                                                <td style="padding: 14px 14px;" valign="top">
+                                                    <span style="font-size: 10.5px; font-weight: bold; color: #6b21a8; background-color: #f3e8ff; padding: 3px 6px; border-radius: 4px; text-transform: uppercase; display: inline-block; margin-bottom: 8px;">OPCIÓN B: ACTIVO PROPIO</span>
+                                                    <p style="margin: 0; font-size: 12.5px; line-height: 1.45; color: #581c87;">
+                                                        <strong>Diseño de Fuente Propietaria:</strong> Desarrollar una fuente exclusiva. Inversión inicial única que <strong>elimina pagos de por vida</strong> y blinda la marca.
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- Protocolo de Acción Sugerido (3 Pasos Horizontales) -->
+                            <p style="margin: 0 0 12px 0; font-size: 13px; font-weight: bold; color: #1e293b; text-transform: uppercase; letter-spacing: 0.5px;">📋 PROTOCOLO DE ACCIÓN SUGERIDO:</p>
+                            
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom: 5px;">
+                                <tr>
+                                    <!-- Paso 1 -->
+                                    <td width="31%" valign="top">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; text-align: center;">
+                                            <tr>
+                                                <td style="padding: 12px 8px;">
+                                                    <div style="background-color: #843077; color: #ffffff; width: 24px; height: 24px; border-radius: 50%; text-align: center; font-size: 12px; font-weight: bold; line-height: 24px; margin: 0 auto 6px auto;">1</div>
+                                                    <p style="margin: 0 0 4px 0; font-size: 12.5px; font-weight: bold; color: #1e293b;">Auditar</p>
+                                                    <p style="margin: 0; font-size: 11px; line-height: 1.35; color: #64748b;">Inventario de fuentes web y cartulinas físicas.</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+
+                                    <!-- Espaciador -->
+                                    <td width="3.5%">&nbsp;</td>
+
+                                    <!-- Paso 2 -->
+                                    <td width="31%" valign="top">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; text-align: center;">
+                                            <tr>
+                                                <td style="padding: 12px 8px;">
+                                                    <div style="background-color: #843077; color: #ffffff; width: 24px; height: 24px; border-radius: 50%; text-align: center; font-size: 12px; font-weight: bold; line-height: 24px; margin: 0 auto 6px auto;">2</div>
+                                                    <p style="margin: 0 0 4px 0; font-size: 12.5px; font-weight: bold; color: #1e293b;">Validar</p>
+                                                    <p style="margin: 0; font-size: 11px; line-height: 1.35; color: #64748b;">Vigencia y contratos de licencias activas.</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+
+                                    <!-- Espaciador -->
+                                    <td width="3.5%">&nbsp;</td>
+
+                                    <!-- Paso 3 -->
+                                    <td width="31%" valign="top">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; text-align: center;">
+                                            <tr>
+                                                <td style="padding: 12px 8px;">
+                                                    <div style="background-color: #843077; color: #ffffff; width: 24px; height: 24px; border-radius: 50%; text-align: center; font-size: 12px; font-weight: bold; line-height: 24px; margin: 0 auto 6px auto;">3</div>
+                                                    <p style="margin: 0 0 4px 0; font-size: 12.5px; font-weight: bold; color: #1e293b;">Migrar/Crear</p>
+                                                    <p style="margin: 0; font-size: 11px; line-height: 1.35; color: #64748b;">Cambiar a fuente libre o diseñar propia.</p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </td>
+                    </tr>
+
+                    <!-- Footer Corporativo de Correo (Texto Tipográfico Nativo Siempre Visible) -->
+                    <tr>
+                        <td align="center" style="background-color: #f1f5f9; padding: 22px 40px; border-top: 1px solid #e2e8f0; text-align: center;">
+                            
+                            <!-- Marca en Texto HTML Directo de Alta Densidad -->
+                            <div style="font-family: 'Montserrat', 'Century Gothic', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 22px; font-weight: 700; color: #843077; letter-spacing: -0.5px; margin: 0 auto 10px auto; text-align: center; text-transform: none;">
+                                El Puerto de Liverpool
+                            </div>
+
+                            <p style="margin: 0 0 10px 0; font-size: 10.5px; color: #64748b; font-weight: bold;">Dirección Corporativa de Identidad y Lineamientos de Marca</p>
+                            <p style="margin: 0 0 12px 0; font-size: 10px; color: #94a3b8; line-height: 1.4;">
+                                Comunicado informativo confidencial de uso exclusivo interno. Ante cualquier anomalía o consulta técnica de licenciamiento legal, diríjase con el área legal corporativa: Claudia Lisset Segovia García clsegoviag@liverpool.com.mx y/o propiedadintelectual@liverpool.com.mx
+                            </p>
+                            <p style="margin: 0; font-size: 9.5px; color: #a1a1aa; font-style: italic;">
+                                📩 Nota: Este es un comunicado de carácter meramente informativo; agradecemos no responder a este correo.
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>`;
+        }
+
+        function actualizarFlyer() {
+            const htmlGenerado = generarEmailHTML();
+            
+            const iframe = document.createElement('iframe');
+            iframe.style.width = '100%';
+            iframe.style.height = '620px';
+            iframe.style.border = 'none';
+            iframe.style.backgroundColor = '#f5f2f7';
+            
+            const container = document.getElementById('flyerContainer');
+            container.innerHTML = '';
+            container.appendChild(iframe);
+            
+            const doc = iframe.contentDocument || iframe.contentWindow.document;
+            doc.open();
+            doc.write(htmlGenerado);
+            doc.close();
+        }
+
+        // Ejecutar primer renderizado al cargar
+        actualizarFlyer();
+    </script>
+</body>
+</html>
