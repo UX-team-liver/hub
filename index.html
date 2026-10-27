@@ -102,7 +102,7 @@
                 <span id="cardCounterBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-pink-50 border border-pink-200 text-[#e10098]">
                     <i class="fa-solid fa-layer-group"></i>
                     <!-- Contador dinámico de tarjetas -->
-                    <span id="activeCount">8 Activos</span>
+                    <span id="activeCount">14 Activos</span>
                 </span>
             </div>
         </div>
@@ -193,8 +193,74 @@
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDocs, collection, onSnapshot, writeBatch } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Tarjetas del Hub incluyendo Playbook UX Lead
+        // Tarjetas del Hub incluyendo WoW Calidad UI, Certificaciones UX/UI, Playbook UX Lead, Licencias grupales Dev Mode, Método S.C.A.R., Gestión contratos externos e inserción HTML Gemini
         const initialCards = [
+            {
+                id: 'card-wow-calidad-ui',
+                title: 'WoW Calidad UI',
+                description: 'Estándar de validación visual de Figma a Código para entregas a Producción',
+                link: 'wow_calidad_ui.html',
+                category: 'Manual',
+                icon: 'fa-wand-magic-sparkles',
+                iconBg: 'bg-fuchsia-50 text-fuchsia-600',
+                badgeColor: 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200',
+                createdAt: 12000
+            },
+            {
+                id: 'card-certificaciones-ux-ui',
+                title: 'Certificaciones UX/UI',
+                description: 'Consulta de certificaciones vigentes y paso a paso para certificarte',
+                link: 'certificaciones_ux_ui.html',
+                category: 'Talento',
+                icon: 'fa-award',
+                iconBg: 'bg-emerald-50 text-emerald-600',
+                badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                createdAt: 11500
+            },
+            {
+                id: 'card-html-confluence-gmail',
+                title: 'HTML de Gemini a Confluence/Gmail',
+                description: 'Manual para insertar HTML de Canvas (Gemini) a Confluence o Gmail',
+                link: 'HTML_Confluence_Gmail.html',
+                category: 'Manual',
+                icon: 'fa-code',
+                iconBg: 'bg-violet-50 text-violet-600',
+                badgeColor: 'bg-violet-50 text-violet-700 border-violet-200',
+                createdAt: 11000
+            },
+            {
+                id: 'card-gestion-contratos-externos',
+                title: 'Gestión contratos externos',
+                description: 'Manual para gestionar contratos de staff augmentation UX/UI.',
+                link: 'manual_gestión_contratos_staff_augmentation.html',
+                category: 'Manual',
+                icon: 'fa-file-signature',
+                iconBg: 'bg-teal-50 text-teal-600',
+                badgeColor: 'bg-teal-50 text-teal-700 border-teal-200',
+                createdAt: 10500
+            },
+            {
+                id: 'card-scar-method',
+                title: 'Método S.C.A.R. para estatus con Stakeholders',
+                description: 'Descripción del método S.C.A.R. para presentar de manera senior a Directivos.',
+                link: 'método_SCAR_estatus_Stakeholders.html',
+                category: 'Manual',
+                icon: 'fa-bullhorn',
+                iconBg: 'bg-rose-50 text-rose-600',
+                badgeColor: 'bg-rose-50 text-rose-700 border-rose-200',
+                createdAt: 10000
+            },
+            {
+                id: 'card-devmode-licenses',
+                title: 'Licencias grupales Dev Mode en Figma',
+                description: 'Listado de licencias oficiales grupales Dev Mode compartidas por dominios y proveedores de El Puerto.',
+                link: 'infograf_a_interactive_figma_dev_mode (10).html',
+                category: 'Manual',
+                icon: 'fa-id-badge',
+                iconBg: 'bg-emerald-50 text-emerald-600',
+                badgeColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                createdAt: 9000
+            },
             {
                 id: 'card-playbook-lead',
                 title: 'Playbook UX Lead',
@@ -298,11 +364,26 @@
                 if (saved) {
                     try { 
                         allCards = JSON.parse(saved); 
-                        // Verificar que la nueva tarjeta exista si ya había datos previos en localStorage
-                        if (!allCards.some(c => c.id === 'card-playbook-lead')) {
+                        // Verificar que las nuevas tarjetas existan si ya había datos previos en localStorage
+                        if (!allCards.some(c => c.id === 'card-wow-calidad-ui')) {
                             allCards.unshift(initialCards[0]);
-                            localStorage.setItem('ux_hub_cards', JSON.stringify(allCards));
                         }
+                        if (!allCards.some(c => c.id === 'card-certificaciones-ux-ui')) {
+                            allCards.splice(1, 0, initialCards[1]);
+                        }
+                        if (!allCards.some(c => c.id === 'card-html-confluence-gmail')) {
+                            allCards.splice(2, 0, initialCards[2]);
+                        }
+                        if (!allCards.some(c => c.id === 'card-gestion-contratos-externos')) {
+                            allCards.splice(3, 0, initialCards[3]);
+                        }
+                        if (!allCards.some(c => c.id === 'card-scar-method')) {
+                            allCards.splice(4, 0, initialCards[4]);
+                        }
+                        if (!allCards.some(c => c.id === 'card-devmode-licenses')) {
+                            allCards.splice(5, 0, initialCards[5]);
+                        }
+                        localStorage.setItem('ux_hub_cards', JSON.stringify(allCards));
                     } catch(e) { 
                         allCards = [...initialCards]; 
                     }
@@ -338,9 +419,24 @@
                     });
                     await batch.commit();
                 } else {
-                    // Si ya existían documentos, asegurar que la nueva tarjeta se cree
-                    const playbookDocRef = doc(db, 'artifacts', appId, 'public', 'data', collectionName, 'card-playbook-lead');
-                    await setDoc(playbookDocRef, initialCards[0], { merge: true });
+                    // Si ya existían documentos, asegurar que las nuevas tarjetas se sincronicen
+                    const wowDocRef = doc(db, 'artifacts', appId, 'public', 'data', collectionName, 'card-wow-calidad-ui');
+                    await setDoc(wowDocRef, initialCards[0], { merge: true });
+
+                    const certDocRef = doc(db, 'artifacts', appId, 'public', 'data', collectionName, 'card-certificaciones-ux-ui');
+                    await setDoc(certDocRef, initialCards[1], { merge: true });
+
+                    const htmlDocRef = doc(db, 'artifacts', appId, 'public', 'data', collectionName, 'card-html-confluence-gmail');
+                    await setDoc(htmlDocRef, initialCards[2], { merge: true });
+
+                    const contratosDocRef = doc(db, 'artifacts', appId, 'public', 'data', collectionName, 'card-gestion-contratos-externos');
+                    await setDoc(contratosDocRef, initialCards[3], { merge: true });
+
+                    const scarDocRef = doc(db, 'artifacts', appId, 'public', 'data', collectionName, 'card-scar-method');
+                    await setDoc(scarDocRef, initialCards[4], { merge: true });
+
+                    const devModeDocRef = doc(db, 'artifacts', appId, 'public', 'data', collectionName, 'card-devmode-licenses');
+                    await setDoc(devModeDocRef, initialCards[5], { merge: true });
                 }
 
                 onSnapshot(hubColRef, (qs) => {
