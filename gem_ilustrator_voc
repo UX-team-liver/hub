@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Uso | GEM Ilustrador Liverpool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #e10098;
+            --primary-light: #fce6f5;
+            --primary-hover: #c00082;
+            --text-dark: #1a1a24;
+            --text-gray: #5a5a6a;
+            --bg-body: #f8f9fb;
+            --bg-surface: #ffffff;
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --shadow-sm: 0 4px 6px rgba(0,0,0,0.03);
+            --shadow-lg: 0 20px 40px rgba(0,0,0,0.08);
+            --shadow-hover: 0 25px 50px rgba(225, 0, 152, 0.15);
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--bg-body); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
+
+        .navbar { position: sticky; top: 0; z-index: 1000; background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: var(--shadow-sm); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; }
+        .nav-logo { font-weight: 800; font-size: 1.4rem; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        .nav-links { display: flex; gap: 25px; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 0.95rem; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--primary); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+        section { scroll-margin-top: 90px; padding: 60px 0; }
+
+        .hero { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 40px; min-height: 85vh; padding-top: 40px; }
+        .hero-text h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 24px; letter-spacing: -1px; }
+        .hero-text h1 span { color: var(--primary); }
+        .hero-text p { font-size: 1.125rem; color: var(--text-gray); margin-bottom: 40px; max-width: 90%; }
+        .hero-image-container { position: relative; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-lg); animation: float 6s ease-in-out infinite; }
+        .hero-image-container img { width: 100%; height: auto; display: block; object-fit: cover; }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 16px 36px; font-size: 1rem; font-weight: 700; border-radius: 50px; text-decoration: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border: none; }
+        .btn-primary { background-color: var(--primary); color: white; box-shadow: 0 8px 20px rgba(225, 0, 152, 0.25); }
+        .btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-3px); box-shadow: 0 12px 25px rgba(225, 0, 152, 0.35); }
+        .btn-secondary { background-color: var(--text-dark); color: white; }
+        .btn-secondary:hover { background-color: #000; transform: translateY(-2px); }
+
+        .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 50px; font-weight: 800; }
+        .generator-card { background: var(--bg-surface); padding: 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); border-top: 6px solid var(--primary); }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-label { font-weight: 700; font-size: 0.95rem; color: var(--text-dark); }
+        .form-input, .form-select { padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1rem; font-family: inherit; transition: all 0.3s ease; background-color: var(--bg-body); }
+        .form-input:focus, .form-select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); background-color: #fff; }
+
+        .result-container { background: #f8fafc; border-radius: var(--radius-md); padding: 24px; margin-top: 24px; border: 2px dashed #cbd5e1; position: relative; }
+        .result-text { font-size: 1rem; font-family: monospace; color: #334155; min-height: 120px; white-space: pre-wrap; line-height: 1.5; }
+        .generator-actions { display: flex; justify-content: center; gap: 16px; margin-top: 24px; }
+        .prompt-label { font-weight: 800; font-size: 0.85rem; text-transform: uppercase; color: var(--primary); letter-spacing: 1px; margin-bottom: 8px; display: block; font-style: normal; }
+
+        .dos-donts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px; }
+        .bp-card { background: var(--bg-surface); padding: 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+        .do-card { border-top: 6px solid var(--success); }
+        .dont-card { border-top: 6px solid var(--warning); }
+        .bp-card h3 { font-size: 1.4rem; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
+        .bp-list { list-style: none; }
+        .bp-list li { margin-bottom: 18px; padding-left: 35px; position: relative; color: var(--text-gray); font-size: 1rem; }
+        .do-list li::before { content: '✨'; position: absolute; left: 0; top: 2px; }
+        .dont-list li::before { content: '💡'; position: absolute; left: 0; top: 2px; }
+
+        @media (max-width: 992px) {
+            .navbar { flex-direction: column; gap: 15px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; }
+            .hero { grid-template-columns: 1fr; text-align: center; padding-top: 40px; }
+            .hero-text h1 { font-size: 2.8rem; }
+            .hero-text p { max-width: 100%; margin: 0 auto 30px auto; }
+            .form-grid { grid-template-columns: 1fr; }
+            .generator-actions { flex-direction: column; }
+            .dos-donts-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="#inicio" class="nav-logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+            GEM Ilustrador
+        </a>
+        <ul class="nav-links">
+            <li><a href="#generador">Generador</a></li>
+            <li><a href="#mejores-practicas">Composición Moderna</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <header id="inicio" class="hero">
+            <div class="hero-text">
+                <h1>Crea ilustraciones <span>increíbles</span> al instante</h1>
+                <p>Herramienta oficial para diseñar gráficos de estilo "Lineless Art" (sin contornos). Ahora con reglas de composición moderna para lograr mayor profundidad y dinamismo visual.</p>
+                <a href="https://gemini.google.com/gem/1hcOFOtVHjauR0f7UXuGo3JC8NkosNZPq?usp=sharing" target="_blank" class="btn btn-primary">Empezar a crear</a>
+            </div>
+            <div class="hero-image-container">
+                <img src="https://github.com/Casandra-Abreu/ux/blob/main/GEM.jpeg?raw=true" alt="Ejemplo de ilustración Lineless">
+            </div>
+        </header>
+
+        <section id="generador">
+            <h2 class="section-title">Generador de Prompts Estructurado ✨</h2>
+            <div class="generator-card">
+                <p style="text-align: center; color: var(--text-gray); margin-bottom: 30px;">Llena los detalles. El sistema agregará automáticamente las reglas de perspectiva, superposición y dinamismo modernas.</p>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label" for="inp-quien">👤 Quién / Qué (Personaje)</label>
+                        <input type="text" id="inp-quien" class="form-input" placeholder="Ej. Una mujer joven sonriendo">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="inp-accion">🎬 Acción</label>
+                        <input type="text" id="inp-accion" class="form-input" placeholder="Ej. sentada en el suelo usando su celular">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label" for="inp-props">📦 Utilería (Props & Objetos Gigantes)</label>
+                        <input type="text" id="inp-props" class="form-input" placeholder="Ej. interactuando con un smartphone gigante y cajas de compras">
+                        <small style="color: var(--text-gray); font-size: 0.85rem;">Tip: Añadir objetos "gigantes" mejora muchísimo la composición.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="inp-marca">🎨 Marca (Mancha de fondo)</label>
+                        <select id="inp-marca" class="form-select">
+                            <option value="Pink LP SB">Pink LP SB (#FCE6F5)</option>
+                            <option value="Purple SB">Purple SB (#EEE9F0)</option>
+                            <option value="Purple EPL">Purple EPL (#F3EAF1)</option>
+                            <option value="Blue TRU">Blue TRU (#E7EDF8)</option>
+                            <option value="Yellow TRU">Yellow TRU (#FFF9E0)</option>
+                            <option value="Otro">Otro (Ingresar código HEX)</option>
+                        </select>
+                        <input type="text" id="inp-color-manual" class="form-input" placeholder="Ej. #FF5733" style="display: none; margin-top: 8px;">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="inp-opcion-texto">💬 Texto / Diálogo</label>
+                        <select id="inp-opcion-texto" class="form-select">
+                            <option value="sin_texto">Sin texto / Ninguno</option>
+                            <option value="con_texto">Sí, agregar texto literal</option>
+                        </select>
+                        <input type="text" id="inp-texto" class="form-input" placeholder="Ej. ¡Mi pedido llegó!" style="display: none; margin-top: 8px;">
+                    </div>
+                </div>
+
+                <div class="generator-actions">
+                    <button id="btn-generar" class="btn btn-primary">Generar Instrucción</button>
+                    <button id="btn-copiar" class="btn btn-secondary">Copiar al Portapapeles</button>
+                </div>
+
+                <div class="result-container">
+                    <span class="prompt-label" style="margin-bottom: 10px;">Tu Prompt Estructurado:</span>
+                    <div id="resultado-prompt" class="result-text">Aquí aparecerá tu instrucción exacta y estructurada para el GEM...</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="mejores-practicas">
+            <h2 class="section-title">Secretos de una Composición Moderna</h2>
+            <div class="dos-donts-grid">
+                <div class="bp-card do-card">
+                    <h3>Trucos para mayor dinamismo</h3>
+                    <ul class="bp-list do-list">
+                        <li><strong>Juega con las proporciones:</strong> Pídele al GEM que un objeto específico sea enorme (ej. "Un lápiz gigante" o "Un botón de 'Like' enorme detrás de ella").</li>
+                        <li><strong>Superposición:</strong> El prompt ahora pide explícitamente "profundidad mediante capas". Deja que algunos íconos floten en primer plano desenfocados u opacando el fondo.</li>
+                        <li><strong>Rompe la gravedad:</strong> En el estilo *Alegria*, los personajes pueden estar flotando, apoyados en formas invisibles o saltando dinámicamente.</li>
+                    </ul>
+                </div>
+                <div class="bp-card dont-card">
+                    <h3>La nueva estructura del Prompt</h3>
+                    <ul class="bp-list dont-list">
+                        <li><strong>Piel Clara y Realista:</strong> El GEM y los prompts tienen estrictamente configurado que la piel debe ser de tonos humanos claros.</li>
+                        <li><strong>Fondo Blindado:</strong> Reiteramos la regla para asegurar que el lienzo principal sea siempre blanco puro, usando el color solo en la mancha orgánica decorativa.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnGenerar = document.getElementById('btn-generar');
+            const btnCopiar = document.getElementById('btn-copiar');
+            const resultado = document.getElementById('resultado-prompt');
+            
+            const selectMarca = document.getElementById('inp-marca');
+            const inputColorManual = document.getElementById('inp-color-manual');
+            const selectOpcionTexto = document.getElementById('inp-opcion-texto');
+            const inputTexto = document.getElementById('inp-texto');
+
+            selectMarca.addEventListener('change', (e) => {
+                inputColorManual.style.display = (e.target.value === 'Otro') ? 'block' : 'none';
+            });
+
+            selectOpcionTexto.addEventListener('change', (e) => {
+                inputTexto.style.display = (e.target.value === 'con_texto') ? 'block' : 'none';
+            });
+
+            function generarPrompt() {
+                const quien = document.getElementById('inp-quien').value.trim() || "[un personaje]";
+                const accion = document.getElementById('inp-accion').value.trim() || "[realizando una acción]";
+                const props = document.getElementById('inp-props').value.trim() || "[elementos relevantes]";
+                
+                const marca = selectMarca.value;
+                const colorManual = inputColorManual.value.trim();
+                const hexFondo = (marca === 'Otro' && colorManual !== "") ? colorManual : marca;
+                
+                const opcionTexto = selectOpcionTexto.value;
+                const texto = inputTexto.value.trim();
+
+                let promptTexto = `Crea una ilustración con el estilo de este GEM con estos parámetros:\n\n`;
+                
+                // REGLA ESTRICTA DE PIEL CLARA
+                promptTexto += `📌 SUJETO Y ACCIÓN: ${quien}, ${accion}. Los personajes deben tener SIEMPRE tonos de piel humanos claros. (está estrictamente prohibido usar colores como magenta o azul para la piel).\n`;
+                promptTexto += `📌 ENTORNO Y UI: Incluye ${props}. Agrega elementos de interfaz flotantes alrededor (ej. estrellas, corazones, íconos de notificaciones o pequeñas decoraciones geométricas).\n`;
+                
+                promptTexto += `📌 COMPOSICIÓN: Crea una composición moderna, asimétrica y dinámica. Usa superposición de capas (iconos en primer plano, personajes en plano medio, formas en el fondo) para dar profundidad. Juega con la escala haciendo que algunos objetos de utilería o UI sean gigantes interactundo con los personajes.\n`;
+                
+                promptTexto += `📌 ESTILO GRÁFICO (CRÍTICO): Ilustración vectorial plana 2D, estilo "Alegria" o "Corporate Memphis". ESTRICTAMENTE SIN CONTORNOS (Lineless art). No uses líneas negras ni delineados para los bordes; separa las formas únicamente usando el contraste entre colores sólidos adyacentes.\n`;
+                promptTexto += `📌 FONDO: El lienzo general debe ser ESTRICTAMENTE BLANCO PURO. Sobre ese fondo blanco, pon detrás de los sujetos una sola gran forma orgánica (blob) usando el color ${hexFondo} en un tono claro o semitransparente para enmarcar la escena.\n`;
+
+                if (opcionTexto === 'con_texto' && texto !== '') {
+                    promptTexto += `📌 REGLA DE TEXTO: Pon un globo de pensamiento o diálogo que diga literalmente "${texto}".`;
+                } else {
+                    promptTexto += `📌 REGLA DE TEXTO: La imagen NO debe contener nada de texto real, letras o números. Usa líneas abstractas o bloques (mock text) para simular contenido escrito.`;
+                }
+
+                resultado.textContent = promptTexto;
+                
+                resultado.style.opacity = 0;
+                setTimeout(() => {
+                    resultado.style.opacity = 1;
+                    resultado.style.transition = 'opacity 0.5s';
+                }, 50);
+            }
+
+            function copiarAlPortapapeles() {
+                const textoParaCopiar = resultado.textContent;
+                if (textoParaCopiar.includes("Aquí aparecerá tu instrucción")) {
+                    alert("¡Genera un prompt primero!");
+                    return;
+                }
+                navigator.clipboard.writeText(textoParaCopiar).then(() => {
+                    const originalText = btnCopiar.innerText;
+                    btnCopiar.innerText = "¡Copiado! ✅";
+                    btnCopiar.style.backgroundColor = "var(--success)";
+                    setTimeout(() => {
+                        btnCopiar.innerText = originalText;
+                        btnCopiar.style.backgroundColor = "var(--text-dark)";
+                    }, 2000);
+                }).catch(err => { console.error('Error al copiar: ', err); });
+            }
+
+            btnGenerar.addEventListener('click', generarPrompt);
+            btnCopiar.addEventListener('click', copiarAlPortapapeles);
+        });
+    </script>
+</body>
+</html>
