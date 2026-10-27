@@ -88,12 +88,11 @@
     <nav class="border-b border-slate-200 bg-white/95 backdrop-blur-md sticky top-0 z-40 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
             <div class="flex items-center gap-3">
-                <!-- Logo actualizado a UX -->
+                <!-- Logo UX -->
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#833177] to-[#e10098] flex items-center justify-center text-white font-black text-lg shadow-md shadow-pink-500/20 tracking-tighter">
                     UX
                 </div>
                 <div>
-                    <!-- Texto GLUE removido, dejando solo el título con peso tipográfico -->
                     <h1 class="text-sm font-extrabold text-slate-900 tracking-tight">Liverpool Digital</h1>
                     <span class="text-[11px] font-medium text-slate-500 block">UX/UI Portfolio Hub</span>
                 </div>
@@ -102,8 +101,8 @@
             <div class="flex items-center gap-2 sm:gap-3">
                 <span id="cardCounterBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-pink-50 border border-pink-200 text-[#e10098]">
                     <i class="fa-solid fa-layer-group"></i>
-                    <!-- Contador actualizado a 7 -->
-                    <span id="activeCount">7 Activos</span>
+                    <!-- Contador dinámico de tarjetas -->
+                    <span id="activeCount">8 Activos</span>
                 </span>
             </div>
         </div>
@@ -145,6 +144,9 @@
                 <button onclick="setCategory('ALL')" class="category-btn active px-4 py-1.5 rounded-xl text-xs bg-[#e10098] text-white transition shadow-sm whitespace-nowrap tracking-wide" data-cat="ALL">
                     Todos
                 </button>
+                <button onclick="setCategory('Manual')" class="category-btn px-4 py-1.5 rounded-xl text-xs bg-slate-100 text-slate-600 hover:bg-slate-200 transition whitespace-nowrap tracking-wide" data-cat="Manual">
+                    Manuales
+                </button>
                 <button onclick="setCategory('Herramienta')" class="category-btn px-4 py-1.5 rounded-xl text-xs bg-slate-100 text-slate-600 hover:bg-slate-200 transition whitespace-nowrap tracking-wide" data-cat="Herramienta">
                     Herramientas
                 </button>
@@ -159,7 +161,7 @@
 
         <section>
             <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Cards will be populated dynamically by JavaScript -->
+                <!-- Tarjetas renderizadas dinámicamente -->
             </div>
 
             <!-- Empty State -->
@@ -191,8 +193,19 @@
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDocs, collection, onSnapshot, writeBatch } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Tarjetas base actualizadas con Gem de Copy
+        // Tarjetas del Hub incluyendo Playbook UX Lead
         const initialCards = [
+            {
+                id: 'card-playbook-lead',
+                title: 'Playbook UX Lead',
+                description: 'Manual de expectativas del rol, procesos, buenas prácticas y herramientas que ayudan al desarrollo de los UX Leads.',
+                link: 'playbook_interactivo_del_ux_lead (4).html',
+                category: 'Manual',
+                icon: 'fa-book-bookmark',
+                iconBg: 'bg-indigo-50 text-indigo-600',
+                badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+                createdAt: 8000
+            },
             {
                 id: 'card-1',
                 title: 'Auditoría Figma',
@@ -283,7 +296,16 @@
             if (typeof __firebase_config === 'undefined') {
                 const saved = localStorage.getItem('ux_hub_cards');
                 if (saved) {
-                    try { allCards = JSON.parse(saved); } catch(e) { allCards = [...initialCards]; }
+                    try { 
+                        allCards = JSON.parse(saved); 
+                        // Verificar que la nueva tarjeta exista si ya había datos previos en localStorage
+                        if (!allCards.some(c => c.id === 'card-playbook-lead')) {
+                            allCards.unshift(initialCards[0]);
+                            localStorage.setItem('ux_hub_cards', JSON.stringify(allCards));
+                        }
+                    } catch(e) { 
+                        allCards = [...initialCards]; 
+                    }
                 } else {
                     allCards = [...initialCards];
                 }
@@ -315,6 +337,10 @@
                         batch.set(cardRef, card);
                     });
                     await batch.commit();
+                } else {
+                    // Si ya existían documentos, asegurar que la nueva tarjeta se cree
+                    const playbookDocRef = doc(db, 'artifacts', appId, 'public', 'data', collectionName, 'card-playbook-lead');
+                    await setDoc(playbookDocRef, initialCards[0], { merge: true });
                 }
 
                 onSnapshot(hubColRef, (qs) => {
@@ -415,7 +441,7 @@
 
         window.copyCardLink = function(link) {
             const temp = document.createElement('input');
-            temp.value = window.location.href.replace(/index\.html.*/, '') + link;
+            temp.value = window.location.href.replace(/index.*\.html.*/, '') + link;
             document.body.appendChild(temp);
             temp.select();
             document.execCommand('copy');
