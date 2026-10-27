@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flyer Operativo: Staff Augmentation UX 2026</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#fdf2f8',
+              100: '#fce7f3',
+              500: '#ec4899',
+              600: '#db2777',
+              700: '#be185d',
+              900: '#831843',
+            },
+            liverpool: {
+              pink: '#E1007A',
+              dark: '#1e293b',
+              navy: '#0f172a'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Prevent unwanted scrollbars while preserving 1600px ceiling */
+    html, body {
+      max-height: 1600px;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; padding: 0 !important; }
+      .shadow-xl, .shadow-md, .shadow-sm { box-shadow: none !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-pink-100 selection:text-pink-700">
+
+  <!-- Toast Notification element -->
+  <div id="toast" class="fixed bottom-4 right-4 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2 bg-slate-900 text-white px-3.5 py-2.5 rounded-xl shadow-2xl text-xs sm:text-sm font-medium">
+    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+    </svg>
+    <span id="toast-message">Copiado al portapapeles</span>
+  </div>
+
+  <!-- Main Container -->
+  <main class="w-full px-4 sm:px-6 lg:px-8 pt-4 sm:pt-5 pb-0 space-y-4">
+    
+    <!-- Hero Banner (Compact) -->
+    <div class="relative overflow-hidden bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white rounded-2xl p-4 sm:p-5 shadow-lg border border-slate-700/80">
+      <div class="absolute -right-12 -top-12 w-52 h-52 bg-pink-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="relative z-10 max-w-5xl">
+        <h2 class="text-xl sm:text-2xl font-extrabold tracking-tight text-white mb-1.5">
+          ¿Cómo solicitar staff augmentation UX/UI?
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-300 leading-snug">
+          Este es el proceso para incorporar diseñadores UX/UI en proyectos o productos digitales. Solemos recurrir a ISOL por la alta calidad, respaldo y la flexibilidad de entrevistar previamente a los diseñadores. Selecciona uno de los siguientes pasos para ver su contenido.
+        </p>
+      </div>
+
+      <!-- Quick stats / Steps Bar -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-3.5 pt-3.5 border-t border-slate-700/60 text-xs">
+        <button type="button" onclick="goToStep(0)" id="hero-tab-0" class="step-nav-btn text-left bg-pink-600 text-white p-2.5 rounded-xl border border-pink-500 transition-all shadow-sm">
+          <div class="text-pink-200 text-[11px] font-semibold">Paso 0</div>
+          <div class="font-bold text-xs sm:text-sm truncate">Validar Presupuesto por Mail</div>
+        </button>
+        <button type="button" onclick="goToStep(1)" id="hero-tab-1" class="step-nav-btn text-left bg-slate-800/70 hover:bg-slate-800 text-slate-300 p-2.5 rounded-xl border border-slate-700 transition-all">
+          <div class="text-slate-400 text-[11px]">Paso 1</div>
+          <div class="font-semibold text-white text-xs sm:text-sm truncate">Solicitar Anexo a Proveedor</div>
+        </button>
+        <button type="button" onclick="goToStep(2)" id="hero-tab-2" class="step-nav-btn text-left bg-slate-800/70 hover:bg-slate-800 text-slate-300 p-2.5 rounded-xl border border-slate-700 transition-all">
+          <div class="text-slate-400 text-[11px]">Paso 2</div>
+          <div class="font-semibold text-white text-xs sm:text-sm truncate">Dar de Alta Solicitud de Contrato en Forms</div>
+        </button>
+        <button type="button" onclick="goToStep(3)" id="hero-tab-3" class="step-nav-btn text-left bg-slate-800/70 hover:bg-slate-800 text-slate-300 p-2.5 rounded-xl border border-slate-700 transition-all">
+          <div class="text-slate-400 text-[11px]">Paso 3</div>
+          <div class="font-semibold text-white text-xs sm:text-sm truncate">Dar de Alta Pago a Proveedor en Forms</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Tab 0: Pre-requisites & Interactive Calculator -->
+    <section id="step-panel-0" class="step-panel">
+      <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200 space-y-3.5">
+        <div class="flex items-center gap-3">
+          <span class="w-7 h-7 rounded-full bg-slate-100 text-slate-800 font-bold flex items-center justify-center text-xs border border-slate-300">0</span>
+          <div>
+            <h2 class="text-base sm:text-lg font-bold text-slate-900 leading-tight">Pre-requisitos y Validación de Presupuesto</h2>
+            <p class="text-xs text-slate-500">Antes de comprometer equipo, valida viabilidad financiera con los líderes asignados.</p>
+          </div>
+        </div>
+
+        <!-- Pre-requisites Alert -->
+        <div class="bg-slate-50 rounded-xl p-3 sm:p-4 border border-slate-200 text-xs text-slate-700 space-y-2">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div class="bg-white p-2.5 rounded-lg border border-slate-200">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 block">Si es Proyecto</span>
+              <p class="mt-0.5 font-medium">Hablar con el <strong>Líder Funcional</strong> y <strong>Líder Técnico</strong> correspondientes.</p>
+            </div>
+            <div class="bg-white p-2.5 rounded-lg border border-slate-200">
+              <span class="text-[10px] font-bold uppercase tracking-wider text-pink-600 block">Si es Producto Digital</span>
+              <p class="mt-0.5 font-medium">Hablar con el <strong>Product Owner (PO)</strong> y <strong>Tech Lead</strong> correspondientes.</p>
+            </div>
+          </div>
+          <p class="text-[11px] text-slate-500 pt-0.5 leading-relaxed">
+            💡 <em>Comparte con ellos vía mail la cotización estimada utilizando el cotizador interactivo oficial de tarifas 2026, adicional pide su VoBo por el mismo mail para que quede documentado por cualquier cosa. Puedes consultar el template de correo <a href="https://liverpooldigital.atlassian.net/wiki/spaces/UXH/pages/770801883/Contratos+Externos+UX#Template-de-correos-para-seguimiento" target="_blank" rel="noopener noreferrer" class="font-bold text-pink-600 hover:text-pink-700 underline underline-offset-1 inline-flex items-center gap-0.5">Gestión Presupuestal y Contratación UX <svg class="w-3 h-3 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></a>. Es <strong>mandatorio</strong> contar con el correo previo que especifique: seniority requerido (Sr o Mid Designer), cantidad de personas, meses y el <strong>plan adjunto UX/UI</strong> que justifique la estimación y solicitud del externo.</em>
+          </p>
+        </div>
+
+        <!-- Tabulator & Calculator -->
+        <div class="bg-white border border-slate-200/90 rounded-2xl p-3.5 sm:p-4 shadow-xs">
+          <!-- Switch & Title -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100">
+            <div>
+              <h3 class="text-sm sm:text-base font-bold text-slate-900 flex items-center gap-1.5">
+                <span>📊</span>
+                <span>Tabulador y Calculadora de Cotizaciones</span>
+              </h3>
+              <p class="text-[11px] text-slate-500 font-normal">
+                Consulta los costos de asignación y genera el estimado para justificar presupuesto con Líderes y POs.
+              </p>
+            </div>
+
+            <!-- Segmented Pill Button Group -->
+            <div class="inline-flex p-1 bg-slate-100 rounded-lg border border-slate-200/70 self-start sm:self-auto shrink-0">
+              <button id="tab-isol" onclick="switchProvider('isol')" class="px-3 py-1 rounded-md text-xs font-semibold transition-all bg-[#0f172a] text-white shadow-xs">
+                Tarifas ISOL
+              </button>
+              <button id="tab-kognivera" onclick="switchProvider('kognivera')" class="px-3 py-1 rounded-md text-xs font-semibold transition-all text-slate-600 hover:text-slate-900">
+                Tarifas Kognivera
+              </button>
+            </div>
+          </div>
+
+          <!-- Subheader label and badges -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 mt-3 mb-2">
+            <span id="base-rate-title" class="text-[10px] sm:text-[11px] font-bold italic tracking-wide text-slate-500 uppercase">
+              TARIFA BASE POR MES (NO MODIFICAR) — INGENIERIA DE SOLUCIONES (ISOL 2026)
+            </span>
+            <div class="flex items-center gap-1.5 flex-wrap self-start sm:self-auto">
+              <span id="kognivera-note" class="hidden inline-flex items-center gap-1 text-[11px] font-medium text-purple-700 bg-purple-50 border border-purple-200/80 px-2.5 py-0.5 rounded-full">
+                <svg class="w-3 h-3 text-purple-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>*Solo cuenta con UXers que hablan en inglés.</span>
+              </span>
+              <span class="inline-flex items-center text-[11px] font-medium text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2.5 py-0.5 rounded-full">
+                Tarifa fija acordada
+              </span>
+            </div>
+          </div>
+
+          <!-- Base Rate Table -->
+          <div class="overflow-hidden rounded-lg border border-slate-200">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-[#006399] text-white">
+                  <th class="py-2 px-3 font-bold">Seniority UX</th>
+                  <th class="py-2 px-3 text-center font-bold">Asignación</th>
+                  <th class="py-2 px-3 text-center font-bold">Hrs al mes</th>
+                  <th class="py-2 px-3 text-right font-bold">Tarifa por hr</th>
+                  <th class="py-2 px-3 text-right font-bold">Tarifa al mes</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 bg-white">
+                <tr class="hover:bg-slate-50/70 transition-colors">
+                  <td class="py-2 px-3 font-bold text-slate-900">UX/UI Sr Designer</td>
+                  <td class="py-2 px-3 text-center text-slate-700 font-medium">100%</td>
+                  <td class="py-2 px-3 text-center text-slate-700 font-medium">160</td>
+                  <td class="py-2 px-3 text-right font-mono text-slate-800" id="base-sr-hr">$ 601.43</td>
+                  <td class="py-2 px-3 text-right font-mono font-bold text-emerald-700" id="base-sr-month">$ 96,228.00</td>
+                </tr>
+                <tr class="hover:bg-slate-50/70 transition-colors">
+                  <td class="py-2 px-3 font-bold text-slate-900">UX/UI Designer</td>
+                  <td class="py-2 px-3 text-center text-slate-700 font-medium">100%</td>
+                  <td class="py-2 px-3 text-center text-slate-700 font-medium">160</td>
+                  <td class="py-2 px-3 text-right font-mono text-slate-800" id="base-mid-hr">$ 556.88</td>
+                  <td class="py-2 px-3 text-right font-mono font-bold text-emerald-700" id="base-mid-month">$ 89,100.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Estimator Card -->
+          <div class="mt-3 bg-[#0b1320] text-white rounded-xl p-3 sm:p-4 border border-slate-800">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-2">
+              <h4 class="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
+                <span>🎛️</span>
+                <span>Estimador Rápido de Presupuesto</span>
+              </h4>
+              <span id="calc-provider-badge" class="self-start sm:self-auto text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-[#0a2540] text-sky-400 border border-sky-500/30">
+                Proveedor: ISOL
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-end pt-1">
+              <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-12 gap-2.5">
+                <div class="sm:col-span-6">
+                  <label class="block text-[11px] font-medium text-slate-300 mb-1">Seniority UX</label>
+                  <div class="relative">
+                    <select id="calc-role" onchange="calculateQuote()" class="w-full appearance-none bg-[#162032] text-white text-xs rounded-lg px-2.5 py-1.5 border border-slate-700/80 focus:ring-1 focus:ring-sky-500 focus:outline-none pr-7">
+                      <option value="sr" selected>UX/UI Sr Designer ($96,228 / mes)</option>
+                      <option value="mid">UX/UI Designer ($89,100 / mes)</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-400">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                  <label class="block text-[11px] font-medium text-slate-300 mb-1">Personas</label>
+                  <input id="calc-people" type="number" min="1" max="20" value="2" oninput="calculateQuote()" class="w-full bg-[#162032] text-white text-xs font-semibold rounded-lg px-2 py-1.5 border border-slate-700/80 text-center focus:ring-1 focus:ring-sky-500 focus:outline-none">
+                </div>
+
+                <div class="sm:col-span-3">
+                  <label class="block text-[11px] font-medium text-slate-300 mb-1">Meses</label>
+                  <input id="calc-months" type="number" min="1" max="24" value="9" oninput="calculateQuote()" class="w-full bg-[#162032] text-white text-xs font-semibold rounded-lg px-2 py-1.5 border border-slate-700/80 text-center focus:ring-1 focus:ring-sky-500 focus:outline-none">
+                </div>
+              </div>
+
+              <div class="lg:col-span-4 self-end bg-[#162238] border border-slate-700/70 rounded-lg p-2.5 flex flex-col items-center justify-center text-center">
+                <span class="text-[10px] font-semibold text-slate-400 tracking-wider uppercase" id="calc-total-label">
+                  TOTAL (MXN)
+                </span>
+                <span id="calc-total" class="text-lg sm:text-xl font-extrabold font-mono text-emerald-400">
+                  $1,732,104.00
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer action: exactly 32px from card and 32px from footer -->
+      <div class="flex items-center justify-end mt-[32px] mb-[32px]">
+        <button onclick="goToStep(1)" class="inline-flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs sm:text-sm px-4 py-2 rounded-xl transition shadow">
+          <span>Avanzar al Paso 1: Solicitar Anexo</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Tab 1: Paso 1: Solicitar Anexo al Proveedor -->
+    <section id="step-panel-1" class="step-panel hidden">
+      <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200 space-y-3.5">
+        <div class="flex items-center gap-3">
+          <span class="w-7 h-7 rounded-full bg-pink-100 text-pink-700 font-bold flex items-center justify-center text-xs border border-pink-300">1</span>
+          <div>
+            <h2 class="text-base sm:text-lg font-bold text-slate-900 leading-tight">Paso 1: Solicitar Anexo al Proveedor</h2>
+            <p class="text-xs text-slate-500">Una vez alineado el presupuesto con los líderes de proyecto/producto.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+          <!-- Contacts -->
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between space-y-3">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-pink-600 block mb-0.5">Contacto ISOL</span>
+              <p class="text-xs font-semibold text-slate-900">Carlos López</p>
+              <div class="flex items-center justify-between gap-1.5 mt-1 bg-white px-2 py-1 rounded-lg border border-slate-200">
+                <span class="text-[11px] font-mono text-slate-600 truncate">carlos.lopez@isol.dev</span>
+                <button onclick="copyToClipboard('carlos.lopez@isol.dev', 'Correo de Carlos López copiado')" class="text-slate-400 hover:text-pink-600 p-0.5 transition shrink-0" title="Copiar correo">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="border-t border-slate-200"></div>
+
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-purple-600 block mb-0.5">Contacto Kognivera</span>
+              <p class="text-xs font-semibold text-slate-900">Vamsi Krishna Vemula</p>
+              <div class="flex items-center justify-between gap-1.5 mt-1 bg-white px-2 py-1 rounded-lg border border-slate-200">
+                <span class="text-[11px] font-mono text-slate-600 truncate">vvemula@kognivera.com</span>
+                <button onclick="copyToClipboard('vvemula@kognivera.com', 'Correo de Vamsi Krishna Vemula copiado')" class="text-slate-400 hover:text-purple-600 p-0.5 transition shrink-0" title="Copiar correo">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- PEP -->
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between">
+            <div>
+              <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 block mb-0.5">Identificador Clave</span>
+              <p class="text-xs font-semibold text-slate-900">Código PEP del Proyecto</p>
+              <p class="text-[11px] text-slate-600 mt-1">
+                El <strong>PEP</strong> es el ID del proyecto de donde se descuenta el presupuesto.
+              </p>
+            </div>
+            <div class="mt-2.5 p-2 rounded-lg bg-white border border-slate-200 text-xs font-mono text-slate-700">
+              Ejemplo: <span class="font-bold text-indigo-600">IT/0487-26-16-S-007</span>
+            </div>
+          </div>
+
+          <!-- Witnesses Checklist -->
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block mb-0.5">Testigos Requeridos en Anexo</span>
+            <p class="text-[10px] text-pink-600 font-semibold mb-1.5">Vigente a partir de 2026:</p>
+            <ul class="text-[11px] space-y-1 text-slate-700">
+              <li class="flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                <span><strong>Jorge Gurza</strong> <span class="text-[10px] text-slate-500">(Dir. Exp. Cliente)</span></span>
+              </li>
+              <li class="flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                <span><strong>Liliana Carrera</strong> <span class="text-[10px] text-slate-500">(Subdir. UX/UI)</span></span>
+              </li>
+              <li class="flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0"></span>
+                <span><strong>Casandra Abreu</strong> <span class="text-[10px] text-slate-500">(Gte. UX/UI)</span></span>
+              </li>
+              <li class="flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0"></span>
+                <span><strong>César Guzmán</strong> <span class="text-[10px] text-slate-500">(Dir. Ing. Software)</span></span>
+              </li>
+              <li class="flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0"></span>
+                <span><strong>Líder Técnico Asignado</strong></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation buttons: exactly 32px from card and 32px from footer -->
+      <div class="flex items-center justify-between mt-[32px] mb-[32px]">
+        <button onclick="goToStep(0)" class="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs sm:text-sm px-3.5 py-2 rounded-xl transition">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+          <span>Volver al Paso 0</span>
+        </button>
+        <button onclick="goToStep(2)" class="inline-flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs sm:text-sm px-4 py-2 rounded-xl transition shadow">
+          <span>Avanzar al Paso 2: Contrato en Forms</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Tab 2: Paso 2: Dar de Alta Solicitud de Contrato en Forms -->
+    <section id="step-panel-2" class="step-panel hidden">
+      <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200 space-y-3">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div class="flex items-center gap-3">
+            <span class="w-7 h-7 rounded-full bg-pink-100 text-pink-700 font-bold flex items-center justify-center text-xs border border-pink-300">2</span>
+            <div>
+              <h2 class="text-base sm:text-lg font-bold text-slate-900 leading-tight">Paso 2: Solicitud de Contrato en Forms</h2>
+              <p class="text-xs text-slate-500">Ingresa la solicitud oficial con los datos pre-establecidos para evitar retrasos.</p>
+            </div>
+          </div>
+
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLScHJQ5AWXJAVLUKWhnE-k1BYKuFyaYRXM0PbI5XvBk50GMlVQ/viewform?usp=mail_form_link" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 bg-pink-600 hover:bg-pink-700 text-white px-3.5 py-1.5 rounded-xl text-xs font-semibold transition shadow-sm">
+            <span>🔗 Ir al Forms de Solicitud de Contrato</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+        </div>
+
+        <!-- Form Cheat-Sheet Table -->
+        <div class="border border-slate-200 rounded-xl overflow-hidden">
+          <div class="bg-slate-100 px-3.5 py-2 border-b border-slate-200 text-[11px] font-bold text-slate-700 uppercase tracking-wider">
+            Guía de llenado exacto para el Forms
+          </div>
+
+          <div class="divide-y divide-slate-200 text-xs">
+            <div class="p-2 sm:px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 hover:bg-slate-50 transition-colors">
+              <span class="sm:w-1/2 font-semibold text-slate-700">¿Quién apoyó a negociar los costos del proyecto?*</span>
+              <div class="sm:w-1/2 bg-white px-3 py-1.5 rounded-lg border border-slate-200">
+                <span class="font-medium text-slate-900">Ninguno <span class="text-slate-500 font-normal">(la tarifa de ISOL es fija)</span></span>
+              </div>
+            </div>
+
+            <div class="p-2 sm:px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 hover:bg-slate-50 transition-colors">
+              <span class="sm:w-1/2 font-semibold text-slate-700">¿A qué Dirección pertenece el proyecto?*</span>
+              <div class="sm:w-1/2 bg-white px-3 py-1.5 rounded-lg border border-slate-200">
+                <span class="font-medium text-slate-900">Preguntar a PMO o Líder funcional <span class="text-slate-500 font-normal">(normalmente es Digital)</span></span>
+              </div>
+            </div>
+
+            <div class="p-2 sm:px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 hover:bg-slate-50 transition-colors">
+              <span class="sm:w-1/2 font-semibold text-slate-700">¿Ingresarás un Contrato o Anexo?</span>
+              <div class="sm:w-1/2 bg-white px-3 py-1.5 rounded-lg border border-slate-200">
+                <span class="font-medium text-slate-900">Anexo</span>
+              </div>
+            </div>
+
+            <div class="p-2 sm:px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 hover:bg-slate-50 transition-colors">
+              <span class="sm:w-1/2 font-semibold text-slate-700">ID de contrato (Contrato Marco ISOL)</span>
+              <div class="sm:w-1/2 bg-white px-3 py-1.5 rounded-lg border border-slate-200">
+                <span class="font-medium text-slate-900">3663</span>
+              </div>
+            </div>
+
+            <div class="p-2 sm:px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 hover:bg-slate-50 transition-colors">
+              <span class="sm:w-1/2 font-semibold text-slate-700">Nombre del proveedor</span>
+              <div class="sm:w-1/2 bg-white px-3 py-1.5 rounded-lg border border-slate-200">
+                <span class="font-medium text-slate-900">ISOL - INGENIERIA DE SOLUCIONES SA DE CV - 153878</span>
+              </div>
+            </div>
+
+            <div class="p-2 sm:px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 hover:bg-slate-50 transition-colors">
+              <span class="sm:w-1/2 font-semibold text-slate-700">Tipo de contrato</span>
+              <div class="sm:w-1/2 bg-white px-3 py-1.5 rounded-lg border border-slate-200">
+                <span class="font-medium text-slate-900">Inversión <span class="text-slate-500 font-normal">(cuando son personas adicionales externas)</span></span>
+              </div>
+            </div>
+
+            <div class="p-2 sm:px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 hover:bg-slate-50 transition-colors">
+              <span class="sm:w-1/2 font-semibold text-slate-700">PEP & ¿Contraprestación?</span>
+              <div class="sm:w-1/2 bg-white px-3 py-1.5 rounded-lg border border-slate-200">
+                <span class="font-medium text-slate-900">Nombre del proyecto PEP + Monto total que cotizó el proveedor</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation buttons: exactly 32px from card and 32px from footer -->
+      <div class="flex items-center justify-between mt-[32px] mb-[32px]">
+        <button onclick="goToStep(1)" class="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs sm:text-sm px-3.5 py-2 rounded-xl transition">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+          <span>Volver al Paso 1</span>
+        </button>
+        <button onclick="goToStep(3)" class="inline-flex items-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs sm:text-sm px-4 py-2 rounded-xl transition shadow">
+          <span>Avanzar al Paso 3: Solicitud de Pago</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Tab 3: Paso 3: Solicitud de Pago a Proveedor (Tarjeta Unificada) -->
+    <section id="step-panel-3" class="step-panel hidden">
+      <!-- Main Unified Card -->
+      <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200 space-y-3.5">
+        <!-- Header -->
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div class="flex items-center gap-3">
+            <span class="w-7 h-7 rounded-full bg-pink-100 text-pink-700 font-bold flex items-center justify-center text-xs border border-pink-300">3</span>
+            <div>
+              <h2 class="text-base sm:text-lg font-bold text-slate-900 leading-tight">Paso 3: Solicitud de Pago a Proveedor</h2>
+              <p class="text-xs text-slate-500">Se ejecuta una vez recolectadas todas las firmas y concluido el tiempo del contrato.</p>
+            </div>
+          </div>
+
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfQETX9LrwHnCKrLPosDCTT71fVpby3zxZccmFDugf9kgwhsw/viewform" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 bg-pink-600 hover:bg-pink-700 text-white px-3.5 py-1.5 rounded-xl text-xs font-semibold transition shadow-sm">
+            <span>🔗 Ir al Forms de Pago a Proveedor</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </a>
+        </div>
+
+        <!-- Section 1: Form Fields & Evidences -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          <!-- Fields details -->
+          <div class="space-y-2 text-xs">
+            <div class="p-2 bg-slate-50 rounded-lg border border-slate-200 flex justify-between items-center">
+              <span class="text-slate-600 font-medium">¿Inversión o gasto?:</span>
+              <span class="font-bold text-slate-900 bg-white px-2 py-0.5 rounded border border-slate-200">Inversión</span>
+            </div>
+            <div class="p-2 bg-slate-50 rounded-lg border border-slate-200 flex justify-between items-center">
+              <span class="text-slate-600 font-medium">Nombre del proyecto:</span>
+              <span class="font-semibold text-slate-900 bg-white px-2 py-0.5 rounded border border-slate-200">ID del PEP</span>
+            </div>
+            <div class="p-2 bg-slate-50 rounded-lg border border-slate-200 flex justify-between items-center">
+              <span class="text-slate-600 font-medium">ID del Anexo:</span>
+              <span class="font-semibold text-slate-900 bg-white px-2 py-0.5 rounded border border-slate-200">ID del forms anterior (ID de Contrato)</span>
+            </div>
+            <div class="p-2 bg-slate-50 rounded-lg border border-slate-200 flex justify-between items-center">
+              <span class="text-slate-600 font-medium">Materialidad:</span>
+              <span class="font-semibold text-slate-900 bg-white px-2 py-0.5 rounded border border-slate-200">Asesores externos (cargar Anexo firmado)</span>
+            </div>
+          </div>
+
+          <!-- Evidences requirements -->
+          <div class="bg-gradient-to-br from-slate-50 to-slate-100 p-3 rounded-xl border border-slate-200 text-xs space-y-2 flex flex-col justify-between">
+            <div class="space-y-1.5">
+              <h4 class="font-bold text-slate-900 flex items-center gap-1.5">
+                <span class="text-pink-600">📁</span>
+                Carga de Evidencias y Entregables
+              </h4>
+              <p class="text-slate-600 leading-snug">
+                Dar de alta en <a href="https://liverpool-mx.monday.com/workspaces/14796967" target="_blank" rel="noopener noreferrer" class="font-bold text-pink-600 hover:text-pink-700 underline underline-offset-1 inline-flex items-center gap-0.5">Monday <svg class="w-3 h-3 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></a> los entregables (<em>screenshots de Figma</em>).
+              </p>
+              <div class="p-2 bg-white rounded-lg border border-slate-200 text-[11px] text-slate-700">
+                <strong>Contingencia:</strong> Si no existe el proyecto en Monday, subir capturas en <a href="https://liverpooldigital.atlassian.net/jira/projects?page=1&sortKey=name&sortOrder=ASC" target="_blank" rel="noopener noreferrer" class="font-bold text-pink-600 hover:text-pink-700 underline underline-offset-1 inline-flex items-center gap-0.5">Jira <svg class="w-3 h-3 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></a>.
+              </div>
+            </div>
+            <div class="text-[10px] text-amber-900 bg-amber-50 p-1.5 rounded border border-amber-200">
+              🔎 <strong>Estatus del anexo:</strong> <a href="https://www.appsheet.com/start/1d1c1ca0-a7a1-4788-be0f-57f1e8517ba0#appName=PORTALFINANZASSE-5506363&page=dashboard&table=Anexos&view=INICIO" target="_blank" rel="noopener noreferrer" class="font-bold text-amber-900 hover:text-amber-950 underline underline-offset-1 inline-flex items-center gap-0.5">en CONECTA SE <svg class="w-2.5 h-2.5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></a> selecciona "Anexos" e ingresa el ID del contrato.
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Regla Exclusiva (Embedded block) -->
+        <div class="bg-gradient-to-r from-pink-900 via-slate-900 to-indigo-950 text-white rounded-xl p-3 sm:p-3.5 shadow-xs border border-pink-500/20 space-y-2">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded-full bg-pink-500/20 text-pink-300 text-[10px] font-extrabold tracking-wider uppercase border border-pink-500/40">
+              📌 Regla Exclusiva
+            </span>
+            <h3 class="text-xs sm:text-sm font-bold text-white">Staff Augmentation en Productos Digitales</h3>
+          </div>
+
+          <p class="text-xs text-slate-300 w-full leading-normal sm:whitespace-nowrap">
+            Para productos digitales aplican lineamientos estrictos de auditoría y respaldo administrativo. Cumplir con estos dos pilares:
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2 pt-0.5">
+            <div class="bg-white/10 backdrop-blur rounded-lg p-2.5 border border-white/10 space-y-1">
+              <div class="flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full bg-pink-500 text-white font-bold flex items-center justify-center text-[10px]">1</span>
+                <h4 class="font-bold text-white text-xs">Generación de Evidencias (Jira)</h4>
+              </div>
+              <p class="text-[11px] text-slate-200 leading-snug">
+                Capturas de pantalla de <strong>Jira</strong> donde sea claramente visible historias de usuario, tareas o actividades del periodo reportado.
+              </p>
+            </div>
+
+            <div class="bg-white/10 backdrop-blur rounded-lg p-2.5 border border-white/10 space-y-1">
+              <div class="flex items-center gap-1.5">
+                <span class="w-4 h-4 rounded-full bg-indigo-500 text-white font-bold flex items-center justify-center text-[10px]">2</span>
+                <h4 class="font-bold text-white text-xs">Resguardo en CONECTA SE</h4>
+              </div>
+              <p class="text-[11px] text-slate-200 leading-snug">
+                Cargar capturas en <a href="https://www.appsheet.com/start/1d1c1ca0-a7a1-4788-be0f-57f1e8517ba0#appName=PORTALFINANZASSE-5506363&group=%5B%5D&page=card&sort=%5B%5D&table=Vistas&view=MENU" target="_blank" rel="noopener noreferrer" class="font-bold text-indigo-300 hover:text-white underline underline-offset-1 inline-flex items-center gap-0.5">CONECTA SE <svg class="w-2.5 h-2.5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></a> como repositorio oficial para validación administrativa.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Directorio de Apoyo y Contacto para Pagos (Embedded block) -->
+        <div class="pt-1">
+          <h4 class="text-xs font-bold text-slate-900 mb-2 flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            Directorio de Apoyo y Contacto para Pagos
+          </h4>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+              <div>
+                <span class="font-bold text-slate-900 text-xs block">Denise Chávez</span>
+                <span class="text-[11px] text-slate-500 font-mono">dmchavezm@liverpool.com.mx</span>
+              </div>
+              <button onclick="copyToClipboard('dmchavezm@liverpool.com.mx', 'Correo de Denise Chávez copiado')" class="p-1.5 text-slate-600 hover:text-pink-600 bg-white hover:bg-slate-100 rounded-lg border border-slate-200 transition" title="Copiar correo">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+              </button>
+            </div>
+
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+              <div>
+                <span class="font-bold text-slate-900 text-xs block">Alma Reyna Alba</span>
+                <span class="text-[11px] text-slate-500 font-mono">aralbar@liverpool.com.mx</span>
+              </div>
+              <button onclick="copyToClipboard('aralbar@liverpool.com.mx', 'Correo de Alma Reyna Alba copiado')" class="p-1.5 text-slate-600 hover:text-pink-600 bg-white hover:bg-slate-100 rounded-lg border border-slate-200 transition" title="Copiar correo">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation buttons: exactly 32px from card and 32px from footer -->
+      <div class="flex items-center justify-between mt-[32px] mb-[32px]">
+        <button onclick="goToStep(2)" class="inline-flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs sm:text-sm px-3.5 py-2 rounded-xl transition">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+          <span>Volver al Paso 2</span>
+        </button>
+        <button onclick="goToStep(0)" class="inline-flex items-center gap-1.5 bg-pink-600 hover:bg-pink-700 text-white font-semibold text-xs sm:text-sm px-4 py-2 rounded-xl transition shadow">
+          <span>Reiniciar Flujo (Paso 0)</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-200 py-3 text-center text-[11px] text-slate-400">
+    <div class="w-full px-4 sm:px-6 lg:px-8">
+      UX Chapter & Operations • Guía Actualizada 2026 • Liverpool Digital
+    </div>
+  </footer>
+
+  <script>
+    let currentStep = 0;
+
+    function goToStep(stepIndex) {
+      currentStep = stepIndex;
+
+      // Update panel visibility
+      for (let i = 0; i <= 3; i++) {
+        const panel = document.getElementById(`step-panel-${i}`);
+        if (panel) {
+          if (i === stepIndex) {
+            panel.classList.remove('hidden');
+          } else {
+            panel.classList.add('hidden');
+          }
+        }
+
+        // Update Hero Quick Stats Tabs
+        const heroTab = document.getElementById(`hero-tab-${i}`);
+        if (heroTab) {
+          if (i === stepIndex) {
+            heroTab.className = 'step-nav-btn text-left bg-pink-600 text-white p-2.5 rounded-xl border border-pink-500 transition-all shadow-sm';
+            heroTab.querySelector('div:first-child').className = 'text-pink-200 text-[11px] font-semibold';
+            heroTab.querySelector('div:last-child').className = 'font-bold text-xs sm:text-sm truncate';
+          } else {
+            heroTab.className = 'step-nav-btn text-left bg-slate-800/70 hover:bg-slate-800 text-slate-300 p-2.5 rounded-xl border border-slate-700 transition-all';
+            heroTab.querySelector('div:first-child').className = 'text-slate-400 text-[11px]';
+            heroTab.querySelector('div:last-child').className = 'font-semibold text-white text-xs sm:text-sm truncate';
+          }
+        }
+      }
+    }
+
+    /* Data store for provider rates */
+    const ratesData = {
+      isol: {
+        name: 'ISOL',
+        titleLabel: 'TARIFA BASE POR MES (NO MODIFICAR) — INGENIERIA DE SOLUCIONES (ISOL 2026)',
+        currency: 'MXN',
+        currencySymbol: '$',
+        currencyLabel: 'TOTAL (MXN)',
+        badge: 'Proveedor: ISOL',
+        rates: {
+          sr: { hr: 601.43, month: 96228.00, label: 'UX/UI Sr Designer ($96,228 / mes)' },
+          mid: { hr: 556.88, month: 89100.00, label: 'UX/UI Designer ($89,100 / mes)' }
+        }
+      },
+      kognivera: {
+        name: 'Kognivera',
+        titleLabel: 'TARIFA BASE POR MES (NO MODIFICAR) — KOGNIVERA 2026',
+        currency: 'USD',
+        currencySymbol: '$',
+        currencyLabel: 'TOTAL (USD)',
+        badge: 'Proveedor: Kognivera',
+        rates: {
+          sr: { hr: 36.00, month: 5760.00, label: 'UX/UI Sr Designer ($5,760 / mes)' },
+          mid: { hr: 30.00, month: 4800.00, label: 'UX/UI Designer ($4,800 / mes)' }
+        }
+      }
+    };
+
+    let activeProvider = 'isol';
+
+    function switchProvider(provider) {
+      activeProvider = provider;
+
+      const tabIsol = document.getElementById('tab-isol');
+      const tabKognivera = document.getElementById('tab-kognivera');
+      const baseRateTitle = document.getElementById('base-rate-title');
+      const providerBadge = document.getElementById('calc-provider-badge');
+      const kogniveraNote = document.getElementById('kognivera-note');
+      const selectRole = document.getElementById('calc-role');
+
+      if (provider === 'isol') {
+        tabIsol.className = 'px-3 py-1 rounded-md text-xs font-semibold transition-all bg-[#0f172a] text-white shadow-xs';
+        tabKognivera.className = 'px-3 py-1 rounded-md text-xs font-semibold transition-all text-slate-600 hover:text-slate-900';
+        kogniveraNote.classList.add('hidden');
+      } else {
+        tabKognivera.className = 'px-3 py-1 rounded-md text-xs font-semibold transition-all bg-[#0f172a] text-white shadow-xs';
+        tabIsol.className = 'px-3 py-1 rounded-md text-xs font-semibold transition-all text-slate-600 hover:text-slate-900';
+        kogniveraNote.classList.remove('hidden');
+      }
+
+      const pData = ratesData[provider];
+      baseRateTitle.textContent = pData.titleLabel;
+      providerBadge.textContent = pData.badge;
+
+      // Update select option labels
+      selectRole.options[0].text = pData.rates.sr.label;
+      selectRole.options[1].text = pData.rates.mid.label;
+
+      updateBaseRateTable();
+      calculateQuote();
+    }
+
+    /* Update static monthly rate displays */
+    function updateBaseRateTable() {
+      const data = ratesData[activeProvider];
+      const format = (num) => num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      document.getElementById('base-sr-hr').textContent = `${data.currencySymbol} ${format(data.rates.sr.hr)}`;
+      document.getElementById('base-sr-month').textContent = `${data.currencySymbol} ${format(data.rates.sr.month)}`;
+      document.getElementById('base-mid-hr').textContent = `${data.currencySymbol} ${format(data.rates.mid.hr)}`;
+      document.getElementById('base-mid-month').textContent = `${data.currencySymbol} ${format(data.rates.mid.month)}`;
+      document.getElementById('calc-total-label').textContent = data.currencyLabel;
+    }
+
+    function calculateQuote() {
+      const role = document.getElementById('calc-role').value;
+      const people = Math.max(1, parseInt(document.getElementById('calc-people').value) || 1);
+      const months = Math.max(1, parseInt(document.getElementById('calc-months').value) || 1);
+
+      const providerData = ratesData[activeProvider];
+      const monthlyRate = providerData.rates[role].month;
+      const total = people * months * monthlyRate;
+
+      const format = (num) => num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+      document.getElementById('calc-total').textContent = `${providerData.currencySymbol}${format(total)}`;
+    }
+
+    function copyToClipboard(text, customMessage) {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.top = "0";
+      textArea.style.left = "0";
+      textArea.style.position = "fixed";
+      textArea.style.opacity = "0";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+          showToast(customMessage || 'Texto copiado al portapapeles');
+        } else {
+          showToast('No se pudo copiar automáticamente');
+        }
+      } catch (err) {
+        showToast('Error al copiar');
+      }
+
+      document.body.removeChild(textArea);
+    }
+
+    let toastTimer = null;
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-message');
+      toastMsg.textContent = msg;
+
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2500);
+    }
+
+    // Initialize calculator and step 0 on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      updateBaseRateTable();
+      calculateQuote();
+      goToStep(0);
+    });
+  </script>
+</body>
+</html>
