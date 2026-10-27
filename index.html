@@ -102,7 +102,7 @@
                 <span id="cardCounterBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-pink-50 border border-pink-200 text-[#e10098]">
                     <i class="fa-solid fa-layer-group"></i>
                     <!-- Contador dinámico de tarjetas -->
-                    <span id="activeCount">14 Activos</span>
+                    <span id="activeCount">15 Activos</span>
                 </span>
             </div>
         </div>
@@ -348,6 +348,17 @@
                 iconBg: 'bg-sky-50 text-sky-600',
                 badgeColor: 'bg-sky-50 text-sky-700 border-sky-200',
                 createdAt: 7000
+            },
+            {
+                id: 'card-8',
+                title: 'Ilustraciones E-commerce',
+                description: 'Crea imágenes a partir de IA con el mismo estilo y con los colores de cada marca.',
+                link: 'gem_ilustrator_voc.html',
+                category: 'Herramienta',
+                icon: 'fa-palette',
+                iconBg: 'bg-cyan-50 text-cyan-600',
+                badgeColor: 'bg-cyan-50 text-cyan-700 border-cyan-200',
+                createdAt: 7500
             }
         ];
 
@@ -382,6 +393,9 @@
                         }
                         if (!allCards.some(c => c.id === 'card-devmode-licenses')) {
                             allCards.splice(5, 0, initialCards[5]);
+                        }
+                        if (!allCards.some(c => c.id === 'card-8')) {
+                            allCards.push(initialCards[14]);
                         }
                         localStorage.setItem('ux_hub_cards', JSON.stringify(allCards));
                     } catch(e) { 
@@ -437,6 +451,9 @@
 
                     const devModeDocRef = doc(db, 'artifacts', appId, 'public', 'data', collectionName, 'card-devmode-licenses');
                     await setDoc(devModeDocRef, initialCards[5], { merge: true });
+                    
+                    const newCardDocRef = doc(db, 'artifacts', appId, 'public', 'data', collectionName, 'card-8');
+                    await setDoc(newCardDocRef, initialCards[14], { merge: true });
                 }
 
                 onSnapshot(hubColRef, (qs) => {
