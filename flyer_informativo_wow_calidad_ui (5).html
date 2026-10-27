@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WoW: Sistema de Calidad UI & Visual QA (Light Mode)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s ease, color 0.3s ease; }
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; color: black !important; }
+            .print-card { box-shadow: none !important; border: 1px solid #cbd5e1 !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen p-4 md:p-8">
+
+    <div class="max-w-5xl mx-auto space-y-6">
+
+        <!-- MAIN FLYER CARD -->
+        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-6 md:p-10 shadow-xl shadow-slate-200/60 dark:shadow-none relative overflow-hidden print-card">
+            
+            <!-- Decorative background accents -->
+            <div class="absolute -top-24 -right-24 w-80 h-80 bg-indigo-500/10 dark:bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-emerald-500/10 dark:bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <header class="border-b border-slate-200 dark:border-slate-700/80 pb-6 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <div class="flex items-center gap-2 text-indigo-600 dark:text-indigo-400 font-bold text-xs tracking-wider uppercase mb-1.5">
+                        <span class="inline-block w-2 h-2 rounded-full bg-indigo-600 dark:bg-indigo-400"></span>
+                        <span>Design System & Engineering Alignment</span>
+                    </div>
+                    <h1 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
+                        WAY OF WORKING: <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-emerald-600 dark:from-indigo-400 dark:to-emerald-400">CALIDAD UI</span>
+                    </h1>
+                    <p class="text-slate-600 dark:text-slate-400 text-sm mt-1">Estándar de validación visual de Figma a Código para entregas a Producción</p>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+                    <!-- Theme Toggle Switch -->
+                    <button onclick="toggleTheme()" class="no-print bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 border border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-200 px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all">
+                        <span id="themeIcon">☀️</span>
+                        <span id="themeText">Modo Oscuro</span>
+                    </button>
+
+                    <!-- Score Goal Pill -->
+                    <div class="bg-slate-50 dark:bg-slate-900/90 border border-indigo-200 dark:border-indigo-500/30 px-5 py-2.5 rounded-2xl flex items-center justify-between sm:justify-start gap-4 text-center shadow-xs">
+                        <div>
+                            <div class="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400">≥ 85%</div>
+                            <div class="text-[10px] uppercase font-extrabold text-slate-500 dark:text-slate-400 tracking-wider">Mínimo GO</div>
+                        </div>
+                        <div class="h-8 w-[1px] bg-slate-200 dark:bg-slate-700"></div>
+                        <div>
+                            <div class="text-2xl font-extrabold text-indigo-600 dark:text-indigo-400">VFS</div>
+                            <div class="text-[10px] uppercase font-extrabold text-slate-500 dark:text-slate-400 tracking-wider">Visual Fidelity</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+                <div class="md:col-span-12 bg-slate-50/80 dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-700/60 space-y-4">
+                    <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <span class="flex h-6 w-6 rounded-full bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-400 text-xs items-center justify-center font-black">1</span>
+                        Pilares de Evaluación
+                    </h2>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                        <div class="p-3 bg-white dark:bg-slate-800/80 rounded-xl border border-slate-200/80 dark:border-slate-700/50 shadow-2xs space-y-1">
+                            <div class="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                                <span>🎨</span> <span>Design Tokens</span>
+                            </div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 leading-tight">Variables de color, tipografía, bordes e íconos.</div>
+                        </div>
+
+                        <div class="p-3 bg-white dark:bg-slate-800/80 rounded-xl border border-slate-200/80 dark:border-slate-700/50 shadow-2xs space-y-1">
+                            <div class="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                                <span>📐</span> <span>Layout & Spacing</span>
+                            </div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 leading-tight">Márgenes, paddings, alineación y Grid.</div>
+                        </div>
+
+                        <div class="p-3 bg-white dark:bg-slate-800/80 rounded-xl border border-slate-200/80 dark:border-slate-700/50 shadow-2xs space-y-1">
+                            <div class="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                                <span>🧩</span> <span>Estados & DS</span>
+                            </div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 leading-tight">Hover, Active, Focus, Disabled y Error.</div>
+                        </div>
+
+                        <div class="p-3 bg-white dark:bg-slate-800/80 rounded-xl border border-slate-200/80 dark:border-slate-700/50 shadow-2xs space-y-1">
+                            <div class="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                                <span>📱</span> <span>Responsividad</span>
+                            </div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 leading-tight">Adaptación en Mobile, Tablet y Desktop.</div>
+                        </div>
+
+                        <div class="p-3 bg-white dark:bg-slate-800/80 rounded-xl border border-slate-200/80 dark:border-slate-700/50 shadow-2xs space-y-1">
+                            <div class="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                                <span>✨</span> <span>Animaciones</span>
+                            </div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 leading-tight">Transiciones (ms) y curvas de animación.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-12 bg-slate-50/80 dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-700/60 space-y-4">
+                    <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <span class="flex h-6 w-6 rounded-full bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-400 text-xs items-center justify-center font-black">2</span>
+                        Matriz de Severidad y Ejemplos de Bugs UX/UI
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- Blocker P. Alta Card -->
+                        <div class="p-4 bg-red-50/80 dark:bg-red-950/40 border border-red-200 dark:border-red-500/30 rounded-xl flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-extrabold text-red-700 dark:text-red-400 uppercase tracking-wider flex items-center gap-1">
+                                        <span>🔴</span> <span>Blocker P. Alta</span>
+                                    </span>
+                                    <span class="text-xs font-black bg-red-600 text-white px-2 py-0.5 rounded-md">-25 pts</span>
+                                </div>
+                                <p class="text-xs text-slate-700 dark:text-slate-300 font-medium mb-2">
+                                    Afecta usabilidad, accesibilidad, jerarquía, identidad de marca o faltas ortográficas severas.
+                                </p>
+                            </div>
+                            <div class="pt-2.5 mt-2.5 border-t border-red-200/60 dark:border-red-500/20">
+                                <span class="text-[11px] font-bold text-red-700 dark:text-red-400 block mb-1 uppercase tracking-wider">Ejemplos Blocker P. Alta:</span>
+                                <ul class="list-disc pl-4 text-xs text-slate-600 dark:text-slate-300 space-y-1 font-medium">
+                                    <li>Faltas de ortografía severas (ej. <em>"Inisio"</em>, <em>"Buscador de Producctos"</em>, <em>"Asepta"</em>).</li>
+                                    <li>Texto con contraste insuficiente (ilegitimidad / falla WCAG).</li>
+                                    <li>Botón CTA principal tapado, fuera de lugar o inactivo.</li>
+                                    <li>Color institucional o logotipo de marca erróneo.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Blocker P. Media Card (Orange Theme) -->
+                        <div class="p-4 bg-orange-50/80 dark:bg-orange-950/40 border border-orange-200 dark:border-orange-500/30 rounded-xl flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-extrabold text-orange-700 dark:text-orange-400 uppercase tracking-wider flex items-center gap-1">
+                                        <span>🟠</span> <span>Blocker P. Media</span>
+                                    </span>
+                                    <span class="text-xs font-black bg-orange-500 text-slate-950 px-2 py-0.5 rounded-md">-20 pts</span>
+                                </div>
+                                <p class="text-xs text-slate-700 dark:text-slate-300 font-medium mb-2">
+                                    Desviaciones de estructura o ausencia de estados intermedios perceptibles al ojo técnico.
+                                </p>
+                            </div>
+                            <div class="pt-2.5 mt-2.5 border-t border-orange-200/60 dark:border-orange-500/20">
+                                <span class="text-[11px] font-bold text-orange-700 dark:text-orange-400 block mb-1 uppercase tracking-wider">Ejemplos Blocker P. Media:</span>
+                                <ul class="list-disc pl-4 text-xs text-slate-600 dark:text-slate-300 space-y-1 font-medium">
+                                    <li>Padding o margen muy comprimido (8px en vez de 24px).</li>
+                                    <li>Ausencia de estado Hover/Focus en campos interactivos.</li>
+                                    <li>Título principal en tipografía Regular (400) en lugar de Bold (700).</li>
+                                    <li>Desalineación evidente de la Grid en pantallas medianas.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Major Card -->
+                        <div class="p-4 bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-500/30 rounded-xl flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-xs font-extrabold text-blue-700 dark:text-blue-400 uppercase tracking-wider flex items-center gap-1">
+                                        <span>🔵</span> <span>Major</span>
+                                    </span>
+                                    <span class="text-xs font-black bg-blue-600 text-white px-2 py-0.5 rounded-md">-5 pts</span>
+                                </div>
+                                <p class="text-xs text-slate-700 dark:text-slate-300 font-medium mb-2">
+                                    Detalles micro-visuales finos, casi imperceptibles para el usuario común.
+                                </p>
+                            </div>
+                            <div class="pt-2.5 mt-2.5 border-t border-blue-200/60 dark:border-blue-500/20">
+                                <span class="text-[11px] font-bold text-blue-700 dark:text-blue-400 block mb-1 uppercase tracking-wider">Ejemplos Micro-Visuales:</span>
+                                <ul class="list-disc pl-4 text-xs text-slate-600 dark:text-slate-300 space-y-1 font-medium">
+                                    <li>Omisión sutil de acentos/tildes en etiquetas (ej. <em>"Cancion"</em>, <em>"Menu"</em>).</li>
+                                    <li>Desviación sutil de 2px-4px en la alineación entre ícono y texto.</li>
+                                    <li>Border-radius de 4px en lugar de 8px en tarjetas.</li>
+                                    <li>Apertura de modal con aceleración lineal sin animación fade-in.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-12 bg-slate-50/90 dark:bg-slate-900/80 p-6 rounded-2xl border border-slate-200/80 dark:border-slate-700/80">
+                    <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2 mb-4">
+                        <span class="flex h-6 w-6 rounded-full bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-400 text-xs items-center justify-center font-black">3</span>
+                        Criterio de Decisión en Sesión Go / No-Go (UX Lead)
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- GO Card -->
+                        <div class="p-4 bg-emerald-50/80 dark:bg-emerald-950/30 border-2 border-emerald-500/60 rounded-2xl relative overflow-hidden">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="text-2xl">🟢</span>
+                                <div>
+                                    <h3 class="text-base font-black text-emerald-800 dark:text-emerald-400">PASO A PRODUCCIÓN (GO)</h3>
+                                    <span class="text-xs text-emerald-700 dark:text-emerald-300/80 font-bold">Puntaje VFS ≥ 85%</span>
+                                </div>
+                            </div>
+                            <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-1.5 ml-8 list-disc font-medium">
+                                <li>UX Lead da su Go formal en sesión Go / No go.</li>
+                                <li>Bugs rezagados majors se registran como <em>Deuda Técnica Visual</em>.</li>
+                            </ul>
+                        </div>
+
+                        <!-- NO GO Card -->
+                        <div class="p-4 bg-red-50/80 dark:bg-red-950/30 border-2 border-red-500/60 rounded-2xl relative overflow-hidden">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="text-2xl">🔴</span>
+                                <div>
+                                    <h3 class="text-base font-black text-red-800 dark:text-red-400">RELEASE BLOQUEADO (NO GO)</h3>
+                                    <span class="text-xs text-red-700 dark:text-red-300/80 font-bold">Puntaje VFS &lt; 85%</span>
+                                </div>
+                            </div>
+                            <ul class="text-xs text-slate-700 dark:text-slate-300 space-y-1.5 ml-8 list-disc font-medium">
+                                <li>Sesión Pair Coding (15 min) UX ↔ Dev para resolverlos en corto.</li>
+                                <li>Si no se resuelven para el Go / No go el UX Lead veta la liberación.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-12 bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-500/30 p-5 rounded-2xl no-print">
+                    <h2 class="text-base font-bold text-indigo-900 dark:text-indigo-300 mb-3 flex items-center justify-between">
+                        <span class="flex items-center gap-2">
+                            <span>⚡ Simular Cálculo Rápido de VFS</span>
+                        </span>
+                        <span id="vfsScoreBadge" class="text-xs md:text-sm font-black px-3.5 py-1 bg-emerald-500 text-slate-950 rounded-full shadow-xs">100% → GO 🟢</span>
+                    </h2>
+                    <div class="grid grid-cols-3 gap-3 text-center">
+                        <div class="bg-white dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-700 shadow-2xs">
+                            <span class="text-xs text-red-600 dark:text-red-400 font-extrabold block mb-1.5">Blocker P. Alta (-25)</span>
+                            <div class="flex items-center justify-center gap-3">
+                                <button onclick="updateCalculatedScore('blocker', -1)" class="w-7 h-7 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white rounded-lg font-black transition-colors">-</button>
+                                <span id="blockerCount" class="text-base font-extrabold text-slate-900 dark:text-white">0</span>
+                                <button onclick="updateCalculatedScore('blocker', 1)" class="w-7 h-7 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white rounded-lg font-black transition-colors">+</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-700 shadow-2xs">
+                            <span class="text-xs text-orange-600 dark:text-orange-400 font-extrabold block mb-1.5">Blocker P. Media (-20)</span>
+                            <div class="flex items-center justify-center gap-3">
+                                <button onclick="updateCalculatedScore('critical', -1)" class="w-7 h-7 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white rounded-lg font-black transition-colors">-</button>
+                                <span id="criticalCount" class="text-base font-extrabold text-slate-900 dark:text-white">0</span>
+                                <button onclick="updateCalculatedScore('critical', 1)" class="w-7 h-7 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white rounded-lg font-black transition-colors">+</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white dark:bg-slate-900/80 p-3 rounded-xl border border-slate-200 dark:border-slate-700 shadow-2xs">
+                            <span class="text-xs text-blue-600 dark:text-blue-400 font-extrabold block mb-1.5">Majors (-5)</span>
+                            <div class="flex items-center justify-center gap-3">
+                                <button onclick="updateCalculatedScore('major', -1)" class="w-7 h-7 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white rounded-lg font-black transition-colors">-</button>
+                                <span id="majorCount" class="text-base font-extrabold text-slate-900 dark:text-white">0</span>
+                                <button onclick="updateCalculatedScore('major', 1)" class="w-7 h-7 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-white rounded-lg font-black transition-colors">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <footer class="mt-8 pt-4 border-t border-slate-200 dark:border-slate-700/60 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500 dark:text-slate-400 gap-2">
+                <div>
+                    💡 <strong class="text-slate-800 dark:text-slate-200 font-bold">Regla de Oro del UX Chapter:</strong> Sé cuantitativo. Indicar <em>"el padding debería de ser de 8px"</em> en vez de <em>"se ve apretado"</em>.
+                </div>
+                <div class="font-mono text-[11px] text-slate-400 dark:text-slate-500 font-medium">
+                    UX Design System Standard v2.0
+                </div>
+            </footer>
+
+        </div>
+    </div>
+
+    <script>
+        let blockers = 0;
+        let criticals = 0;
+        let majors = 0;
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            const text = document.getElementById('themeText');
+            
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                icon.innerText = '🌙';
+                text.innerText = 'Modo Oscuro';
+            } else {
+                html.classList.remove('light');
+                html.classList.add('dark');
+                icon.innerText = '☀️';
+                text.innerText = 'Modo Claro';
+            }
+        }
+
+        function updateCalculatedScore(type, change) {
+            if (type === 'blocker') blockers = Math.max(0, blockers + change);
+            if (type === 'critical') criticals = Math.max(0, criticals + change);
+            if (type === 'major') majors = Math.max(0, majors + change);
+
+            document.getElementById('blockerCount').innerText = blockers;
+            document.getElementById('criticalCount').innerText = criticals;
+            document.getElementById('majorCount').innerText = majors;
+
+            const totalDeduction = (blockers * 25) + (criticals * 20) + (majors * 5);
+            const score = Math.max(0, 100 - totalDeduction);
+
+            const badge = document.getElementById('vfsScoreBadge');
+            if (score >= 85) {
+                badge.className = "text-xs md:text-sm font-black px-3.5 py-1 bg-emerald-500 text-slate-950 rounded-full shadow-xs";
+                badge.innerText = `${score}% → GO 🟢`;
+            } else {
+                badge.className = "text-xs md:text-sm font-black px-3.5 py-1 bg-red-500 text-white rounded-full shadow-xs animate-bounce";
+                badge.innerText = `${score}% → NO GO 🔴`;
+            }
+        }
+    </script>
+</body>
+</html>
