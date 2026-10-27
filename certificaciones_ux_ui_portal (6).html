@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificaciones UX/UI | Portal de Formación del Equipo</title>
+    
+    <!-- SEO & Social Graph Meta Tags for Netlify deployments -->
+    <meta name="description" content="Portal interno de formación y certificaciones de UX/UI en Maze, Baymard Institute y Quantum Metric.">
+    <meta name="theme-color" content="#0f172a">
+    <meta property="og:title" content="Certificaciones UX/UI | Portal de Formación">
+    <meta property="og:description" content="Rutas oficiales, guías paso a paso y recursos para certificarte en Maze, Baymard Institute y Quantum Metric.">
+    <meta property="og:type" content="website">
+
+    <!-- Browser Favicon (Inline SVG) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230f172a'/><text x='50' y='64' font-family='sans-serif' font-size='44' font-weight='800' fill='white' text-anchor='middle'>UX</text></svg>">
+
+    <!-- External Fonts & Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        maze: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#2563eb',
+                            600: '#1d4ed8',
+                        },
+                        baymard: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#0d9488',
+                            600: '#0f766e',
+                        },
+                        quantum: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f8fafc; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .tool-card.active {
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+        }
+        .tool-card.active-maze {
+            border-color: #2563eb;
+            background: linear-gradient(180deg, #ffffff 0%, #f8faff 100%);
+        }
+        .tool-card.active-baymard {
+            border-color: #0d9488;
+            background: linear-gradient(180deg, #ffffff 0%, #f4fbfa 100%);
+        }
+        .tool-card.active-quantum {
+            border-color: #6366f1;
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9ff 100%);
+        }
+
+        /* Subtle ambient graduation graphics animation */
+        @keyframes float-slow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+        @keyframes float-reverse {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(12px) rotate(-2deg); }
+        }
+        .anim-float-1 { animation: float-slow 14s ease-in-out infinite; }
+        .anim-float-2 { animation: float-reverse 18s ease-in-out infinite; }
+        .anim-float-3 { animation: float-slow 22s ease-in-out infinite; }
+    </style>
+</head>
+<body class="h-full font-sans text-slate-800 bg-slate-50 antialiased selection:bg-indigo-100 selection:text-indigo-800 flex flex-col justify-between relative overflow-x-hidden min-h-screen">
+
+    <!-- Ambient Graduation Background Artwork (Birretes, Diplomas, Toga Stoles & Badges) -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0 select-none opacity-80" aria-hidden="true">
+        <!-- Soft ambient mesh glow spots -->
+        <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-blue-100/40 blur-3xl"></div>
+        <div class="absolute top-1/3 -right-32 w-96 h-96 rounded-full bg-teal-100/35 blur-3xl"></div>
+        <div class="absolute -bottom-32 left-1/4 w-[500px] h-[500px] rounded-full bg-indigo-100/40 blur-3xl"></div>
+
+        <!-- Watermark 1: Large Birrete (Graduation Cap) Top Right -->
+        <div class="absolute -top-6 right-4 sm:right-16 md:right-28 text-indigo-900/[0.045] anim-float-1">
+            <svg class="w-64 h-64 md:w-80 md:h-80" viewBox="0 0 200 200" fill="none" stroke="currentColor">
+                <!-- Mortarboard Diamond -->
+                <polygon points="100,38 180,72 100,106 20,72" stroke-width="3" stroke-linejoin="round" fill="currentColor" fill-opacity="0.015" />
+                <!-- Cap Skull base -->
+                <path d="M55,87 L55,124 C55,142 145,142 145,124 L145,87" stroke-width="3" stroke-linecap="round" fill="currentColor" fill-opacity="0.02" />
+                <!-- Button on top -->
+                <circle cx="100" cy="72" r="4.5" fill="currentColor" />
+                <!-- Tassel string & fringe -->
+                <path d="M100,72 C125,72 146,88 152,112 L152,145" stroke-width="2.5" stroke-linecap="round" />
+                <rect x="146" y="145" width="12" height="24" rx="3" stroke-width="2" fill="currentColor" fill-opacity="0.03" />
+                <line x1="149" y1="169" x2="149" y2="178" stroke-width="1.5" />
+                <line x1="152" y1="169" x2="152" y2="181" stroke-width="1.5" />
+                <line x1="155" y1="169" x2="155" y2="178" stroke-width="1.5" />
+            </svg>
+        </div>
+
+        <!-- Watermark 2: Rolled Diploma with Ribbon Left Mid -->
+        <div class="absolute top-72 -left-12 sm:left-4 md:left-12 text-teal-900/[0.045] anim-float-2">
+            <svg class="w-56 h-56 md:w-72 md:h-72 transform -rotate-12" viewBox="0 0 200 200" fill="none" stroke="currentColor">
+                <!-- Scroll Cylinder body -->
+                <rect x="50" y="70" width="100" height="42" rx="6" stroke-width="3" fill="currentColor" fill-opacity="0.02" />
+                <!-- Curled ends of scroll -->
+                <ellipse cx="50" cy="91" rx="8" ry="21" stroke-width="3" fill="currentColor" fill-opacity="0.03" />
+                <ellipse cx="150" cy="91" rx="8" ry="21" stroke-width="3" fill="currentColor" fill-opacity="0.03" />
+                <!-- Tied ribbon band -->
+                <rect x="94" y="67" width="14" height="48" rx="3" stroke-width="2.5" fill="currentColor" fill-opacity="0.05" />
+                <!-- Ribbon bows & tails -->
+                <circle cx="101" cy="91" r="5" fill="currentColor" />
+                <path d="M101,94 C92,108 86,128 88,140" stroke-width="2.5" stroke-linecap="round" />
+                <path d="M103,94 C112,108 116,128 114,142" stroke-width="2.5" stroke-linecap="round" />
+                <!-- Hanging wax seal badge -->
+                <circle cx="101" cy="118" r="9" stroke-width="2" fill="currentColor" fill-opacity="0.03" />
+                <polygon points="101,113 103,117 107,117 104,119 105,123 101,120 97,123 98,119 95,117 99,117" fill="currentColor" />
+            </svg>
+        </div>
+
+        <!-- Watermark 3: Academic Toga Stole & Laurel Seal Bottom Right -->
+        <div class="absolute bottom-20 -right-10 md:right-8 text-blue-900/[0.04] anim-float-3">
+            <svg class="w-72 h-72 md:w-96 md:h-96" viewBox="0 0 240 240" fill="none" stroke="currentColor">
+                <!-- Academic Stole / Toga cowl collar curve -->
+                <path d="M60,40 C75,90 85,150 90,210 L110,205 C105,150 95,90 80,40 Z" stroke-width="2.5" fill="currentColor" fill-opacity="0.015" />
+                <path d="M180,40 C165,90 155,150 150,210 L130,205 C135,150 145,90 160,40 Z" stroke-width="2.5" fill="currentColor" fill-opacity="0.015" />
+                <!-- Central Graduation Medallion with Laurel Leaves -->
+                <circle cx="120" cy="115" r="28" stroke-width="2.5" stroke-dasharray="4 3" fill="currentColor" fill-opacity="0.02" />
+                <circle cx="120" cy="115" r="22" stroke-width="2" />
+                <!-- Laurel wreath outlines -->
+                <path d="M104,115 C104,103 112,96 120,96 C128,96 136,103 136,115 C136,126 128,132 120,132 C112,132 104,126 104,115" stroke-width="1.5" />
+                <polygon points="120,107 122,112 127,112 123,115 125,120 120,117 115,120 117,115 113,112 118,112" fill="currentColor" />
+                <!-- Graduation Year ribbon banner -->
+                <path d="M96,155 Q120,165 144,155 L148,172 Q120,180 92,172 Z" stroke-width="2" fill="currentColor" fill-opacity="0.02" />
+            </svg>
+        </div>
+
+        <!-- Subtle scattered graduation mini-elements (sparkles, small caps, stars) -->
+        <div class="absolute top-1/2 left-1/3 text-slate-800/[0.035] transform rotate-12">
+            <svg class="w-20 h-20" viewBox="0 0 64 64" fill="none" stroke="currentColor">
+                <polygon points="32,12 56,24 32,36 8,24" stroke-width="2" />
+                <path d="M20,29 L20,44 C20,50 44,50 44,44 L44,29" stroke-width="2" />
+                <path d="M32,24 C40,24 46,30 48,38 L48,46" stroke-width="1.5" />
+            </svg>
+        </div>
+
+        <!-- Subtle geometric dot grid pattern across background -->
+        <svg class="absolute inset-0 w-full h-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <pattern id="grad-pattern" width="36" height="36" patternUnits="userSpaceOnUse">
+                    <circle cx="2" cy="2" r="1.5" fill="#0f172a" />
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grad-pattern)" />
+        </svg>
+    </div>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full space-y-8 flex-1 relative z-10">
+        
+        <!-- Hero Section: Clear, Focused & Centered -->
+        <section class="text-center max-w-4xl mx-auto pt-2 pb-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-medium mb-3">
+                <span class="w-2 h-2 rounded-full bg-indigo-500 animate-ping"></span>
+                Rutas oficiales de formación continua
+            </div>
+            <h2 class="text-xl sm:text-2xl md:text-[28px] lg:text-3xl font-extrabold text-slate-900 tracking-tight sm:whitespace-nowrap">
+                ¿En qué herramienta te quieres certificar hoy?
+            </h2>
+            <p class="mt-2 text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto">
+                Selecciona una herramienta para consultar sus certificaciones vigentes, horas de dedicación y el paso a paso para certificarte.
+            </p>
+        </section>
+
+        <!-- 3 Interactive Tool Cards -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-4" id="toolSelector">
+            
+            <!-- Maze Card -->
+            <button onclick="selectTool('maze')" id="card-maze" class="tool-card active active-maze text-left p-5 rounded-2xl border-2 transition-all duration-200 relative group focus:outline-none cursor-pointer">
+                <div class="flex items-start justify-between">
+                    <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 flex items-center justify-center font-bold text-xl group-hover:scale-105 transition-transform">
+                        🌀
+                    </div>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                        Equipo UX (Todos)
+                    </span>
+                </div>
+                <div class="mt-4">
+                    <h3 class="text-base font-bold text-slate-900 flex items-center gap-1.5">
+                        Maze
+                        <span class="indicator-icon text-blue-600 text-xs">● Activo</span>
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Continuous Product Research</p>
+                </div>
+                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                    <span class="text-slate-600 font-medium">Maze 101 & 102</span>
+                    <span class="text-blue-600 font-semibold group-hover:translate-x-0.5 transition-transform">Ver pasos &rarr;</span>
+                </div>
+            </button>
+            <!-- Baymard Card -->
+            <button onclick="selectTool('baymard')" id="card-baymard" class="tool-card text-left p-5 rounded-2xl border-2 border-slate-200 bg-white hover:border-teal-300 transition-all duration-200 relative group focus:outline-none cursor-pointer">
+                <div class="flex items-start justify-between">
+                    <div class="w-11 h-11 rounded-xl bg-teal-50 text-teal-700 border border-teal-100 flex items-center justify-center font-bold text-xl group-hover:scale-105 transition-transform">
+                        🏛️
+                    </div>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                        Solo 15 asientos
+                    </span>
+                </div>
+                <div class="mt-4">
+                    <h3 class="text-base font-bold text-slate-900 flex items-center gap-1.5">
+                        Baymard Institute
+                        <span class="indicator-icon hidden text-teal-600 text-xs">● Activo</span>
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-0.5">E-commerce UX Benchmark</p>
+                </div>
+                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                    <span class="text-slate-600 font-medium">3 Tiers Oficiales</span>
+                    <span class="text-teal-700 font-semibold group-hover:translate-x-0.5 transition-transform">Ver pasos &rarr;</span>
+                </div>
+            </button>
+
+            <!-- Quantum Metric Card -->
+            <button onclick="selectTool('quantum')" id="card-quantum" class="tool-card text-left p-5 rounded-2xl border-2 border-slate-200 bg-white hover:border-indigo-300 transition-all duration-200 relative group focus:outline-none cursor-pointer">
+                <div class="flex items-start justify-between">
+                    <div class="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center font-bold text-xl group-hover:scale-105 transition-transform">
+                        ⚡
+                    </div>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                        Equipo UX (Todos)
+                    </span>
+                </div>
+                <div class="mt-4">
+                    <h3 class="text-base font-bold text-slate-900 flex items-center gap-1.5">
+                        Quantum Metric
+                        <span class="indicator-icon hidden text-indigo-600 text-xs">● Activo</span>
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Digital Experience Analytics</p>
+                </div>
+                <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                    <span class="text-slate-600 font-medium">8 Key capabilities</span>
+                    <span class="text-indigo-600 font-semibold group-hover:translate-x-0.5 transition-transform">Ver pasos &rarr;</span>
+                </div>
+            </button>
+
+        </section>
+        <!-- Dynamic Detail Panel -->
+        <section id="detailPanel" class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 sm:p-8 transition-all">
+            <!-- Dynamic tool content injected here -->
+        </section>
+
+        <!-- Information & Support Section -->
+        <section class="p-5 rounded-2xl bg-slate-100 border border-slate-200 text-slate-700">
+            <div class="flex items-start space-x-3 text-xs leading-relaxed">
+                <span class="text-xl shrink-0 select-none">💡</span>
+                <div>
+                    <span class="font-bold text-slate-900">¿Tienes alguna duda o comentarios al respecto?</span>
+                    <p class="text-slate-500 mt-0.5">Contacta a tu UX Lead, Gerente o Subdirectora del área para más información.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-slate-200/80 bg-white py-4 mt-8">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-400">
+            <span>UX Team Excellence · Formación Continua</span>
+            <span>Maze · Baymard Institute · Quantum Metric</span>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" role="status" aria-live="polite" class="fixed bottom-6 right-6 z-50 bg-slate-900 text-white text-xs font-medium px-4 py-3 rounded-2xl shadow-xl border border-slate-800 flex items-center space-x-2.5 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <span class="text-emerald-400 font-bold">✓</span>
+        <span id="toastMsg">Contenido copiado al portapapeles</span>
+    </div>
+    <script>
+        // Data structure containing information for each tool
+        const toolsData = {
+            maze: {
+                id: 'maze',
+                name: 'Maze',
+                color: 'blue',
+                badgeBg: 'bg-blue-50',
+                badgeText: 'text-blue-700',
+                accentBorder: 'border-blue-200',
+                btnBg: 'bg-blue-600 hover:bg-blue-700',
+                tagline: 'Continuous Product Research & Pruebas no moderadas',
+                targetCert: 'Maze 101: Getting Started with Maze & Maze 102: Exploring Maze',
+                timeEstimate: 'A tu propio ritmo · 11 lecciones por curso + videos prácticos',
+                officialUrl: 'https://learn.maze.co',
+                officialUrlLabel: 'Ir a Maze University (learn.maze.co)',
+                summary: 'Ideal para quienes crean y lanzan pruebas con usuarios. Capacita en diseño de pruebas, reclutamiento y lectura de reportes de usabilidad.',
+                steps: [
+                    {
+                        number: '01',
+                        title: 'Ingresar a la academia oficial',
+                        desc: 'Accede a <a href="https://learn.maze.co" target="_blank" rel="noopener noreferrer" class="text-blue-600 underline font-medium hover:text-blue-800">learn.maze.co</a> e inicia sesión con tus credenciales corporativas.'
+                    },
+                    {
+                        number: '02',
+                        title: 'Buscar e inscribirte a los cursos',
+                        desc: 'Si no aparece de inmediato en tu vista principal, haz clic en <strong>"Buscar cursos"</strong> para ver todo el catálogo y selecciona <strong>"Inscribirse ahora"</strong> en <strong>Maze 101: Getting Started with Maze</strong>.'
+                    },
+                    {
+                        number: '03',
+                        title: 'Completar lecciones y videos prácticos',
+                        desc: 'Avanza por los módulos a tu propio ritmo (aproximadamente 11 lecciones con tutoriales de funcionalidades y mejores prácticas).'
+                    },
+                    {
+                        number: '04',
+                        title: 'Descargar tu Certificado y continuar con Maze 102',
+                        desc: 'Una vez que completas el 100% de las lecciones, haz clic en <strong>"Get your certificate"</strong> para descargar tu certificado oficial. Repite el mismo flujo para el curso avanzado <strong>Maze 102: Exploring Maze</strong>.'
+                    }
+                ]
+            },
+            baymard: {
+                id: 'baymard',
+                name: 'Baymard Institute',
+                color: 'teal',
+                badgeBg: 'bg-teal-50',
+                badgeText: 'text-teal-800',
+                accentBorder: 'border-teal-200',
+                btnBg: 'bg-teal-700 hover:bg-teal-800',
+                tagline: 'E-commerce UX Benchmark & Heurísticas de Usabilidad',
+                targetCert: 'Certificación Oficial E-Commerce UX (3 Tiers Disponibles)',
+                timeEstimate: '37h a 122h según el Tier seleccionado · A tu propio ritmo',
+                officialUrl: 'https://baymard.com/premium/training',
+                officialUrlLabel: 'Ir a Baymard Training',
+                summary: 'La referencia mundial en UX de comercio electrónico con más de 130,000 horas de investigación. Valida conocimientos mediante exámenes de opción múltiple.',
+                seatsNotice: 'Aviso de Cupo del Equipo: En el plan corporativo actual contamos con un límite de 15 asientos para certificación. Si tienes dudas al respecto contacta a tu UX Lead.',
+                tiers: [
+                    {
+                        tier: 'TIER 1 · UX Master',
+                        hours: '122 hrs',
+                        findings: '441 research findings',
+                        desc: 'Conviértete en "Top 5% UXer" con el título más completo de la industria y reconocimiento oficial como UX Master Certified by Baymard.'
+                    },
+                    {
+                        tier: 'TIER 2 · UX Professional',
+                        hours: '75 hrs',
+                        findings: '321 research findings',
+                        desc: 'Conocimiento amplio y profundo de ecommerce UX que potenciará los resultados de tus proyectos y tu carrera.'
+                    },
+                    {
+                        tier: 'TIER 3 · UX Practitioner',
+                        hours: '37 hrs',
+                        findings: '188 research findings',
+                        desc: 'Base sólida de ecommerce UX para aplicar de inmediato sin invertir tiempo en detalles interminables.'
+                    }
+                ],
+                steps: [
+                    {
+                        number: '01',
+                        title: 'Coordinar tu asiento con tu UX Lead',
+                        desc: 'Confirma la disponibilidad de uno de los <strong>15 asientos activos</strong> del plan corporativo para registrar tu correo institucional.'
+                    },
+                    {
+                        number: '02',
+                        title: 'Acceder a los cursos online en Baymard Training',
+                        desc: 'Entra a cada track formativo. Contiene módulos organizados con lecturas estructuradas, videos y ejemplos reales de benchmarks de e-commerce que puedes avanzar a tu ritmo.'
+                    },
+                    {
+                        number: '03',
+                        title: 'Presentar y aprobar los exámenes',
+                        desc: 'Al final de cada track realizarás un examen en línea de opción múltiple (se requiere aproximadamente un <strong>70% de aciertos</strong> para aprobar cada nivel).'
+                    },
+                    {
+                        number: '04',
+                        title: 'Obtener tu certificado y perfil público',
+                        desc: 'Al aprobar, recibes tu certificado digital oficial y tu nombre se añade de forma verificable al <strong>Directorio público de expertos certificados de Baymard</strong>.'
+                    }
+                ]
+            },
+            quantum: {
+                id: 'quantum',
+                name: 'Quantum Metric',
+                color: 'indigo',
+                badgeBg: 'bg-indigo-50',
+                badgeText: 'text-indigo-700',
+                accentBorder: 'border-indigo-200',
+                btnBg: 'bg-indigo-600 hover:bg-indigo-700',
+                tagline: 'Digital Experience Analytics & Continuous Product Design (CPD)',
+                targetCert: 'Foundations, Fundamentals, Business Analyst, Engineer & CPD',
+                timeEstimate: 'Módulos interactivos y evaluaciones por insignia/certificado',
+                officialUrl: 'https://university.quantummetric.com',
+                officialUrlLabel: 'Ir a Quantum Metric University',
+                summary: 'Objetivo de equipo: Certificar a todo el equipo UX e integrar analítica de datos en cada research para optimizar las 12 plataformas digitales (LIV, SBB, MS).',
+                capabilities: [
+                    { icon: '📼', name: 'Session Replay', text: 'Entiende el "por qué" detrás del comportamiento real de los clientes.' },
+                    { icon: '⚡', name: 'Opportunity Analysis', text: 'Detecta y cuantifica de forma automática puntos de fricción.' },
+                    { icon: '🧭', name: 'Journeys', text: 'Comprende con exactitud qué rutas y flujos toman los usuarios.' },
+                    { icon: '🔥', name: 'Heatmaps', text: 'Visualiza clics, scrolls y atención a nivel de página.' },
+                    { icon: '📈', name: 'Dashboards', text: 'Organiza y monitorea tus indicadores de experiencia esenciales.' },
+                    { icon: '🔔', name: 'Monitoring & Alerts', text: 'Alertas en tiempo real sobre frustración, caídas y anomalías.' },
+                    { icon: '⏱️', name: 'Page Performance', text: 'Descubre y cuantifica el impacto de páginas lentas en conversión.' },
+                    { icon: '👁️', name: 'Visible & Guides', text: 'Visualiza el comportamiento directo desde tu navegador con plantillas.' }
+                ],
+                steps: [
+                    {
+                        number: '01',
+                        title: 'Ingresar a Quantum Metric University',
+                        desc: 'Inicia sesión en <a href="https://university.quantummetric.com" target="_blank" rel="noopener noreferrer" class="text-indigo-600 underline font-medium hover:text-indigo-800">university.quantummetric.com</a> con tu cuenta corporativa.'
+                    },
+                    {
+                        number: '02',
+                        title: 'Comenzar con Quantum Metric Foundations',
+                        desc: 'Completa la ruta introductoria obligatoria para entender los fundamentos de analítica de producto, métricas de fricción y session replay.'
+                    },
+                    {
+                        number: '03',
+                        title: 'Explorar certificaciones de rol (Business Analyst / CPD)',
+                        desc: 'Avanza hacia las insignias especializadas como <em>Continuous Product Design (CPD)</em> y <em>Business Analyst</em> para dominar dashboards y journeys.'
+                    },
+                    {
+                        number: '04',
+                        title: 'Aplicar métricas a las 12 plataformas (LIV, SBB, MS)',
+                        desc: 'Incorpora datos cuantitativos, videos de sesión y cuantificación de oportunidades directamente en tus entregables y presentaciones de research.'
+                    }
+                ]
+            }
+        };
+
+        let currentToolKey = 'maze';
+        function selectTool(toolKey) {
+            currentToolKey = toolKey;
+
+            const tools = ['maze', 'baymard', 'quantum'];
+            tools.forEach(key => {
+                const card = document.getElementById(`card-${key}`);
+                if (!card) return;
+                const indicator = card.querySelector('.indicator-icon');
+
+                if (key === toolKey) {
+                    card.className = `tool-card active active-${key} text-left p-5 rounded-2xl border-2 transition-all duration-200 relative group focus:outline-none cursor-pointer`;
+                    if (indicator) indicator.classList.remove('hidden');
+                } else {
+                    card.className = `tool-card text-left p-5 rounded-2xl border-2 border-slate-200 bg-white hover:border-slate-300 transition-all duration-200 relative group focus:outline-none cursor-pointer`;
+                    if (indicator) indicator.classList.add('hidden');
+                }
+            });
+
+            renderDetailPanel(toolKey);
+        }
+
+        function renderDetailPanel(toolKey) {
+            const data = toolsData[toolKey];
+            const panel = document.getElementById('detailPanel');
+            if (!panel) return;
+
+            let customExtraBlock = '';
+
+            // Baymard Tiers Block
+            if (toolKey === 'baymard') {
+                customExtraBlock = `
+                    <div class="mt-6 pt-6 border-t border-slate-100">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-teal-800 mb-3">Los 3 Niveles Oficiales (Tiers)</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            ${data.tiers.map(t => `
+                                <div class="p-3.5 rounded-xl border border-teal-100 bg-teal-50/50 flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-1">
+                                            <span class="text-xs font-bold text-teal-900">${t.tier}</span>
+                                        </div>
+                                        <div class="flex items-center gap-2 text-[11px] text-teal-700 font-semibold mb-2">
+                                            <span>⏱️ ${t.hours}</span>
+                                            <span>·</span>
+                                            <span>📚 ${t.findings}</span>
+                                        </div>
+                                        <p class="text-xs text-slate-600 leading-relaxed">${t.desc}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Quantum Capabilities Grid
+            if (toolKey === 'quantum') {
+                customExtraBlock = `
+                    <div class="mt-6 pt-6 border-t border-slate-100">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-indigo-700">8 Key Capabilities a Dominar</h4>
+                            <span class="text-[11px] text-slate-400 font-medium">12 Plataformas (LIV, SBB, MS)</span>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                            ${data.capabilities.map(c => `
+                                <div class="p-2.5 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-white hover:border-indigo-200 transition-colors">
+                                    <span class="text-base select-none">${c.icon}</span>
+                                    <p class="text-xs font-bold text-slate-900 mt-1">${c.name}</p>
+                                    <p class="text-[11px] text-slate-500 leading-tight mt-0.5">${c.text}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            panel.innerHTML = `
+                <div class="space-y-6">
+                    
+                    <!-- Header of Detail -->
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap mb-1.5">
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${data.badgeBg} ${data.badgeText}">
+                                    ${data.tagline}
+                                </span>
+                            </div>
+                            <h3 class="text-2xl font-black text-slate-900 tracking-tight">${data.name}</h3>
+                            <p class="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">${data.summary}</p>
+                        </div>
+                        
+                        <!-- CTA Link -->
+                        <div class="flex flex-wrap items-center gap-2 shrink-0">
+                            <a href="${data.officialUrl}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white ${data.btnBg} transition-all shadow-sm active:scale-95 cursor-pointer">
+                                <span>${data.officialUrlLabel}</span>
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    ${data.seatsNotice ? `
+                        <div class="p-3.5 bg-amber-50 rounded-xl border border-amber-200 text-xs text-amber-900 flex items-start gap-2">
+                            <span class="text-amber-600 font-bold shrink-0 select-none">📌</span>
+                            <div>
+                                <strong>Aviso de Cupo del Equipo:</strong> ${data.seatsNotice.replace('Aviso de Cupo del Equipo: ', '')}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <!-- Step by Step Timeline -->
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 flex items-center gap-1.5">
+                                <span class="select-none">🧭</span> Ruta paso a paso para certificarte
+                            </h4>
+                            <span class="text-xs text-slate-400">Tiempo: ${data.timeEstimate}</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            ${data.steps.map((s) => `
+                                <div class="p-4 rounded-2xl border border-slate-200/80 bg-slate-50/50 hover:bg-white hover:shadow-sm hover:border-slate-300 transition-all flex items-start gap-3">
+                                    <div class="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center font-mono font-bold text-xs shrink-0 mt-0.5">
+                                        ${s.number}
+                                    </div>
+                                    <div>
+                                        <h5 class="text-xs font-bold text-slate-900">${s.title}</h5>
+                                        <p class="text-xs text-slate-600 leading-relaxed mt-1">${s.desc}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    ${customExtraBlock}
+
+                </div>
+            `;
+        }
+        const confluenceMarkdownTemplate = `# 🎓 UX | Catch Up Semanal - Certificaciones de Equipo
+
+¡Bienvenido al espacio de **Certificaciones UX/UI**!
+
+Este espacio está diseñado para impulsar nuestro crecimiento profesional y asegurar la excelencia técnica en los proyectos del equipo. Aquí encontrarás la ruta paso a paso, los recursos de preparación y los lineamientos para certificarte en las herramientas clave que utilizamos en nuestro día a día: **Maze, Baymard Institute y Quantum Metric**.
+
+---
+
+### 🎯 Objetivo del Espacio
+* **Estandarizar procesos:** Dominar las mejores prácticas de la industria en investigación con usuarios, pruebas no moderadas y auditorías heurísticas benchmark.
+* **Acreditar nuestras habilidades:** Obtener credenciales oficiales y figurar en directorios públicos de expertos reconocidos.
+* **Impactar el producto:** Certificar a todo el equipo UX en Quantum Metric e incluir analítica cuantitativa en los research de las **12 plataformas digitales (LIV, SBB, MS)**.
+
+---
+
+### 🗺️ Nuestras Rutas y Enlaces Directos
+
+#### 1. Maze (Continuous Product Research)
+* **Pasos:**
+  1. Ir a [learn.maze.co](https://learn.maze.co) e iniciar sesión con sus credenciales.
+  2. Si no aparece Maze 101 o 102, hacer clic en "Buscar cursos" para ver la oferta actual.
+  3. Hacer clic en "Inscribirse ahora".
+  4. Completar las lecciones para descargar el Certificado de finalización.
+  5. Repetir el proceso para obtener el Certificado de Maze 102.
+* **Cursos clave:** Maze 101: Getting Started with Maze / Maze 102: Exploring Maze
+* **Enlace:** [Ir a Maze University](https://learn.maze.co)
+
+#### 2. Baymard Institute (E-commerce UX Certification)
+* **Niveles (Tiers):**
+  * **TIER 1 - UX Master:** Conviértete en "top 5% UXer" con el título más completo (122 hrs · 441 research findings).
+  * **TIER 2 - UX Professional:** Conocimiento amplio y profundo de ecommerce UX (75 hrs · 321 research findings).
+  * **TIER 3 - UX Practitioner:** Base sólida de ecommerce UX sin invertir tiempo en detalles interminables (37 hrs · 188 research findings).
+* **Pasos:**
+  1. Acceder a los cursos online (lecturas, videos y ejemplos reales a tu ritmo).
+  2. Presentar exámenes online de opción múltiple (~70% de aciertos para aprobar).
+  3. Obtener certificado digital oficial y perfil público en el directorio de Baymard.
+* **Aviso de Cupo del Equipo:** En el plan corporativo actual contamos con un límite de 15 asientos para certificación. Si tienes dudas al respecto contacta a tu UX Lead.
+* **Enlace:** [Ir a Baymard Training](https://baymard.com/premium/training)
+
+#### 3. Quantum Metric (Digital Experience Analytics)
+* **Objetivo:** Certificar a todo el equipo UX en Quantum Metric e incluir métricas en los research a los que aplique.
+* **Alcance:** 12 plataformas digitales (LIV, SBB, MS).
+* **Capacidades clave:** Monitoring & alerts, Session replay, Dashboards, Guides, Opportunity analysis, Page performance, Journeys, Heatmaps, Visible.
+* **Cursos y Badges:** Quantum Metric Foundations, Fundamentals, Business Analyst, Engineer, Continuous Product Design (CPD).
+* **Enlace:** [Ir a Quantum Metric University](https://university.quantummetric.com)
+
+---
+
+### 🚀 Pasos para Iniciar tu Certificación
+
+1. **Selecciona tu ruta:** Elige entre Maze 101/102, Quantum Metric Foundations o el Tier de Baymard correspondiente.
+2. **Coordina con tu UX Lead:** Si cursarás Baymard, notifica para apartar uno de los **15 asientos** disponibles.
+3. **Completa los módulos:** Accede a la plataforma correspondiente de forma oficial.
+4. **Descarga tu certificado:** Comparte tu comprobante con el equipo y aplica las métricas a tus entregables de UX.
+
+---
+
+> 💡 **Nota:** ¿Tienes alguna duda o comentarios al respecto? Contacta a tu UX Lead, Gerente o Subdirectora del área para más información.`;
+
+        // Modern Clipboard API with fallback for Netlify HTTPS environments
+        async function copyConfluenceMarkdown() {
+            const rawText = confluenceMarkdownTemplate;
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(rawText);
+                    showToast('¡Markdown copiado! Pégalo directamente en Confluence');
+                    return;
+                }
+            } catch (e) {
+                // Fallback will execute below
+            }
+
+            // Fallback for older browsers or restricted permissions
+            try {
+                const textArea = document.createElement("textarea");
+                textArea.value = rawText;
+                textArea.setAttribute('readonly', '');
+                textArea.style.position = "fixed";
+                textArea.style.left = "-999999px";
+                textArea.style.top = "-999999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                const successful = document.execCommand('copy');
+                document.body.removeChild(textArea);
+                if (successful) {
+                    showToast('¡Markdown copiado! Pégalo directamente en Confluence');
+                } else {
+                    showToast('No se pudo copiar automáticamente');
+                }
+            } catch (err) {
+                showToast('No se pudo copiar automáticamente');
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            if (!toast || !toastMsg) return;
+            toastMsg.innerText = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Initialize view with Maze on window load
+        window.addEventListener('DOMContentLoaded', () => {
+            selectTool('maze');
+        });
+    </script>
+</body>
+</html>
