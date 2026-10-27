@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flyer Ejecutivo: Método S.C.A.R. (Modo Claro)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background: #ffffff !important;
+        color: #0f172a !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        padding: 0 !important;
+      }
+      .page-canvas {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen py-8 px-3 sm:px-6 lg:px-8 selection:bg-indigo-500 selection:text-white">
+
+  <!-- Main Container / Flyer Canvas -->
+  <div class="page-canvas max-w-5xl mx-auto bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-xl shadow-slate-200/70 relative overflow-hidden">
+    
+    <!-- Subtle Ambient Glows -->
+    <div class="absolute -top-32 -right-32 w-80 h-80 bg-indigo-100/60 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-32 -left-32 w-80 h-80 bg-sky-100/60 rounded-full blur-3xl pointer-events-none"></div>
+
+    <!-- Header & Action Bar -->
+    <header class="relative border-b border-slate-200 pb-7 mb-7">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-indigo-50 text-indigo-700 border border-indigo-200 mb-3">
+            <svg class="w-3.5 h-3.5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            Framework de Comunicación Ejecutiva
+          </div>
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900">
+            MÉTODO <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-600 to-teal-600">S.C.A.R.</span>
+          </h1>
+          <p class="mt-2 text-slate-600 text-sm sm:text-base max-w-2xl font-normal leading-relaxed">
+            Cómo presentar ante directores y alta gerencia protegiendo su tiempo y logrando aprobaciones inmediatas.
+          </p>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="flex items-center gap-2.5 no-print self-start md:self-auto">
+          <button onclick="copiarPitch()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 text-xs font-semibold transition-all active:scale-95">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+            Copiar Guion
+          </button>
+        </div>
+      </div>
+
+      <!-- Core Principle Comparison Banner -->
+      <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-3 bg-slate-50 border border-slate-200 p-4 rounded-2xl">
+        <div class="flex items-start gap-3">
+          <span class="flex-shrink-0 w-6 h-6 rounded-lg bg-red-100 text-red-700 flex items-center justify-center font-bold text-xs mt-0.5">✕</span>
+          <p class="text-xs text-slate-700 leading-snug">
+            <strong class="text-red-700 font-bold">La trampa habitual:</strong> Contar todo el historial y ahogarse en dificultades técnicas ("la anécdota").
+          </p>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="flex-shrink-0 w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs mt-0.5">✓</span>
+          <p class="text-xs text-slate-700 leading-snug">
+            <strong class="text-emerald-700 font-bold">La regla de oro:</strong> Invierte la pirámide: impacto y decisión primero, detalles al respaldo (backup).
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <!-- SECTION 1: THE 4 PILLARS (SCAR GRID) -->
+    <section class="mb-8">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-indigo-700 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+          Estructura de los 4 Pasos
+        </h2>
+        <span class="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-full">Exposición total: &lt; 90 segundos</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <!-- S: Situación -->
+        <div class="bg-sky-50/40 border border-sky-200/90 rounded-2xl p-4 sm:p-5 flex flex-col justify-between hover:shadow-md transition-shadow group">
+          <div>
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="text-3xl font-black text-sky-600">S</span>
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-sky-100 text-sky-800 border border-sky-300">Máx. 30 seg</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mb-1">Situación</h3>
+            <p class="text-xs text-slate-600 mb-3 leading-relaxed">Marco indispensable para identificar el proyecto.</p>
+            
+            <div class="bg-white p-2.5 rounded-xl border border-sky-200 mb-3 shadow-sm">
+              <span class="text-[10px] uppercase font-bold text-sky-700 block mb-1">Frase sugerida</span>
+              <p class="text-xs text-slate-800 italic font-medium leading-tight">"Como sabes, actualmente estamos ejecutando..."</p>
+            </div>
+          </div>
+          
+          <div class="text-[11px] text-red-700 pt-2 border-t border-sky-200/80 flex items-start gap-1.5 leading-tight">
+            <span class="font-bold flex-shrink-0">⚠️ Error:</span>
+            <span>Explicar los últimos 6 meses de historial.</span>
+          </div>
+        </div>
+
+        <!-- C: Complicación -->
+        <div class="bg-amber-50/40 border border-amber-200/90 rounded-2xl p-4 sm:p-5 flex flex-col justify-between hover:shadow-md transition-shadow group">
+          <div>
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="text-3xl font-black text-amber-600">C</span>
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300">Máx. 30 seg</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mb-1">Complicación</h3>
+            <p class="text-xs text-slate-600 mb-3 leading-relaxed">El obstáculo principal y su impacto en el negocio.</p>
+            
+            <div class="bg-white p-2.5 rounded-xl border border-amber-200 mb-3 shadow-sm">
+              <span class="text-[10px] uppercase font-bold text-amber-700 block mb-1">Frase sugerida</span>
+              <p class="text-xs text-slate-800 italic font-medium leading-tight">"Surgió un desvío en [tiempo/costo] que pone en riesgo..."</p>
+            </div>
+          </div>
+          
+          <div class="text-[11px] text-red-700 pt-2 border-t border-amber-200/80 flex items-start gap-1.5 leading-tight">
+            <span class="font-bold flex-shrink-0">⚠️ Error:</span>
+            <span>Traer 5 problemas o el drama técnico del equipo.</span>
+          </div>
+        </div>
+
+        <!-- A: Acción / Propuestas -->
+        <div class="bg-indigo-50/40 border border-indigo-200/90 rounded-2xl p-4 sm:p-5 flex flex-col justify-between hover:shadow-md transition-shadow group">
+          <div>
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="text-3xl font-black text-indigo-600">A</span>
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800 border border-indigo-300">2-3 viñetas</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mb-1">Acción / Opciones</h3>
+            <p class="text-xs text-slate-600 mb-3 leading-relaxed">2 alternativas analizadas con sus trade-offs.</p>
+            
+            <div class="bg-white p-2.5 rounded-xl border border-indigo-200 mb-3 shadow-sm">
+              <span class="text-[10px] uppercase font-bold text-indigo-700 block mb-1">Estructura clave</span>
+              <p class="text-xs text-slate-800 italic font-medium leading-tight">Opción 1 (Recomendada) vs. Opción 2 (Alternativa evaluada).</p>
+            </div>
+          </div>
+          
+          <div class="text-[11px] text-red-700 pt-2 border-t border-indigo-200/80 flex items-start gap-1.5 leading-tight">
+            <span class="font-bold flex-shrink-0">⚠️ Error:</span>
+            <span>Preguntar "¿Tú qué harías?" (trasladas trabajo).</span>
+          </div>
+        </div>
+
+        <!-- R: Requerimiento -->
+        <div class="bg-emerald-50/40 border border-emerald-200/90 rounded-2xl p-4 sm:p-5 flex flex-col justify-between hover:shadow-md transition-shadow group">
+          <div>
+            <div class="flex items-center justify-between mb-2.5">
+              <span class="text-3xl font-black text-emerald-600">R</span>
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">1 llamado</span>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 mb-1">Requerimiento</h3>
+            <p class="text-xs text-slate-600 mb-3 leading-relaxed">Verbo explícito: aprobar, decidir, firmar o destrabar.</p>
+            
+            <div class="bg-white p-2.5 rounded-xl border border-emerald-200 mb-3 shadow-sm">
+              <span class="text-[10px] uppercase font-bold text-emerald-700 block mb-1">Frase sugerida</span>
+              <p class="text-xs text-slate-800 italic font-medium leading-tight">"Lo que necesitamos puntualmente de ti hoy es..."</p>
+            </div>
+          </div>
+          
+          <div class="text-[11px] text-red-700 pt-2 border-t border-emerald-200/80 flex items-start gap-1.5 leading-tight">
+            <span class="font-bold flex-shrink-0">⚠️ Error:</span>
+            <span>Terminar con "Solo para que supieras" o "¿Cómo ves?".</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION 2: PRACTICAL TEMPLATES (Verbal Pitch & One-Pager Slide) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 mb-8">
+      
+      <!-- Script verbal de 90 segundos -->
+      <div class="lg:col-span-7 bg-slate-50/80 border border-slate-200 rounded-2xl p-5 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center font-bold text-xs">🎙️</span>
+              Guion Verbal Ejecutivo (Primeros 90 Segundos)
+            </h3>
+            <span class="text-[10px] bg-white border border-slate-200 text-slate-600 font-semibold px-2 py-0.5 rounded-md">En sala / Zoom</span>
+          </div>
+          <p class="text-xs text-slate-500 mb-3">Plantilla real para abrir la sesión con máxima autoridad:</p>
+          
+          <div id="verbalPitchText" class="space-y-2.5 text-xs bg-white p-4 rounded-xl border border-slate-200 text-slate-700 leading-relaxed shadow-sm">
+            <p><strong class="text-slate-900">Apertura:</strong> "Director, gracias por tu tiempo. Para ser respetuosos con tus 20 minutos, traemos un objetivo puntual:"</p>
+            <p><span class="inline-block px-1.5 py-0.2 bg-sky-100 text-sky-800 rounded font-bold text-[11px] mr-1">S</span> "Como sabes, estamos desplegando la nueva plataforma de clientes..."</p>
+            <p><span class="inline-block px-1.5 py-0.2 bg-amber-100 text-amber-800 rounded font-bold text-[11px] mr-1">C</span> "Sin embargo, TI central liberará credenciales hasta el próximo trimestre, lo cual frena el lanzamiento..."</p>
+            <p><span class="inline-block px-1.5 py-0.2 bg-indigo-100 text-indigo-800 rounded font-bold text-[11px] mr-1">A</span> "Evaluamos 2 opciones: Opción A, salir con piloto local; u Opción B, escalar con el VP de TI para priorizar los accesos este mes..."</p>
+            <p><span class="inline-block px-1.5 py-0.2 bg-emerald-100 text-emerald-800 rounded font-bold text-[11px] mr-1">R</span> "Lo que necesitamos de ti hoy es validar si puedes patrocinar el escalamiento o si nos autorizas a correr la Opción A."</p>
+          </div>
+        </div>
+
+        <div class="mt-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between text-xs text-slate-500 pt-3 border-t border-slate-200 gap-1">
+          <span class="font-medium">Pregunta de cierre:</span>
+          <span class="text-indigo-700 font-semibold italic">"¿Hacia cuál opción te inclinas o qué dudas puntuales tienes?"</span>
+        </div>
+      </div>
+
+      <!-- One-Pager Slide Framework -->
+      <div class="lg:col-span-5 bg-slate-50/80 border border-slate-200 rounded-2xl p-5 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">📊</span>
+              La "Diapositiva Única" (One-Pager)
+            </h3>
+            <span class="text-[10px] bg-white border border-slate-200 text-slate-600 font-semibold px-2 py-0.5 rounded-md">Slide #1</span>
+          </div>
+          <p class="text-xs text-slate-500 mb-3">Si proyectas, esta es tu única lámina. El resto va al Backup.</p>
+
+          <div class="bg-white p-3.5 rounded-xl border border-slate-300 font-mono text-[11px] space-y-2 shadow-sm text-slate-700">
+            <div class="flex justify-between border-b border-slate-200 pb-1.5 text-slate-500 text-[10px] font-sans font-bold">
+              <span>PROYECTO: LANZAMIENTO APP V2</span>
+              <span>FECHA: HOY</span>
+            </div>
+            <div>
+              <span class="text-sky-700 font-bold">[S] SITUACIÓN:</span>
+              <p class="text-slate-700 text-[11px]">Implementación pasarela de pagos para mercado local.</p>
+            </div>
+            <div>
+              <span class="text-amber-700 font-bold">[C] COMPLICACIÓN:</span>
+              <p class="text-slate-700 text-[11px]">Certificación bancaria demorará 3 semanas adicionales.</p>
+            </div>
+            <div>
+              <span class="text-indigo-700 font-bold">[A] ACCIONES EVALUADAS:</span>
+              <ul class="text-slate-700 text-[11px] list-disc list-inside">
+                <li>Opción 1: Salir con método manual (Fricción alta)</li>
+                <li>Opción 2: Posponer 3 semanas (Experiencia 100%)</li>
+              </ul>
+            </div>
+            <div class="bg-emerald-50 p-2 rounded-lg border border-emerald-200">
+              <span class="text-emerald-800 font-bold">[R] DECISIÓN REQUERIDA HOY:</span>
+              <p class="text-emerald-900 text-[11px] font-semibold">Definir si priorizamos fecha de salida (Op. 1) o experiencia (Op. 2).</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-[11px] text-slate-500 mt-2.5 text-center italic">
+          💡 Si abres un Excel con 50 columnas, la atención se perderá en una celda aleatoria.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- SECTION 3: 3 TACTICS TO STOP DIGRESSION & CHECKLIST -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+      
+      <!-- 3 Tácticas Antidesenfoque -->
+      <div class="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+        <h3 class="text-sm font-bold text-slate-900 mb-3.5 flex items-center gap-2">
+          <span class="w-6 h-6 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-xs">🛡️</span>
+          3 Tácticas para Frenar el Desenfoque y Anécdotas
+        </h3>
+
+        <div class="space-y-3">
+          <!-- Táctica 1 -->
+          <div class="flex gap-3 bg-purple-50/50 p-3 rounded-xl border border-purple-100">
+            <span class="flex-shrink-0 w-6 h-6 rounded-full bg-purple-600 text-white text-xs font-bold flex items-center justify-center">1</span>
+            <div>
+              <h4 class="text-xs font-bold text-slate-900">Interrupción Táctica: "Validar + Puente"</h4>
+              <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">
+                Cuando lleve más de 2 min en una anécdota: <em class="text-slate-800 font-medium">"Totalmente de acuerdo, Director; ese punto histórico es clave. Para proteger tus 15 min restantes y no irnos sin resolver el obstáculo de hoy, ¿nos permites volver a la decisión entre la Opción A o B?"</em>
+              </p>
+            </div>
+          </div>
+
+          <!-- Táctica 2 -->
+          <div class="flex gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
+            <span class="flex-shrink-0 w-6 h-6 rounded-full bg-slate-700 text-white text-xs font-bold flex items-center justify-center">2</span>
+            <div>
+              <h4 class="text-xs font-bold text-slate-900">El "Estacionamiento" de Ideas (Parking Lot)</h4>
+              <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">
+                Ten visible una nota: <em>"Temas derivados"</em>. Si surge una variable lateral: <em class="text-slate-800 font-medium">"Anoto ese punto en el estacionamiento para darte estatus el viernes. Para cerrar la sesión de hoy, ¿cuál de los dos caminos aprobamos?"</em>
+              </p>
+            </div>
+          </div>
+
+          <!-- Táctica 3 -->
+          <div class="flex gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
+            <span class="flex-shrink-0 w-6 h-6 rounded-full bg-slate-700 text-white text-xs font-bold flex items-center justify-center">3</span>
+            <div>
+              <h4 class="text-xs font-bold text-slate-900">El Filtro Disciplinado del "Backup"</h4>
+              <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">
+                Nunca proyectes anexos de inicio. Mantén solo el resumen S.C.A.R. al frente y únicamente abre el anexo técnico si el directivo pregunta: <em class="text-slate-800 font-medium">"¿De dónde salió esa cifra?"</em>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Checklist Pre-Reunión Interactivo -->
+      <div class="lg:col-span-5 bg-gradient-to-b from-slate-50 to-white border border-slate-200 rounded-2xl p-5 flex flex-col justify-between shadow-sm">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">✓</span>
+              Checklist Pre-Vuelo (Antes de Entrar)
+            </h3>
+            <span class="text-[10px] text-emerald-700 font-bold bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">5 Controles</span>
+          </div>
+          <p class="text-xs text-slate-500 mb-3.5">Verifica mentalmente cada casilla antes de iniciar la sesión:</p>
+
+          <div class="space-y-2">
+            <label class="flex items-start gap-2.5 p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors text-xs text-slate-700 shadow-xs">
+              <input type="checkbox" class="mt-0.5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+              <span><strong>Requerimiento (R):</strong> ¿Es un verbo contundente (aprobar, destrabar) y no solo "informar"?</span>
+            </label>
+
+            <label class="flex items-start gap-2.5 p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors text-xs text-slate-700 shadow-xs">
+              <input type="checkbox" class="mt-0.5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+              <span><strong>Situación (S):</strong> ¿Toma menos de 30 segundos y omite el historial previo?</span>
+            </label>
+
+            <label class="flex items-start gap-2.5 p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors text-xs text-slate-700 shadow-xs">
+              <input type="checkbox" class="mt-0.5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+              <span><strong>Opciones (A):</strong> ¿Hay 2 o 3 caminos listos con costos y pros evaluados?</span>
+            </label>
+
+            <label class="flex items-start gap-2.5 p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors text-xs text-slate-700 shadow-xs">
+              <input type="checkbox" class="mt-0.5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+              <span><strong>Backup Oculto:</strong> ¿Los datos técnicos densos están en láminas de respaldo?</span>
+            </label>
+
+            <label class="flex items-start gap-2.5 p-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors text-xs text-slate-700 shadow-xs">
+              <input type="checkbox" class="mt-0.5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+              <span><strong>Vocería Única:</strong> ¿Se acordó quién hablará para no contradecirse en sala?</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="mt-3.5 pt-3 border-t border-slate-200 flex items-center justify-between text-[11px] text-slate-500">
+          <span>Framework Ejecutivo S.C.A.R.</span>
+          <span class="text-emerald-700 font-bold flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            Listo para reunión
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer Note -->
+    <footer class="mt-8 pt-5 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
+      <p class="font-medium text-slate-600">Guía de Bolsillo para Mandos Medios, Líderes de Proyecto y Gerentes.</p>
+      <p class="font-semibold text-indigo-700">Menos anécdota, más decisiones.</p>
+    </footer>
+
+  </div>
+
+  <!-- Toast Notification Feedback -->
+  <div id="toastNotification" class="fixed bottom-6 right-6 bg-slate-900 text-white px-4 py-2.5 rounded-xl shadow-lg text-xs font-semibold transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none z-50 flex items-center gap-2">
+    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+    <span>Guion copiado al portapapeles</span>
+  </div>
+
+  <script>
+    function copiarPitch() {
+      const texto = `Director, muchas gracias por tu tiempo. Para ser muy respetuosos con tus 20 minutos, traemos un objetivo muy puntual:
+
+(S) Situación: Como sabes, estamos desplegando la nueva plataforma de clientes.
+(C) Complicación: Sin embargo, TI central liberará las credenciales hasta el próximo trimestre, lo cual frena nuestro lanzamiento.
+(A) Acciones Evaluadas: El equipo evaluó dos alternativas: Opción A, hacer un lanzamiento piloto local con la base actual; u Opción B, que nos ayudes a escalar con el VP de TI para priorizar los accesos en el sprint de este mes.
+(R) Requerimiento: Lo que necesitamos puntualmente de ti hoy es validar si puedes patrocinar ese escalamiento con TI esta semana o si nos autorizas a correr la Opción A.
+
+¿Hacia cuál opción te inclinas o qué dudas puntuales tienes sobre el impacto de ambas?`;
+
+      const textarea = document.createElement('textarea');
+      textarea.value = texto;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      
+      try {
+        document.execCommand('copy');
+        mostrarToast('¡Guion verbal copiado con éxito!');
+      } catch (err) {
+        mostrarToast('Selecciona el texto para copiarlo manualmente.');
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function mostrarToast(mensaje) {
+      const toast = document.getElementById('toastNotification');
+      toast.querySelector('span').textContent = mensaje;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2500);
+    }
+  </script>
+
+</body>
+</html>
