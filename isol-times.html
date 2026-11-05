@@ -65,12 +65,32 @@
         <div>
           <div class="flex items-center gap-2">
             <span class="font-bold text-base tracking-wide text-white">Externos <span class="text-blue-400">UX</span></span>
-            <span class="bg-blue-500/20 text-blue-300 border border-blue-400/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
+            <span id="brand-year-badge" class="bg-blue-500/20 text-blue-300 border border-blue-400/30 text-[10px] font-bold px-2 py-0.5 rounded-full">
               2026
             </span>
           </div>
           <p class="text-[10px] text-slate-400 hidden sm:block">Control de anexos, dedicación y auditoría de traslapes temporales</p>
         </div>
+      </div>
+
+      <!-- TABS SELECTOR DE AÑO (2026 vs 2027) -->
+      <div class="flex items-center bg-slate-900/90 p-1 rounded-xl border border-slate-700/80 shadow-inner">
+        <button 
+          id="tab-year-2026"
+          onclick="setYear(2026)" 
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-[#0073ea] text-white shadow-sm"
+        >
+          <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+          <span>2026</span>
+        </button>
+        <button 
+          id="tab-year-2027"
+          onclick="setYear(2027)" 
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-slate-800"
+        >
+          <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+          <span>2027</span>
+        </button>
       </div>
 
       <!-- Menú de Filtros estilo Monday -->
@@ -81,7 +101,7 @@
           class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all bg-[#0073ea] text-white shadow-sm"
         >
           <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
-          <span>Cronograma 2026</span>
+          <span id="tab-cronograma-label">Cronograma 2026</span>
           <span id="badge-total-uxers" class="bg-black/25 px-1.5 py-0.2 rounded text-[10px]">0</span>
         </button>
 
@@ -137,67 +157,61 @@
       </div>
     </div>
 
-    <!-- SUBHEADER: NAVEGACIÓN RÁPIDA Y LEYENDA -->
-    <div class="bg-[#171926] px-5 py-2 border-t border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs">
+    <!-- SUBHEADER: GUÍA DE COLORIMETRÍA DIVIDIDA EN DOS SECCIONES -->
+    <div class="bg-[#171926] px-5 py-2.5 border-t border-slate-800 flex flex-wrap items-center justify-between gap-y-2.5 gap-x-6 text-xs">
       
-      <!-- Saltos rápidos por Trimestre -->
-      <div class="flex items-center gap-1.5">
-        <span class="text-[11px] font-semibold text-slate-400 mr-1 flex items-center gap-1">
-          <i data-lucide="navigation" class="w-3 h-3 text-blue-400"></i>
-          Navegar a:
-        </span>
-        <button 
-          onclick="scrollToQuarter(0)" 
-          class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 text-[11px] font-medium transition-colors"
-        >
-          Q1 (Ene-Mar)
-        </button>
-        <button 
-          onclick="scrollToQuarter(1)" 
-          class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 text-[11px] font-medium transition-colors"
-        >
-          Q2 (Abr-Jun)
-        </button>
-        <button 
-          onclick="scrollToQuarter(2)" 
-          class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 text-[11px] font-medium transition-colors"
-        >
-          Q3 (Jul-Sep)
-        </button>
-        <button 
-          onclick="scrollToQuarter(3)" 
-          class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 text-[11px] font-medium transition-colors"
-        >
-          Q4 (Oct-Dic)
-        </button>
-        <button 
-          onclick="scrollToToday()" 
-          class="ml-2 px-2.5 py-1 rounded bg-blue-600/30 text-blue-300 border border-blue-500/40 hover:bg-blue-600/50 text-[11px] font-bold transition-colors flex items-center gap-1.5"
-        >
-          <span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-ping"></span>
-          Ir a Hoy (Nov)
-        </button>
+      <!-- SECCIÓN 1: UXer Estatus -->
+      <div class="flex items-center gap-3 flex-wrap">
+        <div class="flex items-center gap-1.5 bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700/80">
+          <i data-lucide="user-check" class="w-3.5 h-3.5 text-blue-400"></i>
+          <span class="font-bold text-slate-200 text-[11px] uppercase tracking-wider">UXer Estatus:</span>
+        </div>
+        <div class="flex items-center gap-3 text-[11px] text-slate-300">
+          <div class="flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-emerald-400/30"></span>
+            <span class="font-medium text-emerald-300">Activo (Verde)</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 ring-2 ring-amber-400/30"></span>
+            <span class="font-medium text-amber-300">Por salir (Amarillo)</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-rose-400 ring-2 ring-rose-400/30"></span>
+            <span class="font-medium text-rose-300">Inactivo (Rojo)</span>
+          </div>
+        </div>
       </div>
 
-      <!-- Leyenda visual -->
-      <div class="flex items-center gap-4 text-[11px] text-slate-300">
-        <div class="flex items-center gap-1.5">
-          <span class="w-3 h-3 rounded-md bg-gradient-to-r from-[#0073ea] to-[#00a3ff]"></span>
-          <span>Dedicación Normal</span>
+      <!-- SECCIÓN 2: Proyecto Estatus -->
+      <div class="flex items-center gap-3 flex-wrap">
+        <div class="flex items-center gap-1.5 bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700/80">
+          <i data-lucide="layers" class="w-3.5 h-3.5 text-indigo-400"></i>
+          <span class="font-bold text-slate-200 text-[11px] uppercase tracking-wider">Proyecto Estatus:</span>
         </div>
-        <div class="flex items-center gap-1.5">
-          <span class="w-3 h-3 rounded-md bg-gradient-to-r from-[#e2445c] to-[#ff5ac4]"></span>
-          <span class="font-semibold text-rose-300">Empalme de Fechas</span>
-        </div>
-        <div class="flex items-center gap-1.5">
-          <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
-          <span class="text-amber-200">Ajuste por contrato</span>
-        </div>
-        <div class="flex items-center gap-1.5 border-l pl-3 border-slate-700">
-          <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
-          <span>Línea Hoy</span>
+        <div class="flex items-center gap-3 text-[11px] text-slate-300 flex-wrap">
+          <div class="flex items-center gap-1.5">
+            <span class="w-3.5 h-3 rounded-md bg-gradient-to-r from-[#0073ea] to-[#00a3ff] border border-blue-400"></span>
+            <span class="font-semibold text-blue-200">Activo (Azul)</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-3.5 h-3 rounded-md bg-gradient-to-r from-slate-400 to-slate-500 border border-slate-400"></span>
+            <span class="text-slate-300">Cerrado (Gris)</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-3.5 h-3 rounded-md bg-gradient-to-r from-amber-400 to-amber-500 border border-amber-500"></span>
+            <span class="text-amber-200 font-semibold">Ajuste Contrato (Amarillo)</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-3.5 h-3 rounded-md bg-gradient-to-r from-[#e2445c] to-[#ff5ac4] border border-rose-400"></span>
+            <span class="font-semibold text-rose-300">Empalme (Rojo)</span>
+          </div>
+          <div class="flex items-center gap-1.5 border-l pl-2.5 border-slate-700">
+            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+            <span class="text-slate-400">Línea Hoy</span>
+          </div>
         </div>
       </div>
+
     </div>
   </header>
 
@@ -218,7 +232,7 @@
                 <i data-lucide="users" class="w-4 h-4 text-slate-500"></i>
                 <span class="text-[11px] font-bold text-slate-700 uppercase tracking-wider">UXer / Especialista</span>
               </div>
-              <span class="text-[10px] text-blue-700 bg-blue-100 font-bold px-1.5 py-0.5 rounded">2026</span>
+              <span id="col-header-year" class="text-[10px] text-blue-700 bg-blue-100 font-bold px-1.5 py-0.5 rounded">2026</span>
             </div>
 
             <!-- Meses proporcionales -->
@@ -251,7 +265,7 @@
         </div>
         <div class="flex items-center gap-3">
           <span class="text-slate-400">Scroll sincronizado para los 12 meses</span>
-          <span class="font-semibold text-slate-700 bg-slate-200/70 px-2 py-0.5 rounded">Ejercicio 2026</span>
+          <span id="footer-year-badge" class="font-semibold text-slate-700 bg-slate-200/70 px-2 py-0.5 rounded">Ejercicio 2026</span>
         </div>
       </div>
     </div>
@@ -301,6 +315,9 @@
               <span id="drawer-dates">-</span>
             </div>
           </div>
+          <div id="drawer-extra-info" class="bg-slate-50 p-3 rounded-lg border border-slate-100 col-span-2 hidden space-y-2">
+            <!-- Datos adicionales de contrato: PEP, Monto, Anexo -->
+          </div>
         </div>
 
         <!-- Recomendación UX -->
@@ -343,8 +360,22 @@
 
   <!-- LÓGICA Y DATOS EN JAVASCRIPT NATIVO -->
   <script>
-    // DATASET OFICIAL CONSOLIDAD 2026
-    const RAW_DATA_2026 = [
+    // Configuración de estatus de diseñadores externos
+    const UXER_STATUS_CONFIG = {
+      "Alicia": { label: "Activo", style: "bg-emerald-50 text-emerald-700 border-emerald-200", dot: "bg-emerald-500 animate-pulse" },
+      "Luis": { label: "Activo", style: "bg-emerald-50 text-emerald-700 border-emerald-200", dot: "bg-emerald-500 animate-pulse" },
+      "Verónica": { label: "Activo", style: "bg-emerald-50 text-emerald-700 border-emerald-200", dot: "bg-emerald-500 animate-pulse" },
+      "Vero Ramírez": { label: "Activo", style: "bg-emerald-50 text-emerald-700 border-emerald-200", dot: "bg-emerald-500 animate-pulse" },
+      "Sandra Huerta": { label: "Activo", style: "bg-emerald-50 text-emerald-700 border-emerald-200", dot: "bg-emerald-500 animate-pulse" },
+      "Sandra": { label: "Activo", style: "bg-emerald-50 text-emerald-700 border-emerald-200", dot: "bg-emerald-500 animate-pulse" },
+      "Bertha": { label: "Por salir", style: "bg-amber-50 text-amber-800 border-amber-300", dot: "bg-amber-500 animate-pulse" },
+      "Fernando": { label: "Inactivo", style: "bg-rose-50 text-rose-700 border-rose-200", dot: "bg-rose-500" },
+      "Lore": { label: "Inactivo", style: "bg-rose-50 text-rose-700 border-rose-200", dot: "bg-rose-500" },
+      "MaFer": { label: "Inactivo", style: "bg-rose-50 text-rose-700 border-rose-200", dot: "bg-rose-500" }
+    };
+
+    // DATASET OFICIAL CONSOLIDADO 2026 / 2027
+    const RAW_DATA = [
       // Bertha
       { id: 1, uxer: "Bertha", project: "Super App Fase 3", start: "2025-09-19", end: "2026-01-19", dominio: "Herramientas de Venta", proveedor: "ISOL" },
       { id: 2, uxer: "Bertha", project: "Try on", start: "2026-01-19", end: "2026-02-27", dominio: "Herramientas de Venta", proveedor: "ISOL" },
@@ -361,6 +392,24 @@
         detalleDivision: "Proyecto dividido en 2 fases. Bertha concluye formalmente el 31 de Mayo de 2026 antes de iniciar Gestor Logístico el 1 de Junio."
       },
       { id: 4, uxer: "Bertha", project: "Gestor Logístico", start: "2026-06-01", end: "2026-09-04", dominio: "Operaciones", proveedor: "ISOL" },
+      { 
+        id: 19, 
+        uxer: "Bertha", 
+        project: "Gestor logístico (Mejoras F1)", 
+        start: "2026-09-29", 
+        end: "2026-11-29", 
+        dominio: "Tienda y Logística", 
+        proveedor: "ISOL",
+        anexo: "ANEXO 254 Mejoras y se...",
+        estatus: "Not started (Listo para firma)",
+        comentarios: "Listo para enviar a firma",
+        monto: "$ 192,456",
+        pep: "IT/0487-26-04-6-012",
+        evidencia: "Modernización Portal Gestor Logístico | Recursos y UI Kit",
+        faseTag: "Mejoras F1",
+        leyenda: "Contrato activo - Por salir Nov 2026",
+        detalleDivision: "Contrato actualmente activo del 29 de septiembre al 29 de noviembre de 2026 para Modernización Portal Gestor Logístico. Bertha se encuentra en estatus 'Por salir' al concluir este periodo."
+      },
 
       // Luis
       { id: 5, uxer: "Luis", project: "Actualización Gobierno", start: "2025-12-11", end: "2026-01-16", dominio: "Gobierno", proveedor: "ISOL" },
@@ -390,6 +439,7 @@
         end: "2026-10-22", 
         dominio: "Marketplace & Operaciones", 
         proveedor: "ISOL", 
+        isAjusteContrato: true,
         leyenda: "Ajuste de tiempos por contrato",
         detalleDivision: "Ajuste de tiempos por contrato formalizado para el cierre operativo e incidencias de Marketplace (8 al 22 de octubre de 2026)."
       },
@@ -401,9 +451,9 @@
         end: "2027-02-02", 
         dominio: "Apps", 
         proveedor: "ISOL", 
-        faseTag: "Fase 2 (Verónica)",
+        faseTag: "Verónica (Relevo)",
         leyenda: "Super App Fase 2",
-        detalleDivision: "Relevo secuencial de Super App. Continúa del 2 de noviembre de 2026 al 2 de febrero de 2027 tras el cierre de MaFer."
+        detalleDivision: "Relevo secuencial de Super App Fase 2. Continúa del 2 de noviembre de 2026 al 2 de febrero de 2027 tras el cierre de MaFer."
       },
 
       // Alicia
@@ -414,14 +464,14 @@
       { 
         id: 15, 
         uxer: "MaFer", 
-        project: "Super App Fase 1", 
+        project: "Super App Fase 2", 
         start: "2026-08-24", 
         end: "2026-10-30", 
         dominio: "Apps", 
         proveedor: "ISOL",
-        faseTag: "Fase 1 (MaFer)",
-        leyenda: "Fase 1 (MaFer)",
-        detalleDivision: "Primera fase de Super App asignada a MaFer del 24 de agosto al 30 de octubre de 2026. Verónica toma la estafeta para la Fase 2."
+        faseTag: "MaFer",
+        leyenda: "Super App Fase 2 (MaFer)",
+        detalleDivision: "Participación en Super App Fase 2 asignada a MaFer del 24 de agosto al 30 de octubre de 2026. Verónica toma el relevo."
       },
 
       // Fernando
@@ -437,47 +487,169 @@
         end: "2026-10-22", 
         dominio: "Marketplace & Operaciones", 
         proveedor: "ISOL", 
+        isAjusteContrato: true,
         leyenda: "Ajuste de tiempos por contrato",
         detalleDivision: "Ajuste de tiempos por contrato formalizado para el cierre operativo e incidencias de Marketplace (8 al 22 de octubre de 2026)."
+      },
+
+      // Vero Ramírez (Nueva Externa Activa - Proyectos 2026 y 2027)
+      {
+        id: 20,
+        uxer: "Vero Ramírez",
+        project: "Features Personalización",
+        start: "2026-02-03",
+        end: "2026-05-05",
+        dominio: "Tráfico y Navegación",
+        proveedor: "ISOL",
+        anexo: "2. Features...",
+        idContrato: "9651",
+        estatus: "Solicitud de pago (Anexo firmado)",
+        comentarios: "Anexo firmado.",
+        monto: "$ 288,684"
+      },
+      {
+        id: 21,
+        uxer: "Vero Ramírez",
+        project: "Features Personalización",
+        start: "2026-05-06",
+        end: "2026-08-06",
+        dominio: "Tráfico y Navegación",
+        proveedor: "ISOL",
+        anexo: "3. Features...",
+        idContrato: "9920",
+        estatus: "Done (pagado)",
+        comentarios: "Anexo ya firmado",
+        monto: "$ 288,684"
+      },
+      {
+        id: 22,
+        uxer: "Vero Ramírez",
+        project: "Features de Innovación",
+        start: "2026-08-07",
+        end: "2027-01-29",
+        dominio: "Tráfico y Navegación",
+        proveedor: "ISOL",
+        anexo: "1. Platafor...",
+        idContrato: "10280",
+        estatus: "Solicitud de compra",
+        comentarios: "*Se realizó el 28 de Oct el 1er pago ($288,684), el 29 de enero se haría el último pago.",
+        monto: "$ 577,368"
+      },
+      {
+        id: 23,
+        uxer: "Vero Ramírez",
+        project: "Features de Innovación",
+        start: "2027-02-01",
+        end: "2027-04-05",
+        dominio: "Tráfico y Navegación",
+        proveedor: "ISOL",
+        anexo: "Extensión 3 meses",
+        idContrato: "-",
+        estatus: "Not started",
+        comentarios: "*Extensión de 3 meses para Vero en el mismo proyecto.",
+        monto: "$ 288,684",
+        faseTag: "Extensión 2027"
+      },
+      // Proyectos adicionales integrados de la imagen
+      {
+        id: 24,
+        uxer: "Vero Ramírez",
+        project: "Asistente de Crédito (en tienda)",
+        start: "2026-01-01",
+        end: "2026-01-30",
+        dominio: "Servicios",
+        proveedor: "ISOL",
+        anexo: "1. Asistente...",
+        idContrato: "9411",
+        estatus: "Solicitud de pago",
+        comentarios: "Proyecto del área de Innovación (con Itzana).",
+        monto: "$ 96,228"
+      },
+      {
+        id: 25,
+        uxer: "Sandra Huerta",
+        project: "Célula de Crédito",
+        start: "2026-04-16",
+        end: "2027-01-15",
+        dominio: "Servicios",
+        proveedor: "ISOL",
+        anexo: "1. Features ...",
+        idContrato: "9968",
+        estatus: "Solicitud de pago",
+        comentarios: "Originalmente se facturaba cada 3 meses ($288,684 x 3): [✓] 16 de jul, [_] 16 de oct y [_] 16 de ene. Pero por repriorización de Dir. Digital (Decomm) solo se podrá pagar vía Producto el 1er Q. Los otros 2 se pagarán vía Centro de Costos con el área de Crédito (Lupita Saavedra). Y para ello se firmó una Cesión de Derechos.",
+        monto: "$ 288,684",
+        faseTag: "Activo 2026/2027"
       }
     ];
 
-    const MONTHS_2026 = [
-      { name: 'ENE', days: 31, quarter: 'Q1' },
-      { name: 'FEB', days: 28, quarter: 'Q1' },
-      { name: 'MAR', days: 31, quarter: 'Q1' },
-      { name: 'ABR', days: 30, quarter: 'Q2' },
-      { name: 'MAY', days: 31, quarter: 'Q2' },
-      { name: 'JUN', days: 30, quarter: 'Q2' },
-      { name: 'JUL', days: 31, quarter: 'Q3' },
-      { name: 'AGO', days: 31, quarter: 'Q3' },
-      { name: 'SEP', days: 30, quarter: 'Q3' },
-      { name: 'OCT', days: 31, quarter: 'Q4' },
-      { name: 'NOV', days: 30, quarter: 'Q4' },
-      { name: 'DIC', days: 31, quarter: 'Q4' }
-    ];
-
-    const TOTAL_YEAR_DAYS = 365;
-    const yearStartTs = new Date('2026-01-01T00:00:00').getTime();
-    const yearEndTs = new Date('2026-12-31T23:59:59').getTime();
-    const yearDuration = yearEndTs - yearStartTs;
-    const todayTs = new Date('2026-11-04T12:00:00').getTime();
-    const todayPercentage = ((todayTs - yearStartTs) / yearDuration) * 100;
-
     // Estado global de la aplicación
+    let currentSelectedYear = 2026;
     let currentFilterMode = 'all'; // 'all', 'overlaps_only', 'clean_only'
     let currentSearchTerm = '';
     let processedGroups = [];
     let stats = { totalUXers: 0, totalProjects: 0, totalOverlappingUXers: 0 };
     let taskLookupMap = {};
 
-    // PROCESAMIENTO Y AUDITORÍA DE EMPALMES
+    // Obtener configuración del año actual
+    function getYearConfig(year) {
+      const isLeap = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+      const febDays = isLeap ? 29 : 28;
+      const totalDays = isLeap ? 366 : 365;
+      const months = [
+        { name: 'ENE', days: 31, quarter: 'Q1' },
+        { name: 'FEB', days: febDays, quarter: 'Q1' },
+        { name: 'MAR', days: 31, quarter: 'Q1' },
+        { name: 'ABR', days: 30, quarter: 'Q2' },
+        { name: 'MAY', days: 31, quarter: 'Q2' },
+        { name: 'JUN', days: 30, quarter: 'Q2' },
+        { name: 'JUL', days: 31, quarter: 'Q3' },
+        { name: 'AGO', days: 31, quarter: 'Q3' },
+        { name: 'SEP', days: 30, quarter: 'Q3' },
+        { name: 'OCT', days: 31, quarter: 'Q4' },
+        { name: 'NOV', days: 30, quarter: 'Q4' },
+        { name: 'DIC', days: 31, quarter: 'Q4' }
+      ];
+      const yearStartTs = new Date(`${year}-01-01T00:00:00`).getTime();
+      const yearEndTs = new Date(`${year}-12-31T23:59:59`).getTime();
+      const yearDuration = yearEndTs - yearStartTs;
+      return { isLeap, totalDays, months, yearStartTs, yearEndTs, yearDuration };
+    }
+
+    // CAMBIAR AÑO (2026 vs 2027)
+    function setYear(year) {
+      currentSelectedYear = year;
+
+      // Actualizar pestañas del año
+      const tab26 = document.getElementById('tab-year-2026');
+      const tab27 = document.getElementById('tab-year-2027');
+      if (year === 2026) {
+        tab26.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-[#0073ea] text-white shadow-sm";
+        tab27.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-slate-800";
+      } else {
+        tab27.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-[#0073ea] text-white shadow-sm";
+        tab26.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-300 hover:text-white hover:bg-slate-800";
+      }
+
+      // Actualizar títulos e indicadores
+      document.getElementById('brand-year-badge').textContent = year;
+      document.getElementById('col-header-year').textContent = year;
+      document.getElementById('footer-year-badge').textContent = `Ejercicio ${year}`;
+      document.getElementById('tab-cronograma-label').textContent = `Cronograma ${year}`;
+
+      processData();
+      renderTimelineHeaderAndGrid();
+      renderGanttRows();
+    }
+
+    // PROCESAMIENTO Y AUDITORÍA DE EMPALMES PARA EL AÑO SELECCIONADO
     function processData() {
-      // 1. Filtrar solo los que intersectan 2026
-      const validProjects = RAW_DATA_2026.filter(p => {
+      const yearCfg = getYearConfig(currentSelectedYear);
+
+      // 1. Filtrar solo los que intersectan el año seleccionado
+      const validProjects = RAW_DATA.filter(p => {
         const s = new Date(p.start + 'T00:00:00').getTime();
         const e = new Date(p.end + 'T23:59:59').getTime();
-        return s <= yearEndTs && e >= yearStartTs;
+        return s <= yearCfg.yearEndTs && e >= yearCfg.yearStartTs;
       });
 
       // 2. Agrupar por diseñador
@@ -527,10 +699,10 @@
           }
           tracks[trackIdx] = p.e;
 
-          const renderStart = Math.max(p.s, yearStartTs);
-          const renderEnd = Math.min(p.e, yearEndTs);
-          const left = Math.max(0, Math.min(100, ((renderStart - yearStartTs) / yearDuration) * 100));
-          const width = Math.max(2.8, Math.min(100 - left, ((renderEnd - renderStart) / yearDuration) * 100));
+          const renderStart = Math.max(p.s, yearCfg.yearStartTs);
+          const renderEnd = Math.min(p.e, yearCfg.yearEndTs);
+          const left = Math.max(0, Math.min(100, ((renderStart - yearCfg.yearStartTs) / yearCfg.yearDuration) * 100));
+          const width = Math.max(2.8, Math.min(100 - left, ((renderEnd - renderStart) / yearCfg.yearDuration) * 100));
 
           const enriched = {
             ...p,
@@ -580,19 +752,22 @@
       const overlapBadge = document.getElementById('badge-total-overlaps');
       if (stats.totalOverlappingUXers > 0) {
         overlapBadge.className = 'px-1.5 py-0.2 rounded text-[10px] font-bold bg-[#e2445c] text-white';
+      } else {
+        overlapBadge.className = 'px-1.5 py-0.2 rounded text-[10px] font-bold bg-slate-700 text-slate-400';
       }
     }
 
     // RENDERIZAR CABECERA MENSUAL Y GRID
     function renderTimelineHeaderAndGrid() {
+      const yearCfg = getYearConfig(currentSelectedYear);
       const headerContainer = document.getElementById('timeline-header-months');
       const gridContainer = document.getElementById('grid-background');
 
       let headerHtml = '';
       let gridHtml = '';
 
-      MONTHS_2026.forEach(m => {
-        const widthPercent = (m.days / TOTAL_YEAR_DAYS) * 100;
+      yearCfg.months.forEach(m => {
+        const widthPercent = (m.days / yearCfg.totalDays) * 100;
 
         headerHtml += `
           <div class="border-r border-slate-200/90 flex flex-col items-center justify-center py-2.5 bg-gradient-to-b from-white to-[#f8f9fc]" style="width: ${widthPercent}%">
@@ -611,15 +786,19 @@
         `;
       });
 
-      // Marcador HOY
-      if (todayPercentage >= 0 && todayPercentage <= 100) {
-        gridHtml += `
-          <div class="absolute top-0 bottom-0 border-l-2 border-blue-500 z-10" style="left: ${todayPercentage}%">
-            <div class="sticky top-11 -left-[14px] bg-blue-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded shadow-md pointer-events-auto">
-              HOY
+      // Marcador HOY (sólo visible durante 2026)
+      if (currentSelectedYear === 2026) {
+        const todayTs = new Date('2026-11-05T12:00:00').getTime();
+        const todayPercentage = ((todayTs - yearCfg.yearStartTs) / yearCfg.yearDuration) * 100;
+        if (todayPercentage >= 0 && todayPercentage <= 100) {
+          gridHtml += `
+            <div class="absolute top-0 bottom-0 border-l-2 border-blue-500 z-10" style="left: ${todayPercentage}%">
+              <div class="sticky top-11 -left-[14px] bg-blue-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded shadow-md pointer-events-auto">
+                HOY
+              </div>
             </div>
-          </div>
-        `;
+          `;
+        }
       }
 
       headerContainer.innerHTML = headerHtml;
@@ -646,7 +825,7 @@
         container.innerHTML = `
           <div class="p-16 text-center text-slate-400 flex flex-col items-center justify-center">
             <i data-lucide="search" class="w-10 h-10 mb-3 opacity-40 text-slate-500"></i>
-            <p class="text-sm font-semibold text-slate-600">No se encontraron registros con los filtros actuales.</p>
+            <p class="text-sm font-semibold text-slate-600">No se encontraron registros en el año ${currentSelectedYear} con los filtros actuales.</p>
             <button onclick="clearSearch(); setFilterMode('all')" class="mt-3 px-3 py-1.5 bg-[#0073ea] text-white text-xs font-semibold rounded-lg hover:bg-blue-600 transition-colors">
               Restablecer Filtros
             </button>
@@ -665,10 +844,21 @@
         html += `
           <div class="flex border-b border-slate-100 group transition-colors relative hover:bg-slate-50/70 ${overlapClass}" style="min-height: ${rowHeight}px">
             
-            <!-- Celda Sticky UXer -->
+            <!-- Celda Sticky UXer con Badge de Estado (Activo / Por salir / Inactivo) -->
             <div class="w-56 md:w-64 flex-shrink-0 border-r border-slate-200 px-4 py-3 sticky left-0 bg-white group-hover:bg-slate-50 z-20 flex flex-col justify-start shadow-[2px_0_5px_-2px_rgba(0,0,0,0.06)]">
               <div class="flex items-center justify-between">
-                <span class="font-bold text-slate-800 text-sm">${group.uxer}</span>
+                <div class="flex items-center gap-2">
+                  <span class="font-bold text-slate-800 text-sm">${group.uxer}</span>
+                  ${(() => {
+                    const st = UXER_STATUS_CONFIG[group.uxer] || { label: 'Activo', style: 'bg-emerald-50 text-emerald-700 border-emerald-200', dot: 'bg-emerald-500' };
+                    return `
+                      <span class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full border shadow-xs ${st.style}">
+                        <span class="w-1.5 h-1.5 rounded-full ${st.dot}"></span>
+                        ${st.label}
+                      </span>
+                    `;
+                  })()}
+                </div>
                 <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200">
                   ${group.projects.length} ${group.projects.length === 1 ? 'anexo' : 'anexos'}
                 </span>
@@ -679,12 +869,7 @@
                   <i data-lucide="alert-triangle" class="w-3 h-3 flex-shrink-0"></i>
                   <span>Empalme detectado</span>
                 </div>
-              ` : `
-                <div class="mt-2 flex items-center gap-1 text-[11px] font-medium text-emerald-600 bg-emerald-50/80 border border-emerald-200/60 px-2 py-0.5 rounded-md w-fit">
-                  <i data-lucide="check-circle-2" class="w-3 h-3"></i>
-                  <span>Sin empalmes</span>
-                </div>
-              `}
+              ` : ''}
             </div>
 
             <!-- Pista Gantt Timeline -->
@@ -693,9 +878,30 @@
 
         group.projects.forEach(proj => {
           const isConflict = proj.isOverlapping;
-          const barStyle = isConflict
-            ? 'bg-gradient-to-r from-[#e2445c] to-[#ff5ac4] border-[#d82a45] shadow-rose-200 text-white'
-            : 'bg-gradient-to-r from-[#0073ea] to-[#00a3ff] border-[#0060c0] shadow-blue-100 text-white';
+          const isAjuste = proj.isAjusteContrato || (proj.leyenda && proj.leyenda.toLowerCase().includes('ajuste'));
+          
+          // Contratos activos en fecha / vigentes
+          const isActiveContract = !isConflict && !isAjuste && (
+            proj.end >= '2026-11-01' || 
+            proj.project.toLowerCase().includes('innovación') ||
+            proj.project.toLowerCase().includes('modelos ia') ||
+            proj.project.toLowerCase().includes('traducción')
+          );
+
+          let barStyle = '';
+          if (isConflict) {
+            // Empalme de fechas: Rojo
+            barStyle = 'bg-gradient-to-r from-[#e2445c] to-[#ff5ac4] border-[#d82a45] shadow-rose-200 text-white';
+          } else if (isAjuste) {
+            // Ajuste de contrato: Amarillo
+            barStyle = 'bg-gradient-to-r from-amber-400 to-amber-500 border-amber-600 text-slate-950 font-bold shadow-amber-200';
+          } else if (isActiveContract) {
+            // Contratos activos en fecha: Azul
+            barStyle = 'bg-gradient-to-r from-[#0073ea] to-[#00a3ff] border-[#0060c0] shadow-blue-200 text-white';
+          } else {
+            // Contratos cerrados en fecha: Gris
+            barStyle = 'bg-gradient-to-r from-slate-400 to-slate-500 border-slate-500 text-white shadow-slate-200 opacity-95';
+          }
 
           html += `
             <div
@@ -709,15 +915,14 @@
               <div class="truncate flex items-center gap-1.5 w-full">
                 ${isConflict ? '<i data-lucide="alert-triangle" class="w-3.5 h-3.5 flex-shrink-0 text-white animate-bounce"></i>' : ''}
                 ${proj.faseTag ? `
-                  <span class="bg-indigo-950/70 text-white border border-white/20 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 shadow-xs flex-shrink-0">
+                  <span class="bg-black/25 text-white border border-white/25 text-[9px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 shadow-xs flex-shrink-0">
                     ${proj.faseTag}
                   </span>
                 ` : ''}
-                ${proj.leyenda && !proj.faseTag ? `
-                  <span class="bg-amber-300 text-amber-950 border border-amber-400 font-extrabold text-[9px] px-2 py-0.5 rounded-full flex items-center gap-1 shadow-xs flex-shrink-0">
-                    <i data-lucide="file-text" class="w-2.5 h-2.5 text-amber-900"></i>
-                    <span class="hidden sm:inline">${proj.leyenda}</span>
-                    <span class="sm:hidden">Ajuste contrato</span>
+                ${isAjuste ? `
+                  <span class="bg-amber-950 text-amber-200 border border-amber-900 font-extrabold text-[9px] px-2 py-0.5 rounded-full flex items-center gap-1 shadow-xs flex-shrink-0">
+                    <i data-lucide="file-text" class="w-2.5 h-2.5 text-amber-300"></i>
+                    <span>Ajuste contrato</span>
                   </span>
                 ` : ''}
                 <span class="truncate drop-shadow-xs font-medium">${proj.project}</span>
@@ -845,7 +1050,25 @@
       document.getElementById('drawer-uxer').textContent = task.uxer;
       document.getElementById('drawer-proveedor').textContent = task.proveedor;
       document.getElementById('drawer-dominio').textContent = task.dominio;
-      document.getElementById('drawer-dates').textContent = `${task.start} al ${task.end}`;
+      // Información adicional si existe (PEP, Monto, Anexo, Evidencia, Comentarios)
+      const extraInfoEl = document.getElementById('drawer-extra-info');
+      if (task.pep || task.monto || task.anexo || task.idContrato || task.comentarios) {
+        extraInfoEl.classList.remove('hidden');
+        extraInfoEl.innerHTML = `
+          <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-1">Datos Contractuales Adicionales</div>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            ${task.monto ? `<div><span class="text-slate-400">Monto:</span> <strong class="text-slate-700">${task.monto}</strong></div>` : ''}
+            ${task.estatus ? `<div><span class="text-slate-400">Estatus:</span> <span class="bg-blue-50 text-blue-700 text-[10px] font-bold px-1.5 py-0.5 rounded border border-blue-200">${task.estatus}</span></div>` : ''}
+            ${task.idContrato ? `<div><span class="text-slate-400"># ID:</span> <span class="font-mono text-slate-700 font-bold">${task.idContrato}</span></div>` : ''}
+            ${task.pep ? `<div><span class="text-slate-400">PEP:</span> <span class="font-mono text-slate-700 font-semibold">${task.pep}</span></div>` : ''}
+            ${task.anexo ? `<div class="col-span-2"><span class="text-slate-400">Anexo:</span> <span class="text-blue-700 font-medium">${task.anexo}</span></div>` : ''}
+            ${task.comentarios ? `<div class="col-span-2 text-[11px] text-slate-600 bg-slate-100/70 p-2 rounded"><span class="text-slate-400 font-semibold">Comentarios:</span> ${task.comentarios}</div>` : ''}
+            ${task.evidencia ? `<div class="col-span-2 text-[11px] text-slate-500 italic"><span class="text-slate-400 not-italic">Evidencia:</span> ${task.evidencia}</div>` : ''}
+          </div>
+        `;
+      } else {
+        extraInfoEl.classList.add('hidden');
+      }
 
       // Estado y Empalmes
       const statusContainer = document.getElementById('drawer-status-container');
