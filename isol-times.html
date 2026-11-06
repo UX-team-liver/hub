@@ -278,7 +278,15 @@
       <!-- Header Drawer -->
       <div class="p-6 border-b border-slate-200 flex items-center justify-between bg-slate-50">
         <div>
-          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Detalle de Asignación</span>
+          <div class="flex items-center gap-1.5 mb-1.5 flex-wrap">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Detalle de Asignación</span>
+            <span id="drawer-header-anexo-badge" class="bg-amber-100 text-amber-900 border border-amber-300 px-2 py-0.5 rounded text-[10px] font-extrabold font-mono shadow-2xs">
+              -
+            </span>
+            <span id="drawer-header-pago-badge" class="bg-blue-100 text-blue-900 border border-blue-300 px-2 py-0.5 rounded text-[10px] font-extrabold font-mono shadow-2xs">
+              -
+            </span>
+          </div>
           <h2 id="drawer-project-name" class="text-lg font-bold text-slate-800">-</h2>
         </div>
         <button onclick="closeDrawer()" class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-full transition-all">
@@ -315,18 +323,28 @@
               <div id="drawer-monto-subtext" class="text-[10px] text-slate-400 hidden mt-0.5"></div>
             </div>
             <div>
-              <span class="text-[10px] uppercase font-bold text-slate-400 block mb-0.5">Identificador de Contrato</span>
+              <span class="text-[10px] uppercase font-bold text-slate-400 block mb-0.5">Solicitud de Pago (#Pago)</span>
               <div class="flex items-center gap-1.5 text-xs font-semibold text-slate-200 mt-1">
-                <i data-lucide="hash" class="w-3.5 h-3.5 text-slate-400"></i>
-                <span id="drawer-id-contrato" class="font-mono">-</span>
+                <span id="drawer-solicitud-pago" class="bg-blue-500/25 text-blue-300 border border-blue-400/50 px-2.5 py-1 rounded-md font-mono font-bold text-sm shadow-inner">
+                  -
+                </span>
               </div>
             </div>
-            <div class="col-span-2 pt-1 border-t border-slate-800/80 flex items-center justify-between text-[11px]">
+            <div class="col-span-2 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px]">
+              <span class="text-slate-300 flex items-center gap-1.5 font-semibold">
+                <i data-lucide="file-badge-2" class="w-4 h-4 text-amber-400"></i>
+                Número de Anexo Oficial:
+              </span>
+              <span id="drawer-numero-anexo" class="font-extrabold text-amber-300 bg-amber-950/80 border border-amber-500/50 px-2.5 py-0.5 rounded-md font-mono text-xs shadow-xs">
+                -
+              </span>
+            </div>
+            <div class="col-span-2 flex items-center justify-between text-[11px]">
               <span class="text-slate-400 flex items-center gap-1">
                 <i data-lucide="file-check" class="w-3.5 h-3.5 text-slate-500"></i>
-                Anexo Asociado:
+                Carátula del Anexo:
               </span>
-              <span id="drawer-anexo-nombre" class="font-semibold text-blue-300 truncate max-w-[220px]">-</span>
+              <span id="drawer-anexo-nombre" class="font-semibold text-slate-300 truncate max-w-[220px]">-</span>
             </div>
           </div>
         </div>
@@ -477,7 +495,7 @@
   </div>
 
   <!-- TOOLTIP FLOTANTE -->
-  <div id="gantt-tooltip" class="fixed z-50 bg-[#1f2232] text-white p-3.5 rounded-xl shadow-2xl text-xs pointer-events-none transform -translate-x-1/2 -translate-y-full mb-3 min-w-[240px] border border-slate-700 hidden">
+  <div id="gantt-tooltip" class="fixed z-50 bg-[#1f2232] text-white p-3.5 rounded-xl shadow-2xl text-xs pointer-events-none transform -translate-x-1/2 -translate-y-full mb-3 min-w-[260px] border border-slate-700 hidden">
     <div class="flex items-center justify-between mb-1.5 pb-1.5 border-b border-slate-700/60">
       <span id="tt-title" class="font-bold text-white text-sm">Proyecto</span>
       <span id="tt-badge" class="bg-[#e2445c] text-white text-[9px] font-bold px-1.5 py-0.5 rounded hidden">EMPALME</span>
@@ -486,6 +504,10 @@
       <div><span class="text-slate-400">UXer:</span> <strong id="tt-uxer" class="text-white">-</strong></div>
       <div><span class="text-slate-400">Fechas:</span> <span id="tt-dates">-</span></div>
       <div><span class="text-slate-400">Monto:</span> <strong id="tt-monto" class="text-emerald-400 font-mono">-</strong></div>
+      <div class="flex items-center gap-2 pt-0.5">
+        <span class="bg-amber-900/60 text-amber-300 border border-amber-600/50 px-2 py-0.5 rounded font-mono text-[10px] font-bold" id="tt-anexo-tag">-</span>
+        <span class="bg-blue-900/60 text-blue-300 border border-blue-500/50 px-2 py-0.5 rounded font-mono text-[10px] font-bold" id="tt-solicitud-tag">-</span>
+      </div>
       <div><span class="text-slate-400">Dominio:</span> <span id="tt-dominio">-</span></div>
       <div id="tt-leyenda-container" class="hidden mt-1.5 text-amber-300 bg-amber-950/80 border border-amber-500/50 px-2.5 py-1 rounded-md text-[10px] flex items-center gap-1.5 font-bold shadow-xs">
         <i data-lucide="file-text" class="w-3 h-3 text-amber-400"></i>
@@ -547,8 +569,10 @@
         dominio: "Herramientas de Venta", 
         proveedor: "ISOL",
         monto: "$ 384,912",
-        anexo: "ANEXO 214 Super App F3",
-        idContrato: "8942",
+        numeroAnexo: "ANEXO 142",
+        solicitudPago: "9235",
+        anexo: "ANEXO 142 - Super App Fase 3 (Bertha)",
+        idContrato: "9235",
         estatus: "Done (pagado)",
         comentarios: "Periodo cubierto al 100%."
       },
@@ -561,6 +585,8 @@
         dominio: "Herramientas de Venta", 
         proveedor: "ISOL",
         monto: "$ 128,304",
+        numeroAnexo: "ANEXO 220",
+        solicitudPago: "9102",
         anexo: "ANEXO 220 Try On",
         idContrato: "9102",
         estatus: "Done (pagado)",
@@ -575,8 +601,10 @@
         dominio: "Servicios & Apps", 
         proveedor: "ISOL",
         monto: "$ 288,684",
-        anexo: "ANEXO 231 Servicios VAS F1",
-        idContrato: "9350",
+        numeroAnexo: "ANEXO 166",
+        solicitudPago: "9799",
+        anexo: "ANEXO 166 - Super App Servicios VAS",
+        idContrato: "9799",
         estatus: "Done (pagado)",
         faseTag: "Fase 1 (Bertha)",
         leyenda: "División 1/2: Cierre en Mayo (pre-Gestor)",
@@ -591,13 +619,17 @@
             nombre: "Bertha",
             rol: "Fase 1 (Saliente)",
             fechas: "02 Mar 2026 al 31 May 2026",
-            monto: "$ 288,684"
+            monto: "$ 288,684",
+            anexo: "ANEXO 166",
+            solicitud: "9799"
           },
           uxerEntrante: {
             nombre: "Luis",
             rol: "Fase 2 (Relevo)",
             fechas: "01 Jun 2026 al 16 Oct 2026",
-            monto: "$ 433,026"
+            monto: "$ 433,026",
+            anexo: "ANEXO 166",
+            solicitud: "9799"
           }
         }
       },
@@ -610,8 +642,10 @@
         dominio: "Operaciones", 
         proveedor: "ISOL",
         monto: "$ 288,684",
-        anexo: "ANEXO 242 Gestor Logístico",
-        idContrato: "9580",
+        numeroAnexo: "ANEXO 185",
+        solicitudPago: "10031",
+        anexo: "ANEXO 185 - Gestor Logístico (jun sep 26)",
+        idContrato: "10031",
         estatus: "Done (pagado)",
         comentarios: "Entrega de flujos principales."
       },
@@ -623,8 +657,10 @@
         end: "2026-11-29", 
         dominio: "Tienda y Logística", 
         proveedor: "ISOL",
-        anexo: "ANEXO 254 Mejoras y se...",
-        idContrato: "10115",
+        numeroAnexo: "ANEXO 254",
+        solicitudPago: "10770",
+        anexo: "ANEXO 254 Mejoras y seguimiento Gestor Logístico",
+        idContrato: "10770",
         estatus: "Not started (Listo para firma)",
         comentarios: "Listo para enviar a firma",
         monto: "$ 192,456",
@@ -645,6 +681,8 @@
         dominio: "Gobierno", 
         proveedor: "ISOL",
         monto: "$ 115,474",
+        numeroAnexo: "ANEXO 218",
+        solicitudPago: "8995",
         anexo: "ANEXO 218 Gobierno",
         idContrato: "8995",
         estatus: "Done (pagado)"
@@ -658,8 +696,10 @@
         dominio: "Portal Sellers", 
         proveedor: "ISOL",
         monto: "$ 288,684",
-        anexo: "ANEXO 225 Portal Sellers",
-        idContrato: "9180",
+        numeroAnexo: "ANEXO 152",
+        solicitudPago: "9800",
+        anexo: "ANEXO 152 - Migración Portal de Sellers",
+        idContrato: "9800",
         estatus: "Done (pagado)"
       },
       { 
@@ -671,8 +711,10 @@
         dominio: "Mesa de Regalos", 
         proveedor: "ISOL",
         monto: "$ 128,304",
-        anexo: "ANEXO 234 MDR F3",
-        idContrato: "9420",
+        numeroAnexo: "ANEXO 154",
+        solicitudPago: "9969",
+        anexo: "ANEXO 154 - Mesa de Regalos",
+        idContrato: "9969",
         estatus: "Done (pagado)"
       },
       { 
@@ -684,8 +726,10 @@
         dominio: "Servicios & Apps", 
         proveedor: "ISOL",
         monto: "$ 433,026",
-        anexo: "ANEXO 245 Servicios VAS F2",
-        idContrato: "9685",
+        numeroAnexo: "ANEXO 166",
+        solicitudPago: "9799",
+        anexo: "ANEXO 166 - Super App Servicios VAS",
+        idContrato: "9799",
         estatus: "Done (pagado)",
         faseTag: "Fase 2 (Relevo Luis)",
         leyenda: "División 2/2: Inicio 1 de Junio",
@@ -700,13 +744,17 @@
             nombre: "Bertha",
             rol: "Fase 1 (Previa)",
             fechas: "02 Mar 2026 al 31 May 2026",
-            monto: "$ 288,684"
+            monto: "$ 288,684",
+            anexo: "ANEXO 166",
+            solicitud: "9799"
           },
           uxerEntrante: {
             nombre: "Luis",
             rol: "Fase 2 (Relevo Actual)",
             fechas: "01 Jun 2026 al 16 Oct 2026",
-            monto: "$ 433,026"
+            monto: "$ 433,026",
+            anexo: "ANEXO 166",
+            solicitud: "9799"
           }
         }
       },
@@ -719,8 +767,10 @@
         dominio: "Expansión", 
         proveedor: "ISOL",
         monto: "$ 384,912",
-        anexo: "ANEXO 259 EU Traducción",
-        idContrato: "10240",
+        numeroAnexo: "ANEXO 246",
+        solicitudPago: "10768",
+        anexo: "ANEXO 246 Traduccion a Ingles -Entrada Unica",
+        idContrato: "10768",
         estatus: "Solicitud de pago"
       },
 
@@ -734,8 +784,10 @@
         dominio: "B2B", 
         proveedor: "ISOL",
         monto: "$ 384,912",
-        anexo: "ANEXO 247 KAM Virtual",
-        idContrato: "9710",
+        numeroAnexo: "ANEXO 198",
+        solicitudPago: "10730",
+        anexo: "ANEXO 198 - KAM Virtual + Rediseño",
+        idContrato: "10730",
         estatus: "Done (pagado)"
       },
       { 
@@ -747,8 +799,10 @@
         dominio: "Marketplace & Operaciones", 
         proveedor: "ISOL", 
         monto: "$ 96,228",
-        anexo: "ANEXO 257 Rediseño MKP",
-        idContrato: "10190",
+        numeroAnexo: "ANEXO 251",
+        solicitudPago: "10771",
+        anexo: "ANEXO 251 Rediseño MKP e Incidencias",
+        idContrato: "10771",
         estatus: "Solicitud de pago",
         isAjusteContrato: true,
         leyenda: "Ajuste de tiempos por contrato",
@@ -763,8 +817,10 @@
         dominio: "Apps", 
         proveedor: "ISOL", 
         monto: "$ 336,798",
-        anexo: "ANEXO 262 Super App F2 Relevo",
-        idContrato: "10340",
+        numeroAnexo: "ANEXO 222",
+        solicitudPago: "10584",
+        anexo: "ANEXO 222 - Super App Fase 2 (MaFer y Vero)",
+        idContrato: "10584",
         estatus: "Solicitud de compra",
         faseTag: "Verónica (Relevo)",
         leyenda: "Super App Fase 2",
@@ -779,13 +835,17 @@
             nombre: "MaFer",
             rol: "Fase 1 (Previa)",
             fechas: "24 Ago 2026 al 08 Nov 2026",
-            monto: "$ 240,570"
+            monto: "$ 240,570",
+            anexo: "ANEXO 222",
+            solicitud: "10584"
           },
           uxerEntrante: {
             nombre: "Verónica",
             rol: "Fase 2 (Relevo Actual)",
             fechas: "09 Nov 2026 al 24 Feb 2027",
-            monto: "$ 336,798"
+            monto: "$ 336,798",
+            anexo: "ANEXO 222",
+            solicitud: "10584"
           }
         }
       },
@@ -800,6 +860,8 @@
         dominio: "Marketing", 
         proveedor: "ISOL",
         monto: "$ 288,684",
+        numeroAnexo: "ANEXO 249",
+        solicitudPago: "9750",
         anexo: "ANEXO 249 Portal Mkt",
         idContrato: "9750",
         estatus: "Done (pagado)"
@@ -813,8 +875,10 @@
         dominio: "Inteligencia Artificial", 
         proveedor: "ISOL",
         monto: "$ 384,912",
-        anexo: "ANEXO 256 Modelos IA",
-        idContrato: "10160",
+        numeroAnexo: "ANEXO 224",
+        solicitudPago: "10515",
+        anexo: "ANEXO 224 - Modelos IA",
+        idContrato: "10515",
         estatus: "Solicitud de pago"
       },
 
@@ -828,8 +892,10 @@
         dominio: "Apps", 
         proveedor: "ISOL",
         monto: "$ 240,570",
-        anexo: "ANEXO 252 Super App F2 Inicio",
-        idContrato: "9890",
+        numeroAnexo: "ANEXO 222",
+        solicitudPago: "10584",
+        anexo: "ANEXO 222 - Super App Fase 2 (MaFer y Vero)",
+        idContrato: "10584",
         estatus: "Done (pagado)",
         faseTag: "MaFer",
         leyenda: "Super App Fase 2 (MaFer)",
@@ -844,13 +910,17 @@
             nombre: "MaFer",
             rol: "Fase 1 (Actual)",
             fechas: "24 Ago 2026 al 08 Nov 2026",
-            monto: "$ 240,570"
+            monto: "$ 240,570",
+            anexo: "ANEXO 222",
+            solicitud: "10584"
           },
           uxerEntrante: {
             nombre: "Verónica",
             rol: "Fase 2 (Relevo)",
             fechas: "09 Nov 2026 al 24 Feb 2027",
-            monto: "$ 336,798"
+            monto: "$ 336,798",
+            anexo: "ANEXO 222",
+            solicitud: "10584"
           }
         }
       },
@@ -865,8 +935,10 @@
         dominio: "Omnicanalidad", 
         proveedor: "ISOL",
         monto: "$ 192,456",
-        anexo: "ANEXO 210 Comercio Unif",
-        idContrato: "8850",
+        numeroAnexo: "ANEXO 147",
+        solicitudPago: "9308",
+        anexo: "ANEXO 147 - Comercio Unificado",
+        idContrato: "9308",
         estatus: "Done (pagado)"
       },
 
@@ -880,8 +952,10 @@
         dominio: "B2B", 
         proveedor: "ISOL",
         monto: "$ 384,912",
-        anexo: "ANEXO 248 KAM Virtual",
-        idContrato: "9711",
+        numeroAnexo: "ANEXO 198",
+        solicitudPago: "10730",
+        anexo: "ANEXO 198 - KAM Virtual + Rediseño",
+        idContrato: "10730",
         estatus: "Done (pagado)"
       },
 
@@ -894,7 +968,9 @@
         end: "2026-05-05",
         dominio: "Tráfico y Navegación",
         proveedor: "ISOL",
-        anexo: "2. Features...",
+        numeroAnexo: "ANEXO 152",
+        solicitudPago: "9651",
+        anexo: "ANEXO 152 - Features Personalización (Feb may 26)",
         idContrato: "9651",
         estatus: "Solicitud de pago (Anexo firmado)",
         comentarios: "Anexo firmado.",
@@ -908,7 +984,9 @@
         end: "2026-08-06",
         dominio: "Tráfico y Navegación",
         proveedor: "ISOL",
-        anexo: "3. Features...",
+        numeroAnexo: "ANEXO 152",
+        solicitudPago: "9920",
+        anexo: "ANEXO 152 - Features Personalización (may ago 26)",
         idContrato: "9920",
         estatus: "Done (pagado)",
         comentarios: "Anexo ya firmado",
@@ -922,7 +1000,9 @@
         end: "2027-01-29",
         dominio: "Tráfico y Navegación",
         proveedor: "ISOL",
-        anexo: "1. Platafor...",
+        numeroAnexo: "ANEXO 200",
+        solicitudPago: "10280",
+        anexo: "ANEXO 200 - Features Innovación",
         idContrato: "10280",
         estatus: "Solicitud de compra",
         comentarios: "*Se realizó el 28 de Oct el 1er pago ($288,684), el 29 de enero se haría el último pago.",
@@ -936,7 +1016,9 @@
         end: "2027-04-05",
         dominio: "Tráfico y Navegación",
         proveedor: "ISOL",
-        anexo: "Extensión 3 meses",
+        numeroAnexo: "ANEXO 200",
+        solicitudPago: "10510",
+        anexo: "ANEXO 200 Features Innovación (Extensión)",
         idContrato: "10510",
         estatus: "Not started",
         comentarios: "*Extensión de 3 meses para Vero en el mismo proyecto.",
@@ -951,7 +1033,9 @@
         end: "2026-01-30",
         dominio: "Servicios",
         proveedor: "ISOL",
-        anexo: "1. Asistente...",
+        numeroAnexo: "ANEXO 151",
+        solicitudPago: "9411",
+        anexo: "ANEXO 151 - Asistente de Crédito (en tienda)",
         idContrato: "9411",
         estatus: "Solicitud de pago",
         comentarios: "Proyecto del área de Innovación (con Itzana).",
@@ -965,7 +1049,9 @@
         end: "2027-01-15",
         dominio: "Servicios",
         proveedor: "ISOL",
-        anexo: "1. Features ...",
+        numeroAnexo: "ANEXO 180",
+        solicitudPago: "9968",
+        anexo: "ANEXO 180 - Célula de Crédito",
         idContrato: "9968",
         estatus: "Solicitud de pago",
         comentarios: "Originalmente se facturaba cada 3 meses ($288,684 x 3): [✓] 16 de jul, [_] 16 de oct y [_] 16 de ene. Pero por repriorización de Dir. Digital (Decomm) solo se podrá pagar vía Producto el 1er Q. Los otros 2 se pagarán vía Centro de Costos con el área de Crédito (Lupita Saavedra). Y para ello se firmó una Cesión de Derechos.",
@@ -1202,9 +1288,16 @@
       const container = document.getElementById('gantt-rows-container');
       
       const filtered = processedGroups.filter(g => {
+        const query = currentSearchTerm.toLowerCase();
         const matchesSearch = 
-          g.uxer.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
-          g.projects.some(p => p.project.toLowerCase().includes(currentSearchTerm.toLowerCase()) || p.dominio.toLowerCase().includes(currentSearchTerm.toLowerCase()));
+          g.uxer.toLowerCase().includes(query) ||
+          g.projects.some(p => 
+            p.project.toLowerCase().includes(query) || 
+            p.dominio.toLowerCase().includes(query) ||
+            (p.numeroAnexo && p.numeroAnexo.toLowerCase().includes(query)) ||
+            (p.solicitudPago && p.solicitudPago.toLowerCase().includes(query)) ||
+            (p.anexo && p.anexo.toLowerCase().includes(query))
+          );
 
         if (!matchesSearch) return false;
 
@@ -1402,6 +1495,10 @@
       }
       document.getElementById('tt-dominio').textContent = task.dominio;
 
+      // Número de anexo y número de solicitud de pago en tooltip
+      document.getElementById('tt-anexo-tag').textContent = task.numeroAnexo || 'ANEXO';
+      document.getElementById('tt-solicitud-tag').textContent = `#Pago: ${task.solicitudPago || '-'}`;
+
       const badge = document.getElementById('tt-badge');
       const conflictWarn = document.getElementById('tt-conflict-warning');
       const conflictText = document.getElementById('tt-conflict-text');
@@ -1448,6 +1545,23 @@
       document.getElementById('drawer-proveedor').textContent = task.proveedor;
       document.getElementById('drawer-dominio').textContent = task.dominio;
 
+      // Badges destacados en el Header del Drawer
+      const headerAnexoBadge = document.getElementById('drawer-header-anexo-badge');
+      const headerPagoBadge = document.getElementById('drawer-header-pago-badge');
+      if (task.numeroAnexo) {
+        headerAnexoBadge.textContent = task.numeroAnexo;
+        headerAnexoBadge.classList.remove('hidden');
+      } else {
+        headerAnexoBadge.classList.add('hidden');
+      }
+
+      if (task.solicitudPago) {
+        headerPagoBadge.textContent = `#Pago: ${task.solicitudPago}`;
+        headerPagoBadge.classList.remove('hidden');
+      } else {
+        headerPagoBadge.classList.add('hidden');
+      }
+
       // Monto y Datos Contractuales
       const montoLabel = document.getElementById('drawer-monto-label');
       const montoSubtext = document.getElementById('drawer-monto-subtext');
@@ -1484,7 +1598,10 @@
       }
 
       document.getElementById('drawer-estatus-pago').textContent = task.estatus || 'En gestión';
-      document.getElementById('drawer-id-contrato').textContent = task.idContrato || task.id;
+      
+      // Número de Solicitud de Pago (#Pago) y Número de Anexo Oficial
+      document.getElementById('drawer-solicitud-pago').textContent = task.solicitudPago ? `#${task.solicitudPago}` : '-';
+      document.getElementById('drawer-numero-anexo').textContent = task.numeroAnexo || '-';
       document.getElementById('drawer-anexo-nombre').textContent = task.anexo || 'Anexo contractual estándar';
 
       // Fechas Detalladas y Cálculo de Duración
