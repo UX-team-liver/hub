@@ -505,10 +505,6 @@
             <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Proveedor</span>
             <span id="drawer-proveedor" class="text-sm font-bold text-slate-800">-</span>
           </div>
-          <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 col-span-2">
-            <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Dominio / Célula</span>
-            <span id="drawer-dominio" class="text-sm font-semibold text-slate-700">-</span>
-          </div>
           <div id="drawer-extra-info" class="bg-slate-50 p-3 rounded-lg border border-slate-100 col-span-2 hidden space-y-2">
             <!-- Datos adicionales de contrato: PEP, Comentarios, etc. -->
           </div>
@@ -557,7 +553,6 @@
       <!-- Contenedor dinámico de Tags: Relevo / Estatus / Fase -->
       <div class="flex items-center gap-1.5 flex-wrap pt-0.5" id="tt-tags-container"></div>
 
-      <div><span class="text-slate-400">Dominio:</span> <span id="tt-dominio">-</span></div>
       <div id="tt-leyenda-container" class="hidden mt-1 text-amber-300 bg-amber-950/80 border border-amber-500/50 px-2.5 py-1 rounded-md text-[10px] flex items-center gap-1.5 font-bold shadow-xs">
         <i data-lucide="file-text" class="w-3 h-3 text-amber-400"></i>
         <span id="tt-leyenda"></span>
@@ -1377,7 +1372,6 @@
               g.uxer.toLowerCase().includes(query) ||
               g.projects.some(p => 
                 p.project.toLowerCase().includes(query) || 
-                p.dominio.toLowerCase().includes(query) ||
                 (p.numeroAnexo && p.numeroAnexo.toLowerCase().includes(query)) ||
                 (p.solicitudPago && p.solicitudPago.toLowerCase().includes(query)) ||
                 (p.anexo && p.anexo.toLowerCase().includes(query))
@@ -1601,7 +1595,6 @@
       } else {
         document.getElementById('tt-monto').textContent = task.monto || 'Por definir';
       }
-      document.getElementById('tt-dominio').textContent = task.dominio;
 
       // Número de anexo y número de solicitud de pago destacados en tooltip
       document.getElementById('tt-anexo-tag').textContent = task.numeroAnexo ? task.numeroAnexo : 'ANEXO';
@@ -1675,7 +1668,6 @@
       document.getElementById('drawer-project-name').textContent = task.project;
       document.getElementById('drawer-uxer').textContent = task.uxer;
       document.getElementById('drawer-proveedor').textContent = task.proveedor;
-      document.getElementById('drawer-dominio').textContent = task.dominio;
 
       // Banner superior de Anexo Oficial y Solicitud de Contrato
       document.getElementById('drawer-banner-anexo-full').textContent = task.anexo || `${task.numeroAnexo || 'ANEXO'} - ${task.project}`;
