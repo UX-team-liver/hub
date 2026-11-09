@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>El Puerto de Liverpool • UX/UI y Reglas de Negocio</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            lp: {
+              purple: '#4A154B',       // Morado Corporativo Puerto de Liverpool
+              'purple-dark': '#320B34',
+              'purple-light': '#68236A',
+              magenta: '#E10098',      // Magenta / Rosa Liverpool
+              'magenta-soft': '#FDF2F9',
+              orange: '#FF6600',       // Naranja Liverpool
+              'orange-dark': '#D95200',
+              'orange-light': '#FFF4EB',
+              surface: '#FFFFFF',
+              canvas: '#F8FAFC',
+              border: '#E2E8F0',
+              text: '#0F172A',
+              muted: '#64748B'
+            }
+          },
+          boxShadow: {
+            'card': '0 4px 20px -2px rgba(74, 21, 75, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.03)',
+            'card-hover': '0 12px 32px -4px rgba(74, 21, 75, 0.12), 0 4px 12px -2px rgba(255, 102, 0, 0.08)',
+            'accent-orange': '0 8px 24px -4px rgba(255, 102, 0, 0.25)',
+            'accent-purple': '0 8px 24px -4px rgba(74, 21, 75, 0.25)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar for Presentation Feel */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F8FAFC;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #4A154B;
+    }
+    .badge-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    .gradient-purple-orange {
+      background: linear-gradient(135deg, #4A154B 0%, #7E1E70 50%, #FF6600 100%);
+    }
+  </style>
+</head>
+<body class="bg-white text-slate-900 font-sans antialiased selection:bg-lp-orange selection:text-white">
+
+  <!-- TOP APP / PRESENTATION BAR -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 transition-all duration-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand & Document Title -->
+      <div class="flex items-center gap-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-[11px] font-black uppercase tracking-wider text-lp-purple">El Puerto de Liverpool</span>
+            <span class="text-xs text-slate-400">•</span>
+            <span class="text-[11px] font-bold text-lp-orange uppercase tracking-wider">PIM Headless</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Presentation Navigation -->
+      <nav class="hidden lg:flex items-center gap-1 text-xs font-semibold text-slate-600">
+        <a href="#arquitectura" class="px-2.5 py-1.5 rounded-lg hover:text-lp-purple hover:bg-slate-100 transition">1. Arquitectura</a>
+        <a href="#entrada" class="px-2.5 py-1.5 rounded-lg hover:text-lp-purple hover:bg-slate-100 transition">2. Entrada Única</a>
+        <a href="#mercaderias" class="px-2.5 py-1.5 rounded-lg hover:text-lp-purple hover:bg-slate-100 transition">3. Mercaderías</a>
+        <a href="#marketplace" class="px-2.5 py-1.5 rounded-lg hover:text-lp-purple hover:bg-slate-100 transition">4. Marketplace</a>
+        <a href="#fotoia" class="px-2.5 py-1.5 rounded-lg hover:text-lp-purple hover:bg-slate-100 transition">5. FotoIA</a>
+        <a href="#commercetools" class="px-2.5 py-1.5 rounded-lg hover:text-lp-purple hover:bg-slate-100 transition">6. Commerce Tools</a>
+        <a href="#gobierno" class="px-2.5 py-1.5 rounded-lg hover:text-lp-purple hover:bg-slate-100 transition">7. Gobierno</a>
+        <a href="#matriz" class="px-3 py-1.5 rounded-lg bg-lp-purple text-white hover:bg-lp-purple-dark transition shadow-accent-purple">8. Matriz</a>
+      </nav>
+
+      <!-- Action Button -->
+      <div class="flex items-center gap-2">
+        <span class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-[11px] font-bold text-emerald-700">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          TO BE
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN SCROLL PRESENTATION CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-24">
+
+    <!-- HERO SECTION: EXECUTIVE VISION -->
+    <section class="pt-4 pb-8 border-b border-slate-200 relative overflow-hidden">
+      <div class="absolute -top-12 -right-12 w-96 h-96 rounded-full bg-lp-orange/5 blur-3xl pointer-events-none"></div>
+      <div class="absolute top-20 right-1/3 w-80 h-80 rounded-full bg-lp-purple/5 blur-3xl pointer-events-none"></div>
+
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-xs text-slate-700 font-semibold mb-5">
+        <span class="w-2 h-2 rounded-full bg-lp-orange"></span>
+        Digital Omnicanal • Reemplazo P360
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-8 space-y-4">
+          <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+            Gobierno de Producto: <br class="hidden sm:inline">
+            <span class="bg-gradient-to-r from-lp-purple via-lp-magenta to-lp-orange bg-clip-text text-transparent">
+              Aquitectura PIM Headless
+            </span>
+          </h1>
+          <p class="text-base sm:text-lg text-slate-600 leading-relaxed max-w-3xl">
+            Modernización integral de la catalogación comercial de <strong>El Puerto de Liverpool</strong>. Elimina los cuellos de botella de la plataforma P360, desacopla la salida al mercado (<em>Time-to-Market</em>) del enriquecimiento profundo y garantiza una experiencia de autoservicio ágil para Liverpool, Suburbia y Marketplace.
+          </p>
+        </div>
+
+        <div class="lg:col-span-4 bg-slate-50 border border-slate-200 p-5 rounded-2xl shadow-card space-y-3">
+          <div class="text-xs font-bold uppercase tracking-wider text-lp-purple">Principios Rectores del Rediseño</div>
+          <div class="space-y-2.5 text-xs text-slate-700">
+            <div class="flex items-start gap-2.5">
+              <div class="w-5 h-5 rounded-md bg-lp-purple text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">&check;</div>
+              <div><strong class="text-slate-900">Time-to-Market Inmediato:</strong> Venta con Capa 1 (15 campos esenciales); enriquecimiento asíncrono posterior.</div>
+            </div>
+            <div class="flex items-start gap-2.5">
+              <div class="w-5 h-5 rounded-md bg-lp-orange text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">&check;</div>
+              <div><strong class="text-slate-900">Cero Dependencia de Tickets:</strong> Autonomía del comprador hacia SAP y captura libre con LOVs transparentes.</div>
+            </div>
+            <div class="flex items-start gap-2.5">
+              <div class="w-5 h-5 rounded-md bg-slate-800 text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">&check;</div>
+              <div><strong class="text-slate-900">Consistencia Omnicanal:</strong> Ficha técnica unificada y adaptada por canal (Liverpool, Suburbia y MKP).</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Strategic Metrics Strip -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-10">
+        <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Publicación Inicial</span>
+          <div class="text-2xl sm:text-3xl font-extrabold text-lp-purple mt-1">Capa 1</div>
+          <span class="text-xs text-slate-600 block mt-0.5">~15 de 50 atributos mínimos</span>
+        </div>
+        <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Filtro Preventivo</span>
+          <div class="text-2xl sm:text-3xl font-extrabold text-lp-orange mt-1">Paso 0</div>
+          <span class="text-xs text-slate-600 block mt-0.5">Blacklist & Whitelist síncrona</span>
+        </div>
+        <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">FotoIA Fallback</span>
+          <div class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">4 Intentos</div>
+          <span class="text-xs text-slate-600 block mt-0.5">Restaura original sin detener venta</span>
+        </div>
+        <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm">
+          <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Purga de Borradores</span>
+          <div class="text-2xl sm:text-3xl font-extrabold text-rose-600 mt-1">90 Días</div>
+          <span class="text-xs text-slate-600 block mt-0.5">Saneamiento continuo de BD</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. VISIÓN GENERAL Y ARQUITECTURA DE EXPERIENCIA -->
+    <section id="arquitectura" class="space-y-8">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-slate-200 pb-4">
+        <div>
+          <span class="badge-chip bg-lp-purple/10 text-lp-purple border border-lp-purple/20">Sección 01</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
+            Visión General y Arquitectura de Experiencia (UX/UI)
+          </h2>
+          <p class="text-sm text-slate-500 mt-1">Desacoplamiento funcional, flujo de eventos e interacción entre capas.</p>
+        </div>
+        <span class="text-xs font-mono bg-slate-100 text-slate-600 px-3 py-1.5 rounded-lg border border-slate-200">
+          Target: TO BE Architecture
+        </span>
+      </div>
+
+      <!-- DYNAMIC ARCHITECTURE DIAGRAM (Replaces ASCII diagram with interactive flow) -->
+      <div class="p-6 sm:p-8 rounded-2xl bg-slate-50 border border-slate-200 shadow-card space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-4">
+          <div>
+            <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-lp-orange"></span>
+              Diagrama Dinámico: Arquitectura de Catalogación PIM Headless
+            </h3>
+            <p class="text-xs text-slate-500 mt-0.5">Haz clic en cada bloque para inspeccionar su comportamiento UX y reglas operativas asociadas:</p>
+          </div>
+          <span class="text-xs font-mono text-lp-purple font-bold bg-white px-2.5 py-1 rounded-md border border-slate-200 shadow-sm">
+            Topología End-to-End
+          </span>
+        </div>
+
+        <!-- Visual Flow Nodes -->
+        <div class="grid grid-cols-1 md:grid-cols-6 gap-3 relative">
+          
+          <!-- Node 1: Fuentes Origen -->
+          <button onclick="inspectNode('fuentes')" class="p-4 rounded-xl text-left transition-all duration-200 border-2 bg-white hover:border-lp-purple shadow-sm focus:outline-none" id="node-fuentes">
+            <span class="text-[10px] font-mono uppercase font-bold text-slate-400 block">01. Ingesta</span>
+            <strong class="text-sm font-bold text-slate-900 block mt-1">Fuentes Origen</strong>
+            <p class="text-[11px] text-slate-500 mt-1">Sellers, Compradores (SAP S/4HANA) y Scraping.</p>
+            <div class="mt-2 text-[10px] font-semibold text-lp-purple">&rarr; Explorar nodo</div>
+          </button>
+
+          <!-- Node 2: Paso 0 -->
+          <button onclick="inspectNode('paso0')" class="p-4 rounded-xl text-left transition-all duration-200 border-2 bg-white hover:border-lp-orange shadow-sm focus:outline-none" id="node-paso0">
+            <span class="text-[10px] font-mono uppercase font-bold text-lp-orange block">02. Filtro</span>
+            <strong class="text-sm font-bold text-slate-900 block mt-1">Paso 0 Universal</strong>
+            <p class="text-[11px] text-slate-500 mt-1">Blacklist & Whitelist por sección y marca.</p>
+            <div class="mt-2 text-[10px] font-semibold text-lp-orange">&rarr; Explorar nodo</div>
+          </button>
+
+          <!-- Node 3: Motor Matching -->
+          <button onclick="inspectNode('matching')" class="p-4 rounded-xl text-left transition-all duration-200 border-2 bg-white hover:border-lp-purple shadow-sm focus:outline-none" id="node-matching">
+            <span class="text-[10px] font-mono uppercase font-bold text-lp-purple block">03. Coincidencia</span>
+            <strong class="text-sm font-bold text-slate-900 block mt-1">Matching Engine</strong>
+            <p class="text-[11px] text-slate-500 mt-1">EAN, Imagen, Modelo, Marca o URL externa.</p>
+            <div class="mt-2 text-[10px] font-semibold text-lp-purple">&rarr; Explorar nodo</div>
+          </button>
+
+          <!-- Node 4: PIM Core -->
+          <button onclick="inspectNode('core')" class="p-4 rounded-xl text-left transition-all duration-200 border-2 bg-white hover:border-lp-orange shadow-sm focus:outline-none" id="node-core">
+            <span class="text-[10px] font-mono uppercase font-bold text-lp-orange block">04. Atributos</span>
+            <strong class="text-sm font-bold text-slate-900 block mt-1">PIM Core (3 Capas)</strong>
+            <p class="text-[11px] text-slate-500 mt-1">Capa 1 Requeridos, Capa 2 SEO, Capa 3 Enrich.</p>
+            <div class="mt-2 text-[10px] font-semibold text-lp-orange">&rarr; Explorar nodo</div>
+          </button>
+
+          <!-- Node 5: Broker -->
+          <button onclick="inspectNode('broker')" class="p-4 rounded-xl text-left transition-all duration-200 border-2 bg-white hover:border-slate-400 shadow-sm focus:outline-none" id="node-broker">
+            <span class="text-[10px] font-mono uppercase font-bold text-slate-500 block">05. Mensajería</span>
+            <strong class="text-sm font-bold text-slate-900 block mt-1">Broker Intermedio</strong>
+            <p class="text-[11px] text-slate-500 mt-1">Eventos asíncronos y desacoplamiento.</p>
+            <div class="mt-2 text-[10px] font-semibold text-slate-600">&rarr; Explorar nodo</div>
+          </button>
+
+          <!-- Node 6: Publicación -->
+          <button onclick="inspectNode('publicacion')" class="p-4 rounded-xl text-left transition-all duration-200 border-2 bg-white hover:border-lp-purple shadow-sm focus:outline-none" id="node-publicacion">
+            <span class="text-[10px] font-mono uppercase font-bold text-emerald-600 block">06. Storefront</span>
+            <strong class="text-sm font-bold text-slate-900 block mt-1">Publicación</strong>
+            <p class="text-[11px] text-slate-500 mt-1">Commerce Tools, FotoIA y Enrich scraping.</p>
+            <div class="mt-2 text-[10px] font-semibold text-emerald-600">&rarr; Explorar nodo</div>
+          </button>
+
+        </div>
+
+        <!-- Node Inspector Detail Box -->
+        <div id="architectureInspector" class="p-5 rounded-xl bg-white border border-slate-200 shadow-sm transition-all duration-300">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- 3 Fundamental Principles -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-slate-200">
+          <div class="p-4 rounded-xl bg-white border border-slate-200">
+            <div class="w-8 h-8 rounded-lg bg-lp-purple/10 text-lp-purple flex items-center justify-center font-bold text-sm mb-2">1</div>
+            <h4 class="text-sm font-bold text-slate-900">Desacoplamiento Rápido vs Profundo</h4>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+              El producto se publica y comienza a venderse al cumplir la <strong>Capa 1</strong>. Las Capas 2 y 3 corren en segundo plano mediante IA y scraping sin demorar la venta.
+            </p>
+          </div>
+          <div class="p-4 rounded-xl bg-white border border-slate-200">
+            <div class="w-8 h-8 rounded-lg bg-lp-orange/10 text-lp-orange flex items-center justify-center font-bold text-sm mb-2">2</div>
+            <h4 class="text-sm font-bold text-slate-900">Arquitectura Headless Agnóstica</h4>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+              Repositorio central desacoplado de frontends. Comunicación limpia a través de API Gateway con Commerce Tools, OMS, SAP S/4HANA y Storefronts.
+            </p>
+          </div>
+          <div class="p-4 rounded-xl bg-white border border-slate-200">
+            <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-800 flex items-center justify-center font-bold text-sm mb-2">3</div>
+            <h4 class="text-sm font-bold text-slate-900">Autonomía y Mitigación de Tickets</h4>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+              Erradicación total de solicitudes manuales para liberación de EANs, envases o tallas. El sistema canaliza tareas automáticas a Gobierno de Datos o SAP.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. ENTRADA ÚNICA, FILTRO UNIVERSAL Y MATCHING -->
+    <section id="entrada" class="space-y-8">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-slate-200 pb-4">
+        <div>
+          <span class="badge-chip bg-lp-orange/10 text-lp-orange border border-lp-orange/20">Sección 02</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
+            Entrada Única, Filtro Universal y Motor de Coincidencias (Matching)
+          </h2>
+          <p class="text-sm text-slate-500 mt-1">Primera línea de defensa preventiva para resguardar la unicidad de catálogo.</p>
+        </div>
+        <span class="text-xs font-mono bg-lp-orange-light text-lp-orange px-3 py-1.5 rounded-lg border border-lp-orange/20 font-bold">
+          Paso 0 Transparente
+        </span>
+      </div>
+
+      <!-- Functional Details Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Card 1: Paso 0 -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-card space-y-4">
+          <div class="w-10 h-10 rounded-xl bg-lp-purple/10 text-lp-purple flex items-center justify-center font-bold text-base">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+          </div>
+          <h3 class="text-base font-bold text-slate-900">Filtro Universal de Lista Negra (Paso 0)</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Se ejecuta de manera síncrona antes de mostrar cualquier plantilla. Evita registros ilegítimos o sin autorización comercial:
+          </p>
+          <ul class="text-xs space-y-2 text-slate-700">
+            <li class="flex items-start gap-2">
+              <span class="text-lp-purple font-bold">&bull;</span>
+              <span><strong>Segmentación por Sección:</strong> Perfumería, cosméticos, fragancias, óptica y electrónica.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-lp-purple font-bold">&bull;</span>
+              <span><strong>Marcas Protegidas:</strong> Apple, Chanel, Dior, Disney bloquean captura salvo carta de distribución validada.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-lp-purple font-bold">&bull;</span>
+              <span><strong>Brand Request:</strong> Modal in situ para anexar carta de autorización sin abandonar el portal.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Card 2: Matching Redirection -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-card space-y-4">
+          <div class="w-10 h-10 rounded-xl bg-lp-orange/10 text-lp-orange flex items-center justify-center font-bold text-base">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+          </div>
+          <h3 class="text-base font-bold text-slate-900">Motor de Coincidencias (Matching)</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Evalúa 5 entradas lógicas: <strong>EAN/UPC, imagen, modelo, marca o URL externa</strong> y redirige automáticamente:
+          </p>
+          <div class="space-y-2.5 text-xs">
+            <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+              <strong class="text-lp-purple block font-bold">Match en Marketplace:</strong>
+              <p class="text-slate-600 mt-0.5">Desvía a <strong>Multioferta</strong> para colgar precio/stock sin duplicar la ficha técnica madre.</p>
+            </div>
+            <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+              <strong class="text-lp-orange block font-bold">Match en Liverpool / Suburbia:</strong>
+              <p class="text-slate-600 mt-0.5">Redirige a <strong>Stockout</strong> vinculando inventario sin re-crear el SKU en SAP.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Plantillas & Ropa General -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-card space-y-4">
+          <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center font-bold text-base">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+          </div>
+          <h3 class="text-base font-bold text-slate-900">Plantillas y Negocio Hermano</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Optimización ergonómica del flujo de captura según el historial del proveedor:
+          </p>
+          <ul class="text-xs space-y-2 text-slate-700">
+            <li class="flex items-start gap-2">
+              <span class="text-slate-400 font-bold">&bull;</span>
+              <span><strong>Historial 6 Meses:</strong> Panel de plantillas y categorías favoritas accesibles en 1 clic.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-slate-400 font-bold">&bull;</span>
+              <span><strong>Coincidencia Comercial (LIV &rarr; SUB):</strong> Si existe en Liverpool, precarga datos en Suburbia requiriendo solo validación.</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-slate-400 font-bold">&bull;</span>
+              <span><strong>Familias Genéricas:</strong> Ante artículos nuevos sin categoría obvia, asigna <em>Ropa General</em> con cuestionario guiado.</span>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- INTERACTIVE SIMULATOR: MATCHING & PASO 0 -->
+      <div class="p-6 sm:p-8 rounded-2xl bg-slate-50 border border-slate-200 shadow-card space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
+          <div>
+            <span class="text-[11px] font-mono uppercase tracking-wider text-lp-purple font-bold block">Simulador Interactivo de UX</span>
+            <h4 class="text-base font-bold text-slate-900">Laboratorio de Validación Paso 0 y Redirección de Coincidencias</h4>
+          </div>
+          <span class="text-xs text-slate-500">Prueba cómo responde la interfaz frente a diferentes entradas</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <!-- Input Controls -->
+          <div class="lg:col-span-5 space-y-3">
+            <label class="block text-xs font-bold text-slate-700">Ingresar EAN, Marca o Palabra Clave:</label>
+            <div class="flex gap-2">
+              <input type="text" id="simEanInput" value="7501000123456" class="w-full px-3 py-2 text-xs font-mono rounded-lg border border-slate-300 focus:outline-none focus:border-lp-purple bg-white text-slate-900" placeholder="ej. APPLE_WATCH o 7501000123456">
+              <button onclick="runMatchingSim()" class="px-4 py-2 bg-lp-purple hover:bg-lp-purple-dark text-white rounded-lg text-xs font-bold transition shrink-0 shadow-sm">
+                Procesar
+              </button>
+            </div>
+
+            <div class="space-y-1.5 pt-2">
+              <span class="text-[11px] font-semibold text-slate-500 block">Casos de prueba predeterminados:</span>
+              <div class="flex flex-wrap gap-1.5">
+                <button onclick="setSimInput('APPLE_IPHONE_16', 'Paso 0')" class="px-2.5 py-1 rounded bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium hover:bg-rose-100 transition">Marca Protegida (Apple)</button>
+                <button onclick="setSimInput('7501000123456', 'Match MKP')" class="px-2.5 py-1 rounded bg-purple-50 border border-purple-200 text-lp-purple text-xs font-medium hover:bg-purple-100 transition">Match MKP (Multioferta)</button>
+                <button onclick="setSimInput('7509999888822', 'Match LIV')" class="px-2.5 py-1 rounded bg-orange-50 border border-orange-200 text-lp-orange text-xs font-medium hover:bg-orange-100 transition">Match Liverpool (Stockout)</button>
+                <button onclick="setSimInput('LIV_TO_SUB_441', 'Hermano')" class="px-2.5 py-1 rounded bg-blue-50 border border-blue-200 text-blue-700 text-xs font-medium hover:bg-blue-100 transition">Negocio Hermano (LIV &rarr; SUB)</button>
+                <button onclick="setSimInput('7508822119933', 'Limpio')" class="px-2.5 py-1 rounded bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium hover:bg-emerald-100 transition">Nuevo SKU (Paso 1)</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- UI Reaction Card -->
+          <div class="lg:col-span-7 bg-white rounded-xl p-5 border border-slate-200 min-h-[190px] shadow-sm flex flex-col justify-between" id="simResultCard">
+            <!-- Dynamically populated by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. MÓDULO DE MERCADERÍAS (LIVERPOOL Y SUBURBIA) -->
+    <section id="mercaderias" class="space-y-8">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-slate-200 pb-4">
+        <div>
+          <span class="badge-chip bg-lp-purple/10 text-lp-purple border border-lp-purple/20">Sección 03</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
+            Módulo de Mercaderías (Liverpool y Suburbia)
+          </h2>
+          <p class="text-sm text-slate-500 mt-1">Gobernanza de atributos en tres capas, autonomía del comprador y congelamiento de títulos.</p>
+        </div>
+        <span class="text-xs font-mono bg-lp-magenta-soft text-lp-purple px-3 py-1.5 rounded-lg border border-lp-purple/20 font-bold">
+          Compuertas 3-Tier
+        </span>
+      </div>
+
+      <!-- 3-Tier Visual Gates -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Capa 1 -->
+        <div class="p-6 rounded-2xl bg-white border-2 border-lp-purple shadow-card relative overflow-hidden">
+          <div class="absolute top-0 right-0 bg-lp-purple text-white text-[10px] font-bold px-3 py-1 rounded-bl-lg font-mono">
+            Habilita Publicación
+          </div>
+          <span class="text-xs font-mono text-lp-purple font-extrabold uppercase block">Capa 1</span>
+          <h3 class="text-base font-bold text-slate-900 mt-1">Requeridos (Obligatorios Mínimos)</h3>
+          <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+            Aproximadamente <strong>15 de 50 campos</strong> indispensables para generar el SKU en SAP y salir a venta de forma inmediata:
+          </p>
+          <div class="mt-4 pt-3 border-t border-slate-100 text-xs space-y-1.5 text-slate-700">
+            <div class="flex items-center justify-between">
+              <span>Nombre y Marca <span class="text-rose-500 font-bold">*</span></span>
+              <span class="font-mono text-[10px] bg-slate-100 px-1.5 py-0.5 rounded">Requerido</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>Código EAN / UPC <span class="text-rose-500 font-bold">*</span></span>
+              <span class="font-mono text-[10px] bg-slate-100 px-1.5 py-0.5 rounded">Requerido</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>Talla y Color Primario <span class="text-rose-500 font-bold">*</span></span>
+              <span class="font-mono text-[10px] bg-slate-100 px-1.5 py-0.5 rounded">Requerido</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>Foto Principal Mínima <span class="text-rose-500 font-bold">*</span></span>
+              <span class="font-mono text-[10px] bg-slate-100 px-1.5 py-0.5 rounded">Requerido</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Capa 2 -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-card">
+          <span class="text-xs font-mono text-lp-orange font-extrabold uppercase block">Capa 2</span>
+          <h3 class="text-base font-bold text-slate-900 mt-1">Recomendados (SEO y Conversión)</h3>
+          <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+            Atributos comerciales que optimizan la navegabilidad en facetas, indexación orgánica y recomendaciones en storefront:
+          </p>
+          <div class="mt-4 pt-3 border-t border-slate-100 text-xs space-y-1.5 text-slate-700">
+            <div class="flex items-center justify-between">
+              <span>Composición y Materiales</span>
+              <span class="text-lp-purple font-semibold">Oblig. Liverpool</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>Guía de Tallas Interactiva</span>
+              <span class="text-slate-500">Modal visual</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>Colección, Ocasión y Estilo</span>
+              <span class="text-slate-500">Filtro facetas</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>Instrucciones de Cuidado</span>
+              <span class="text-slate-500">PDP extendido</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Capa 3 -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-card">
+          <span class="text-xs font-mono text-slate-500 font-extrabold uppercase block">Capa 3</span>
+          <h3 class="text-base font-bold text-slate-900 mt-1">Opcionales (Enriquecimiento IA)</h3>
+          <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+            Datos técnicos profundos enriquecidos asíncronamente post-publicación mediante scraping o FotoIA sin detener la venta:
+          </p>
+          <div class="mt-4 pt-3 border-t border-slate-100 text-xs space-y-1.5 text-slate-700">
+            <div class="flex items-center justify-between">
+              <span>Manuales de Usuario PDF</span>
+              <span class="text-emerald-600 font-semibold">Asíncrono</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>Certificaciones NOM</span>
+              <span class="text-slate-500">Documental</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>Dimensiones de Empaque</span>
+              <span class="text-slate-500">Volumetría</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>Garantías Extendidas</span>
+              <span class="text-slate-500">Póliza</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Autonomía del Comprador, SEO y Diff Highlighting -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Rules Card -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-card space-y-4">
+          <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+            <svg class="w-5 h-5 text-lp-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+            Autonomía del Comprador & Congelamiento SEO
+          </h3>
+
+          <div class="space-y-3 text-xs text-slate-700">
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <strong class="text-slate-900 block font-bold">Edición Directa de Campos Calculados (Cero Tickets):</strong>
+              <p class="text-slate-600 mt-1">El comprador edita directamente en su pantalla campos de control como <em>Tipo de Envase</em> y <em>Temporada</em>. El sistema detona la actualización automática a SAP en segundo plano.</p>
+            </div>
+
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <strong class="text-slate-900 block font-bold">Congelamiento de Título con Marca (Protección SEO):</strong>
+              <p class="text-slate-600 mt-1">Una vez aprobado, el <em>Título con Marca</em> permanece inmutable para blindar el permalink y la autoridad orgánica en Google. El <em>Título sin Marca</em> (descriptivo) permanece editable.</p>
+            </div>
+
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+              <strong class="text-slate-900 block font-bold">Naturaleza Informativa de Cambios:</strong>
+              <p class="text-slate-600 mt-1">Las correcciones menores del comprador se aplican de inmediato y se notifican al proveedor de manera informativa, sin exigir una re-aprobación que dilate el proceso.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Visual Diff Highlighting Post-Rechazo -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-card space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <span class="w-3 h-3 rounded-full bg-lp-orange"></span>
+              Resaltado Visual Delta (Post-Rechazo)
+            </h3>
+            <button onclick="toggleDiffDemo()" id="btnToggleDiff" class="text-xs px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition">
+              Simular Reingreso de QA
+            </button>
+          </div>
+          <p class="text-xs text-slate-600">
+            Al reabrir una propuesta rechazada, la UI no fuerza a releer 50 campos; destaca con color de acento únicamente las celdas corregidas:
+          </p>
+
+          <!-- Mock UI Form -->
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3 font-mono text-xs">
+            <!-- Field 1: Unchanged -->
+            <div class="p-2.5 rounded bg-white border border-slate-200 opacity-60">
+              <span class="text-[10px] text-slate-400 uppercase block font-sans">EAN / UPC (Aprobado)</span>
+              <span class="text-slate-700 font-bold">7501234567890</span>
+            </div>
+
+            <!-- Field 2: Diff Highlighted Field -->
+            <div id="diffFieldDemo" class="p-3 rounded border-l-4 transition-all duration-300" style="background-color: #FFF4EB; border-color: #FF6600;">
+              <div class="flex items-center justify-between text-[11px] mb-1 font-sans">
+                <span class="font-bold text-lp-orange flex items-center gap-1">
+                  &bull; Campo Modificado por Proveedor (Listo para re-evaluación)
+                </span>
+                <span class="text-[10px] bg-orange-100 text-lp-orange px-1.5 py-0.5 rounded font-bold">Delta Detectado</span>
+              </div>
+              <div class="text-slate-800 font-bold text-xs">Composición: 95% Algodón Peinado, 5% Elastano</div>
+              <span class="text-[10px] text-slate-500 font-sans block mt-1">Valor previo rechazado: "Algodón genérico"</span>
+            </div>
+
+            <div class="text-[11px] font-sans text-slate-500 flex items-center justify-between pt-1">
+              <span>Enrutamiento: <strong class="text-lp-purple">Bandeja Comprador</strong></span>
+              <span class="text-emerald-600 font-bold">&check; Aprobación en 1 clic</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. MÓDULO DE MARKETPLACE (SELLERS, CARGA MASIVA Y APIS) -->
+    <section id="marketplace" class="space-y-8">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-slate-200 pb-4">
+        <div>
+          <span class="badge-chip bg-emerald-100 text-emerald-800 border border-emerald-200">Sección 04</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
+            Módulo de Marketplace (Sellers, Carga Masiva y APIs)
+          </h2>
+          <p class="text-sm text-slate-500 mt-1">Ingesta masiva asíncrona, reporte de error por celda en la misma hoja y control de propiedad de catálogo.</p>
+        </div>
+        <span class="text-xs font-mono bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-lg border border-emerald-200 font-bold">
+          Procesamiento Parcial Activo
+        </span>
+      </div>
+
+      <!-- Functional Visual Breakdown -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Feature 1: Carga Masiva Parcial -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-card space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-base">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+          </div>
+          <h3 class="text-base font-bold text-slate-900">Procesamiento Masivo Parcial</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Al subir un archivo de 100 SKUs, los registros válidos (ej. 80 SKUs) se publican inmediatamente en producción sin cancelar el lote completo.
+          </p>
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs">
+            <span class="font-bold text-slate-800 block">Reporte en la Misma Plantilla:</span>
+            <p class="text-slate-600 mt-1">Para los 20 SKUs erróneos, el sistema entrega un Excel idéntico con una columna de estado señalando la celda defectuosa.</p>
+          </div>
+        </div>
+
+        <!-- Feature 2: Propiedad de Catálogo -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-card space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-lp-purple/10 text-lp-purple flex items-center justify-center font-bold text-base">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path></svg>
+          </div>
+          <h3 class="text-base font-bold text-slate-900">Control de Propiedad de Catálogo</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Diferenciación estricta entre fichas creadas por el seller y fichas maestras ajenas:
+          </p>
+          <ul class="text-xs space-y-1.5 text-slate-700">
+            <li><strong>Productos Propios:</strong> Control editorial pleno (título, descripción, fotos, atributos).</li>
+            <li><strong>Productos Ajenos:</strong> Bloqueo de descripción y fotos base. Solo puede agregar variantes u oferta si está en Whitelist.</li>
+            <li><strong>Agrupación Virtual PDP:</strong> Muestra múltiples ofertas sin alterar la entidad raíz en SAP.</li>
+          </ul>
+        </div>
+
+        <!-- Feature 3: API Gateway & Webhooks -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-card space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-lp-orange/10 text-lp-orange flex items-center justify-center font-bold text-base">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          </div>
+          <h3 class="text-base font-bold text-slate-900">API Gateway en 8 Etapas</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Estandarización de integración enterprise con retroalimentación asíncrona:
+          </p>
+          <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1 text-slate-600 font-mono">
+            <div>1. Autenticación &bull; 2. Predicción</div>
+            <div>3. Pre-validación &bull; 4. Creación</div>
+            <div>5. Visto Bueno &bull; 6. Publicación</div>
+            <div>7. Modificación &bull; 8. Telemetría</div>
+          </div>
+          <p class="text-[11px] text-slate-500">Notificaciones asíncronas vía Webhooks al ERP/WMS del seller.</p>
+        </div>
+
+      </div>
+
+      <!-- INTERACTIVE DATA-CARD: CARGA MASIVA PARCIAL (80 Aprobados / 20 Errores en la misma plantilla) -->
+      <div class="p-6 sm:p-8 rounded-2xl bg-slate-50 border border-slate-200 shadow-card space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3">
+          <div>
+            <span class="text-[11px] font-mono uppercase tracking-wider text-emerald-700 font-bold block">Consola de Ingesta Asíncrona</span>
+            <h4 class="text-base font-bold text-slate-900">Demostración Gráfica: Lote BATCH-MKP-9024 (100 SKUs Procesados)</h4>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-800 text-xs font-bold font-mono">80 Aprobados (80%)</span>
+            <span class="px-2.5 py-1 rounded-md bg-rose-100 text-rose-800 text-xs font-bold font-mono">20 Observados (20%)</span>
+          </div>
+        </div>
+
+        <!-- Excel-like visual editor with inline error feedback -->
+        <div class="overflow-x-auto rounded-xl border border-slate-200 bg-white">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead class="bg-slate-100 text-slate-700 font-mono text-[11px] uppercase border-b border-slate-200">
+              <tr>
+                <th class="p-3 w-16">Fila</th>
+                <th class="p-3">SKU Vendedor</th>
+                <th class="p-3">Campo</th>
+                <th class="p-3">Valor Capturado</th>
+                <th class="p-3 text-rose-600">Diagnóstico del Error</th>
+                <th class="p-3 text-lp-purple">Corrección In Situ</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 text-xs">
+              <!-- Row 12 -->
+              <tr class="hover:bg-slate-50">
+                <td class="p-3 font-mono text-slate-400">#12</td>
+                <td class="p-3 font-mono font-bold text-slate-800">MKP-SHOES-001</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-mono text-[10px]">Col: EAN</span></td>
+                <td class="p-3 text-rose-600 line-through font-mono">750123456</td>
+                <td class="p-3 text-rose-700 font-medium">Longitud no válida (requiere 13 dígitos numéricos).</td>
+                <td class="p-3">
+                  <input type="text" value="0750123456789" class="px-2 py-1 text-xs border border-emerald-400 rounded bg-emerald-50 text-emerald-800 font-mono w-36">
+                </td>
+              </tr>
+              <!-- Row 45 -->
+              <tr class="hover:bg-slate-50">
+                <td class="p-3 font-mono text-slate-400">#45</td>
+                <td class="p-3 font-mono font-bold text-slate-800">MKP-JACKET-092</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-mono text-[10px]">Col: Material</span></td>
+                <td class="p-3 text-rose-600 line-through font-mono">Piel sintética roja</td>
+                <td class="p-3 text-rose-700 font-medium">Valor no tipificado en la taxonomía de la sección.</td>
+                <td class="p-3">
+                  <select class="px-2 py-1 text-xs border border-emerald-400 rounded bg-emerald-50 text-emerald-800 font-mono">
+                    <option selected>Sintético Homologado</option>
+                    <option>Piel Genuina</option>
+                  </select>
+                </td>
+              </tr>
+              <!-- Row 88 -->
+              <tr class="hover:bg-slate-50">
+                <td class="p-3 font-mono text-slate-400">#88</td>
+                <td class="p-3 font-mono font-bold text-slate-800">MKP-TECH-8812</td>
+                <td class="p-3"><span class="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-mono text-[10px]">Col: Precio</span></td>
+                <td class="p-3 text-rose-600 line-through font-mono">$ -250.00</td>
+                <td class="p-3 text-rose-700 font-medium">El precio de oferta debe ser estrictamente mayor a $0.</td>
+                <td class="p-3">
+                  <input type="number" value="250.00" class="px-2 py-1 text-xs border border-emerald-400 rounded bg-emerald-50 text-emerald-800 font-mono w-28">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between text-xs text-slate-500 gap-2 pt-2">
+          <span>&check; <strong>Impacto Inmediato:</strong> Los 80 productos limpios ya están indexados en el Storefront.</span>
+          <button onclick="showToast('Re-procesamiento simulado exitoso: 20 registros actualizados en producción.')" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition self-end sm:self-auto shadow-sm">
+            Re-procesar 20 Registros Corregidos
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. MÓDULO DE FORO FOTOGRÁFICO E IMÁGENES (FOTOIA) -->
+    <section id="fotoia" class="space-y-8">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-slate-200 pb-4">
+        <div>
+          <span class="badge-chip bg-lp-purple/10 text-lp-purple border border-lp-purple/20">Sección 05</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
+            Módulo de Foro Fotográfico e Imágenes (FotoIA)
+          </h2>
+          <p class="text-sm text-slate-500 mt-1">Integración en Portal Foro 40, tres modalidades de responsabilidad y evaluador de realismo.</p>
+        </div>
+        <span class="text-xs font-mono bg-lp-orange-light text-lp-orange px-3 py-1.5 rounded-lg border border-lp-orange/20 font-bold">
+          Fallback Automático (3-4 Reintentos)
+        </span>
+      </div>
+
+      <!-- 3 Modalidades de Responsabilidad -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Modalidad 1 -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-card space-y-3">
+          <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-800 flex items-center justify-center font-bold text-xs">01</div>
+          <h3 class="text-base font-bold text-slate-900">Carga Propia del Proveedor</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            El seller sube directamente imágenes editadas en alta resolución respetando la guía de encuadre y fondo blanco puro.
+          </p>
+          <div class="p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-[11px] text-emerald-800 font-semibold">
+            &check; Regla de Excepción: Si sube fotos válidas en HD, el sistema respeta el archivo y anula la obligación de foro físico.
+          </div>
+        </div>
+
+        <!-- Modalidad 2 -->
+        <div class="p-6 rounded-2xl bg-white border-2 border-lp-orange shadow-card space-y-3 relative">
+          <div class="absolute top-0 right-0 bg-lp-orange text-white text-[10px] font-bold px-2.5 py-0.5 rounded-bl-lg">
+            Innovación IA
+          </div>
+          <div class="w-8 h-8 rounded-lg bg-lp-orange/10 text-lp-orange flex items-center justify-center font-bold text-xs">02</div>
+          <h3 class="text-base font-bold text-slate-900">Uso de FotoIA Liverpool</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            El proveedor sube una toma con teléfono celular sobre maniquí o mesa. La IA de Liverpool viste digitalmente al modelo oficial asignado a la categoría.
+          </p>
+          <p class="text-[11px] text-slate-500">
+            El proveedor es responsable de revisar y validar el realismo antes de aprobar el render final.
+          </p>
+        </div>
+
+        <!-- Modalidad 3 -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-card space-y-3">
+          <div class="w-8 h-8 rounded-lg bg-lp-purple/10 text-lp-purple flex items-center justify-center font-bold text-xs">03</div>
+          <h3 class="text-base font-bold text-slate-900">Envío Físico a Foro 40</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Envío de muestra física a los estudios profesionales de Liverpool. El personal de Foro 40 precarga automáticamente las tomas y modelos desde P360.
+          </p>
+          <p class="text-[11px] text-slate-500">
+            Mantiene la trazabilidad y estatus del producto en bodega de muestras.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- INTERACTIVE SIMULATOR: FOTOIA EVALUATOR & FALLBACK -->
+      <div class="p-6 sm:p-8 rounded-2xl bg-slate-50 border border-slate-200 shadow-card space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
+          <div>
+            <span class="text-[11px] font-mono uppercase tracking-wider text-lp-purple font-bold block">Simulador de Control Algorítmico</span>
+            <h4 class="text-base font-bold text-slate-900">Evaluador de Realismo y Algoritmo de Fallback Obligatorio</h4>
+          </div>
+          <span class="text-xs font-mono text-slate-500">Umbral Aceptable: <strong class="text-lp-purple">&ge; 85 Pts</strong></span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          <!-- Gauge & Controls -->
+          <div class="lg:col-span-6 space-y-4">
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span class="font-bold text-slate-700">Simular Puntaje de Realismo IA:</span>
+                <span id="fotoScoreLabel" class="font-mono font-bold text-lp-orange text-sm">74 / 100</span>
+              </div>
+              <input type="range" id="fotoScoreSlider" min="50" max="100" value="74" oninput="updateFotoIASim()" class="w-full accent-lp-orange cursor-pointer">
+            </div>
+
+            <div class="p-3 rounded-xl bg-white border border-slate-200 flex items-center justify-between">
+              <span class="text-xs font-semibold text-slate-700">Reintento Asistido Actual:</span>
+              <div class="flex items-center gap-1.5" id="attemptPills">
+                <!-- Attempt pills rendered via JS -->
+              </div>
+            </div>
+
+            <div class="flex gap-2">
+              <button onclick="advanceFotoAttempt()" class="px-3 py-1.5 rounded-lg bg-lp-purple hover:bg-lp-purple-dark text-white text-xs font-bold transition">
+                Simular Siguiente Reintento (+1)
+              </button>
+              <button onclick="resetFotoDemo()" class="px-3 py-1.5 rounded-lg bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold transition">
+                Reiniciar Simulación
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Output Card -->
+          <div class="lg:col-span-6">
+            <div id="fotoResultBox" class="p-5 rounded-xl border transition-all duration-300 space-y-2">
+              <!-- Dynamically populated by JS -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. MÓDULO DE CATEGORIZACIÓN, TAXONOMÍA Y COMMERCE TOOLS -->
+    <section id="commercetools" class="space-y-8">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-slate-200 pb-4">
+        <div>
+          <span class="badge-chip bg-lp-orange/10 text-lp-orange border border-lp-orange/20">Sección 06</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
+            Módulo de Categorización, Taxonomía y Commerce Tools
+          </h2>
+          <p class="text-sm text-slate-500 mt-1">Clasificación fuera del PIM, vigencia de banderas comerciales y enriquecimiento por scraping.</p>
+        </div>
+        <span class="text-xs font-mono bg-lp-purple text-white px-3 py-1.5 rounded-lg font-bold">
+          Out-of-PIM Architecture
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Pillar 1: Categorización Fuera del PIM -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-card space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-lp-purple/10 text-lp-purple flex items-center justify-center font-bold">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+          </div>
+          <h3 class="text-base font-bold text-slate-900">Categorización Fuera del PIM</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            La creación del SKU no se bloquea por taxonomía web:
+          </p>
+          <ul class="text-xs space-y-1.5 text-slate-700">
+            <li><strong>Sugerencia PAT:</strong> El proveedor sugiere una ruta preliminar durante la captura en Entrada Única.</li>
+            <li><strong>Asignación Definitiva:</strong> Se ejecuta en Commerce Tools por el equipo interno o modelos de IA una vez que el SKU ha sido aprobado.</li>
+          </ul>
+        </div>
+
+        <!-- Pillar 2: Banderas Comerciales Programadas -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-card space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-lp-orange/10 text-lp-orange flex items-center justify-center font-bold">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"></path></svg>
+          </div>
+          <h3 class="text-base font-bold text-slate-900">Banderas con Vigencia (Flags)</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Badges comerciales configurables con marcas de tiempo (<em>timestamp</em> inicio y fin):
+          </p>
+          <div class="flex flex-wrap gap-1 text-[11px] font-semibold">
+            <span class="px-2 py-0.5 rounded bg-lp-purple-light text-white">Preventa</span>
+            <span class="px-2 py-0.5 rounded bg-lp-orange text-white">Lanzamiento</span>
+            <span class="px-2 py-0.5 rounded bg-slate-800 text-white">Reacondicionado</span>
+            <span class="px-2 py-0.5 rounded bg-blue-600 text-white">Envío Int MKP</span>
+            <span class="px-2 py-0.5 rounded bg-amber-500 text-white">Pedido Especial</span>
+            <span class="px-2 py-0.5 rounded bg-rose-600 text-white">Apagado Oferta</span>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-1">Al expirar la fecha límite, la bandera se retira del storefront sin despliegue de TI.</p>
+        </div>
+
+        <!-- Pillar 3: Scraping Post-Publicación -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-card space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center font-bold">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          </div>
+          <h3 class="text-base font-bold text-slate-900">Enriquecimiento (Enrich)</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Raspado automatizado post-publicación sobre fuentes oficiales de marca:
+          </p>
+          <ul class="text-xs space-y-1.5 text-slate-700">
+            <li>Extrae fichas técnicas profundas, tablas y especificaciones.</li>
+            <li>Actualiza el PDP de forma asíncrona sin impactar el tiempo inicial de catalogación.</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 7. MÓDULO DE GOBIERNO DE DATOS, AUDITORÍA Y REGLAS OPERATIVAS -->
+    <section id="gobierno" class="space-y-8">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-slate-200 pb-4">
+        <div>
+          <span class="badge-chip bg-rose-100 text-rose-800 border border-rose-200">Sección 07</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
+            Módulo de Gobierno de Datos, Auditoría y Reglas Operativas
+          </h2>
+          <p class="text-sm text-slate-500 mt-1">Canalización de LOVs, Audit Trail por SKU, borrado definitivo a 90 días y botón de republicación limpia.</p>
+        </div>
+        <span class="text-xs font-mono bg-rose-50 text-rose-700 px-3 py-1.5 rounded-lg border border-rose-200 font-bold">
+          Saneamiento Activo
+        </span>
+      </div>
+
+      <!-- Lifecycle of Drafts (90 Days) Timeline -->
+      <div class="p-6 sm:p-8 rounded-2xl bg-slate-50 border border-slate-200 shadow-card space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
+          <div>
+            <span class="text-[11px] font-mono uppercase tracking-wider text-rose-700 font-bold block">Optimización de Base de Datos</span>
+            <h4 class="text-base font-bold text-slate-900">Regla de Borrado Definitivo: Ciclo de 90 Días para Borradores Abandonados</h4>
+          </div>
+          <span class="text-xs text-slate-500">Avisos semanales continuos</span>
+        </div>
+
+        <!-- 4-Step Timeline Component -->
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 relative">
+          <div class="p-4 rounded-xl bg-white border border-slate-200 space-y-1">
+            <span class="w-6 h-6 rounded-full bg-slate-100 text-slate-700 text-xs font-bold font-mono flex items-center justify-center">0</span>
+            <strong class="text-xs text-slate-900 block font-bold">Creación de Borrador</strong>
+            <p class="text-[11px] text-slate-500">Propuesta creada o devuelta por rechazo. Inicia el reloj de inactividad.</p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-white border border-amber-200 space-y-1">
+            <span class="w-6 h-6 rounded-full bg-amber-100 text-amber-800 text-xs font-bold font-mono flex items-center justify-center">60</span>
+            <strong class="text-xs text-amber-900 block font-bold">Alertas Semanales</strong>
+            <p class="text-[11px] text-slate-600">Correos periódicos recordando propuestas estancadas con link directo de corrección.</p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-white border border-rose-300 space-y-1">
+            <span class="w-6 h-6 rounded-full bg-rose-100 text-rose-800 text-xs font-bold font-mono flex items-center justify-center">87</span>
+            <strong class="text-xs text-rose-800 block font-bold">Aviso Crítico (3 Días)</strong>
+            <p class="text-[11px] text-rose-700">Notificación urgente final de expiración inminente antes de la purga permanente.</p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-rose-50 border border-rose-400 space-y-1">
+            <span class="w-6 h-6 rounded-full bg-rose-600 text-white text-xs font-bold font-mono flex items-center justify-center">90</span>
+            <strong class="text-xs text-rose-900 block font-bold">Borrado Definitivo</strong>
+            <p class="text-[11px] text-rose-800">Eliminación física del borrador. Liberación de memoria e integridad de base de datos.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Governance Rules Trio -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- LOVs Directas -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-card space-y-3">
+          <div class="w-8 h-8 rounded-lg bg-lp-purple/10 text-lp-purple flex items-center justify-center font-bold text-xs">&plus;</div>
+          <h3 class="text-base font-bold text-slate-900">Canalización Libre de LOVs</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Si se ingresa una marca o talla no tipificada en listas maestras:
+          </p>
+          <ul class="text-xs space-y-1 text-slate-700">
+            <li>El usuario ingresa el texto libre y <strong>continúa su captura sin bloqueos</strong>.</li>
+            <li>Se genera una tarea paralela a Gobierno de Datos para homologar e inyectar en SAP.</li>
+          </ul>
+        </div>
+
+        <!-- Audit Trail -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-card space-y-3">
+          <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-800 flex items-center justify-center font-bold text-xs">&equiv;</div>
+          <h3 class="text-base font-bold text-slate-900">Historial Completo (Audit Trail)</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Reporte descargable a nivel de campo y SKU:
+          </p>
+          <div class="p-2.5 rounded bg-slate-50 border border-slate-200 text-[11px] font-mono text-slate-600 space-y-0.5">
+            <div>&bull; Timestamp exacto (YYYY-MM-DD HH:MM:SS)</div>
+            <div>&bull; Usuario o API responsable</div>
+            <div>&bull; Delta: Valor anterior vs. Valor nuevo</div>
+            <div>&bull; Versión del SKU y estatus del flujo</div>
+          </div>
+        </div>
+
+        <!-- Rechazo vs Descarte & Republicación -->
+        <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-card space-y-3">
+          <div class="w-8 h-8 rounded-lg bg-lp-orange/10 text-lp-orange flex items-center justify-center font-bold text-xs">&circlearrowright;</div>
+          <h3 class="text-base font-bold text-slate-900">Republicación Limpia</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Ante desfases de sincronización en Commerce Tools o SAP:
+          </p>
+          <ul class="text-xs space-y-1 text-slate-700">
+            <li><strong>Rechazo:</strong> Regresa al seller con motivo obligatorio detallado.</li>
+            <li><strong>Descarte:</strong> Eliminación lógica de propuestas canceladas.</li>
+            <li><strong>Botón Republicar:</strong> Reenvía la última versión aprobada sin exigir un nuevo QA.</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 8. MATRIZ CONSOLIDADA DE REQUERIMIENTOS POR MÓDULO -->
+    <section id="matriz" class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-slate-200 pb-4">
+        <div>
+          <span class="badge-chip bg-lp-purple text-white">Sección 08</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1">
+            Matriz Consolidada de Requerimientos y Reglas Operativas
+          </h2>
+          <p class="text-sm text-slate-500 mt-1">Catálogo exhaustivo de especificaciones de interfaz (TO BE) y comportamiento de negocio.</p>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <button onclick="filterMatrix('all')" class="matrix-btn px-2.5 py-1 text-xs font-bold rounded-md bg-lp-purple text-white shadow-sm" data-filter="all">Todos</button>
+          <button onclick="filterMatrix('m1')" class="matrix-btn px-2.5 py-1 text-xs font-bold rounded-md bg-slate-100 text-slate-700 hover:bg-slate-200" data-filter="m1">M1: Ingesta</button>
+          <button onclick="filterMatrix('m2')" class="matrix-btn px-2.5 py-1 text-xs font-bold rounded-md bg-slate-100 text-slate-700 hover:bg-slate-200" data-filter="m2">M2: Mercaderías</button>
+          <button onclick="filterMatrix('m3')" class="matrix-btn px-2.5 py-1 text-xs font-bold rounded-md bg-slate-100 text-slate-700 hover:bg-slate-200" data-filter="m3">M3: Marketplace</button>
+          <button onclick="filterMatrix('m4')" class="matrix-btn px-2.5 py-1 text-xs font-bold rounded-md bg-slate-100 text-slate-700 hover:bg-slate-200" data-filter="m4">M4: FotoIA</button>
+          <button onclick="filterMatrix('m5')" class="matrix-btn px-2.5 py-1 text-xs font-bold rounded-md bg-slate-100 text-slate-700 hover:bg-slate-200" data-filter="m5">M5: Commerce Tools</button>
+          <button onclick="filterMatrix('m6')" class="matrix-btn px-2.5 py-1 text-xs font-bold rounded-md bg-slate-100 text-slate-700 hover:bg-slate-200" data-filter="m6">M6: Gobierno</button>
+        </div>
+      </div>
+
+      <!-- Search in Matrix -->
+      <div class="flex justify-between items-center gap-4">
+        <div class="relative w-full max-w-sm">
+          <input type="text" id="matrixSearch" onkeyup="searchMatrix()" placeholder="Buscar por funcionalidad, regla o campo..." class="w-full pl-8 pr-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:border-lp-purple bg-white text-slate-900">
+          <svg class="w-4 h-4 text-slate-400 absolute left-2.5 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        </div>
+        <span id="matrixCount" class="text-xs text-slate-500 font-mono">19 Requerimientos visibles</span>
+      </div>
+
+      <!-- Interactive Master Table -->
+      <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-card">
+        <table class="w-full text-left text-xs border-collapse" id="matrixMasterTable">
+          <thead class="bg-slate-100 text-slate-800 font-mono text-[11px] uppercase border-b border-slate-200">
+            <tr>
+              <th class="p-3.5 w-44">Módulo / Componente</th>
+              <th class="p-3.5 w-52">Funcionalidad Específica</th>
+              <th class="p-3.5">Requerimientos UX e Interfaz (TO BE)</th>
+              <th class="p-3.5">Reglas Operativas y Flujo de Negocio</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 text-xs text-slate-700">
+            
+            <!-- M1 Rows -->
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m1">
+              <td class="p-3.5 font-bold text-lp-purple">1. Entrada Única & Coincidencias</td>
+              <td class="p-3.5 font-bold text-slate-900">Filtro Universal Lista Negra (Paso 0)</td>
+              <td class="p-3.5">&bull; Evaluación de marcas en Blacklist/Whitelist en el primer paso.<br>&bull; Módulo de solicitud de cartas de distribución (Brand Request).</td>
+              <td class="p-3.5">&bull; Aplica de forma universal.<br>&bull; Bloquea la captura si la marca está protegida sin carta autorizada.</td>
+            </tr>
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m1">
+              <td class="p-3.5 font-bold text-lp-purple">1. Entrada Única & Coincidencias</td>
+              <td class="p-3.5 font-bold text-slate-900">Motor de Coincidencias (Matching)</td>
+              <td class="p-3.5">&bull; Búsqueda preventiva por EAN, imagen, modelo, marca o URL.<br>&bull; Redirección directa al detalle si hay match.</td>
+              <td class="p-3.5">&bull; Match MKP &rarr; Multioferta.<br>&bull; Match Liverpool/Suburbia &rarr; Stockout.<br>&bull; Previene la duplicación de artículos genéricos.</td>
+            </tr>
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m1">
+              <td class="p-3.5 font-bold text-lp-purple">1. Entrada Única & Coincidencias</td>
+              <td class="p-3.5 font-bold text-slate-900">Plantillas & Categorías Favoritas</td>
+              <td class="p-3.5">&bull; Panel de acceso rápido a plantillas frecuentes del proveedor.<br>&bull; Buscador global por palabras clave.</td>
+              <td class="p-3.5">&bull; Asigna familias genéricas (Ropa General) con preguntas guiadas ante productos totalmente nuevos.</td>
+            </tr>
+
+            <!-- M2 Rows -->
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m2">
+              <td class="p-3.5 font-bold text-lp-orange">2. Mercaderías (Liverpool/Suburbia)</td>
+              <td class="p-3.5 font-bold text-slate-900">Compuertas de Atributos (3 Capas)</td>
+              <td class="p-3.5">&bull; Interfaz en 3 capas: Requeridos (*), Recomendados y Opcionales.<br>&bull; Barra indicadora de completitud (%).</td>
+              <td class="p-3.5">&bull; Publicación rápida al completar Capa 1 (~15 de 50 atributos).<br>&bull; Enriquecimiento progresivo post-publicación.</td>
+            </tr>
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m2">
+              <td class="p-3.5 font-bold text-lp-orange">2. Mercaderías (Liverpool/Suburbia)</td>
+              <td class="p-3.5 font-bold text-slate-900">Autonomía del Comprador</td>
+              <td class="p-3.5">&bull; Edición directa de campos calculados (envase, temporada) en la pantalla de revisión.</td>
+              <td class="p-3.5">&bull; Los cambios del comprador detonan actualizaciones automáticas en SAP sin levantar tickets manuales.</td>
+            </tr>
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m2">
+              <td class="p-3.5 font-bold text-lp-orange">2. Mercaderías (Liverpool/Suburbia)</td>
+              <td class="p-3.5 font-bold text-slate-900">Congelamiento de Títulos SEO</td>
+              <td class="p-3.5">&bull; Título con marca congelado tras aprobación (URL permanente).<br>&bull; Título sin marca editable.</td>
+              <td class="p-3.5">&bull; Modificación de título con marca restringida a superadministradores ante cambios comprobados de marca.</td>
+            </tr>
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m2">
+              <td class="p-3.5 font-bold text-lp-orange">2. Mercaderías (Liverpool/Suburbia)</td>
+              <td class="p-3.5 font-bold text-slate-900">Resaltado Visual de Cambios (Delta)</td>
+              <td class="p-3.5">&bull; La UI del comprador resalta únicamente los campos modificados tras rechazo.<br>&bull; Evita releer el formulario completo.</td>
+              <td class="p-3.5">&bull; Las correcciones menores del comprador se despliegan al seller con carácter puramente informativo.</td>
+            </tr>
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m2">
+              <td class="p-3.5 font-bold text-lp-orange">2. Mercaderías (Liverpool/Suburbia)</td>
+              <td class="p-3.5 font-bold text-slate-900">Enrutamiento de Modificaciones</td>
+              <td class="p-3.5">&bull; Derivación inteligente de tareas según la naturaleza del campo ajustado.</td>
+              <td class="p-3.5">&bull; Datos maestros/variantes &rarr; Compras/Foro 40.<br>&bull; Características/Fotos &rarr; QA.<br>&bull; Variantes nuevas regresan a creación de SKU.</td>
+            </tr>
+
+            <!-- M3 Rows -->
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m3">
+              <td class="p-3.5 font-bold text-emerald-700">3. Marketplace (Sellers & APIs)</td>
+              <td class="p-3.5 font-bold text-slate-900">Carga Masiva y Reporte por Renglón</td>
+              <td class="p-3.5">&bull; Descarga/subida de plantillas Excel diferenciadas por canal.<br>&bull; Reporte de errores devuelto en el mismo formato de Excel.</td>
+              <td class="p-3.5">&bull; Procesamiento masivo parcial (SKUs válidos impactan; erróneos se devuelven).<br>&bull; El seller corrige sobre la misma hoja y re-sube.</td>
+            </tr>
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m3">
+              <td class="p-3.5 font-bold text-emerald-700">3. Marketplace (Sellers & APIs)</td>
+              <td class="p-3.5 font-bold text-slate-900">Control de Propiedad de Catálogo</td>
+              <td class="p-3.5">&bull; Sellers editan atributos e imágenes de productos propios.<br>&bull; En ajenos solo agregan variantes vía Whitelist.</td>
+              <td class="p-3.5">&bull; Protege el catálogo maestro frente a alteraciones indebidas de terceros.<br>&bull; Agrupación virtual en PDP sin alterar SAP.</td>
+            </tr>
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m3">
+              <td class="p-3.5 font-bold text-emerald-700">3. Marketplace (Sellers & APIs)</td>
+              <td class="p-3.5 font-bold text-slate-900">API Gateway y Webhooks</td>
+              <td class="p-3.5">&bull; Pasarela de APIs en 8 etapas con notificaciones por Webhooks.<br>&bull; Título estandarizado generado por sistema sin edición libre directa.</td>
+              <td class="p-3.5">&bull; Alta velocidad asíncrona para sellers enterprise y conexión nativa con WMS/ERPs externos.</td>
+            </tr>
+
+            <!-- M4 Rows -->
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m4">
+              <td class="p-3.5 font-bold text-lp-purple">4. Foro Fotográfico e Imágenes</td>
+              <td class="p-3.5 font-bold text-slate-900">Integración en Portal Foro 40</td>
+              <td class="p-3.5">&bull; Al ingresar SKU en Foro, consulta P360 para precargar guía fotográfica y modelos digitales.</td>
+              <td class="p-3.5">&bull; Módulo integrado directamente dentro del portal oficial de Foro Fotográfico.</td>
+            </tr>
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m4">
+              <td class="p-3.5 font-bold text-lp-purple">4. Foro Fotográfico e Imágenes</td>
+              <td class="p-3.5 font-bold text-slate-900">3 Opciones de Responsabilidad</td>
+              <td class="p-3.5">&bull; Carga propia, FotoIA Liverpool (foto de celular) o envío físico a Foro 40.<br>&bull; Permite cambio de responsabilidad.</td>
+              <td class="p-3.5">&bull; Excepción: si el producto tiene fotos válidas en alta definición, se ignora el foro y se respeta la imagen original.</td>
+            </tr>
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m4">
+              <td class="p-3.5 font-bold text-lp-purple">4. Foro Fotográfico e Imágenes</td>
+              <td class="p-3.5 font-bold text-slate-900">Evaluador de Realismo por IA</td>
+              <td class="p-3.5">&bull; Módulo de evaluación automática de realismo fotográfico (&ge; 85 Pts).</td>
+              <td class="p-3.5">&bull; Límite de 3 a 4 reintentos por IA.<br>&bull; Fallback: publica la foto original del vendedor si no logra el realismo.</td>
+            </tr>
+
+            <!-- M5 Rows -->
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m5">
+              <td class="p-3.5 font-bold text-lp-orange">5. Categorización & Commerce Tools</td>
+              <td class="p-3.5 font-bold text-slate-900">Categorización fuera del PIM</td>
+              <td class="p-3.5">&bull; El proveedor sugiere ruta PAT; la categorización definitiva se ejecuta en Commerce Tools.</td>
+              <td class="p-3.5">&bull; Administrada en Commerce Tools post-creación del SKU sin bloquear la catalogación base del PIM.</td>
+            </tr>
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m5">
+              <td class="p-3.5 font-bold text-lp-orange">5. Categorización & Commerce Tools</td>
+              <td class="p-3.5 font-bold text-slate-900">Banderas Comerciales (Flags)</td>
+              <td class="p-3.5">&bull; Configuración de indicadores Sí/No con fechas inicio/fin (Preventa, Lanzamiento, etc.).</td>
+              <td class="p-3.5">&bull; Administradas en Commerce Tools / PIM tras aprobación de Calidad. Remoción automática al expirar fecha.</td>
+            </tr>
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m5">
+              <td class="p-3.5 font-bold text-lp-orange">5. Categorización & Commerce Tools</td>
+              <td class="p-3.5 font-bold text-slate-900">Enriquecimiento por Scraping (Enrich)</td>
+              <td class="p-3.5">&bull; Ingesta asíncrona de metadatos desde sitios oficiales de los fabricantes.</td>
+              <td class="p-3.5">&bull; Puebla el PDP en segundo plano con descripciones ricas tras la salida inicial a venta.</td>
+            </tr>
+
+            <!-- M6 Rows -->
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m6">
+              <td class="p-3.5 font-bold text-rose-700">6. Gobierno de Datos & Auditoría</td>
+              <td class="p-3.5 font-bold text-slate-900">Canalización Directa de LOVs</td>
+              <td class="p-3.5">&bull; Captura libre de nuevos materiales, marcas o tallas no existentes en catálogo.</td>
+              <td class="p-3.5">&bull; Detona tarea paralela a Gobierno de Datos para homologar e inyectar en SAP sin frenar la captura.</td>
+            </tr>
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m6">
+              <td class="p-3.5 font-bold text-rose-700">6. Gobierno de Datos & Auditoría</td>
+              <td class="p-3.5 font-bold text-slate-900">Trazabilidad en Reportes (Audit Trail)</td>
+              <td class="p-3.5">&bull; Reporte descargable con trazabilidad completa de cambios a nivel campo y SKU.</td>
+              <td class="p-3.5">&bull; Registra usuario, fecha, hora exacta, delta de cambio y versiones autorizadas del SKU.</td>
+            </tr>
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m6">
+              <td class="p-3.5 font-bold text-rose-700">6. Gobierno de Datos & Auditoría</td>
+              <td class="p-3.5 font-bold text-slate-900">Borrado Definitivo (90 Días)</td>
+              <td class="p-3.5">&bull; Notificaciones semanales de expiración en borradores y rechazados.</td>
+              <td class="p-3.5">&bull; Borrado automático tras 90 días de inactividad con aviso final crítico a los 3 días previos.</td>
+            </tr>
+            <tr class="matrix-row hover:bg-slate-50/80" data-module="m6">
+              <td class="p-3.5 font-bold text-rose-700">6. Gobierno de Datos & Auditoría</td>
+              <td class="p-3.5 font-bold text-slate-900">Gestión de Rechazos y Republicación</td>
+              <td class="p-3.5">&bull; Campo obligatorio de motivo de rechazo.<br>&bull; Botón de republicación de versión limpia aprobada.</td>
+              <td class="p-3.5">&bull; Distinción entre Rechazo (corrección) y Descarte (cancelación).<br>&bull; Republicación resuelve fallos de sync sin re-aprobación.</td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- FOOTER: SIGN-OFF & DESIGN SPECIFICATIONS -->
+    <footer class="pt-10 pb-16 border-t border-slate-200 text-center space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-xs text-slate-700">
+        <span class="w-2 h-2 rounded-full bg-lp-purple"></span>
+        <span>El Puerto de Liverpool • Dirección de Tecnología Omnicanal & Experiencia Digital</span>
+      </div>
+      <p class="text-xs text-slate-500 max-w-xl mx-auto leading-relaxed">
+        Este documento constituye el marco rector para el diseño de componentes en Figma, flujos de usuario (User Flows) y contratos de interfaz con Commerce Tools, SAP S/4HANA y API Gateway.
+      </p>
+      <div class="text-[11px] font-mono text-slate-400">
+        PIM Headless UX/UI Specifications &bull; Generado para Equipos de Producto &bull; 2026
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- JAVASCRIPT LOGIC & INTERACTIVE LABS -->
+  <script>
+    // 1. Architecture Flow Dynamic Inspector
+    const architectureData = {
+      fuentes: {
+        title: "01. Ingesta Multi-Canal (Fuentes Origen)",
+        tag: "Ingesta Unificada",
+        color: "text-lp-purple",
+        desc: "Punto de entrada único que centraliza la catalogación manual o masiva proveniente de Proveedores Marketplace, Compradores internos (sincronizados con SAP S/4HANA / ECC) y microservicios de Scraping/Grounding para precarga de fichas de fabricantes.",
+        points: [
+          "Pre-validación síncrona de sintaxis de códigos de barras (EAN/UPC).",
+          "Detección automática del tipo de actor (Seller 3P vs Comprador 1P).",
+          "Autoguardado inmediato en estado Borrador Transitorio."
+        ]
+      },
+      paso0: {
+        title: "02. Filtro Universal de Lista Negra (Paso 0)",
+        tag: "Seguridad y Calidad",
+        color: "text-lp-orange",
+        desc: "Candado preventivo que corre de forma invisible antes de desplegar plantillas. Comprueba marcas protegidas (Apple, Chanel, Dior, Disney) o categorías de alto riesgo legal (perfumería, cosméticos).",
+        points: [
+          "Si no cuenta con Carta de Distribución Autorizada, la captura se frena en seco.",
+          "Habilita el modal Brand Request para anexar el permiso legal sin abandonar el flujo.",
+          "Protege la reputación comercial y evita disputas legales post-publicación."
+        ]
+      },
+      matching: {
+        title: "03. Motor de Coincidencias (Matching Engine)",
+        tag: "Prevención de Duplicados",
+        color: "text-lp-purple",
+        desc: "Compara el insumo entrante contra el grafo de datos maestro a través de 5 vectores lógicos: EAN, Imagen por visión artificial, Modelo, Marca o URLs externas de Cloudinary/proveedor.",
+        points: [
+          "Match en Marketplace &rarr; Redirección determinística a Multioferta.",
+          "Match en Liverpool / Suburbia &rarr; Redirección a Stockout.",
+          "Coincidencia Comercial Hermano (LIV &rarr; SUB) precarga el 80% de datos existentes."
+        ]
+      },
+      core: {
+        title: "04. PIM Headless Core (Compuertas 3-Tier)",
+        tag: "Time to Market Ágil",
+        color: "text-lp-orange",
+        desc: "El corazón del nuevo modelo. Desacopla la venta de la exhaustividad documental. Permite encender el SKU con la Capa 1 y continuar enriqueciendo el producto mientras genera GMV.",
+        points: [
+          "Capa 1: ~15 atributos obligatorios indispensables para SAP y venta.",
+          "Capa 2: Atributos recomendados que potencian facetas y SEO.",
+          "Capa 3: Datos técnicos profundos enriquecidos asíncronamente."
+        ]
+      },
+      broker: {
+        title: "05. Capa Intermedia Broker (Eventos Asíncronos)",
+        tag: "Desacoplamiento Tecnológico",
+        color: "text-slate-700",
+        desc: "Message broker que transmite deltas y eventos de catalogación hacia sistemas satélite. Asegura que picos masivos de carga no degraden la experiencia de usuario en frontend.",
+        points: [
+          "Transmisión asíncrona a SAP S/4HANA, OMS y Commerce Tools.",
+          "Monitoreo de latencia y cola de reintentos automatizados.",
+          "Rate Limiting estándar de 100 req/s por seller tenant."
+        ]
+      },
+      publicacion: {
+        title: "06. Publicación, Commerce Tools & FotoIA",
+        tag: "Storefront & Conversión",
+        color: "text-emerald-700",
+        desc: "Salida comercial y optimización visual continua. Commerce Tools administra la taxonomía web y vigencia de banderas comerciales; FotoIA evalúa realismo fotográfico y Enrich scrapea fichas técnicas.",
+        points: [
+          "Asignación de categoría web PAT independiente del PIM.",
+          "Banderas promocionales automáticas (Preventa, Hot Sale, Lanzamiento).",
+          "Evaluación de realismo fotográfico con fallback obligatorio."
+        ]
+      }
+    };
+
+    function inspectNode(nodeKey) {
+      const node = architectureData[nodeKey];
+      const inspector = document.getElementById('architectureInspector');
+      
+      // Update active border styles
+      ['fuentes', 'paso0', 'matching', 'core', 'broker', 'publicacion'].forEach(k => {
+        const el = document.getElementById(`node-${k}`);
+        if (el) {
+          if (k === nodeKey) {
+            el.classList.add('border-lp-purple', 'ring-2', 'ring-lp-purple/20');
+            el.classList.remove('border-slate-200');
+          } else {
+            el.classList.remove('border-lp-purple', 'ring-2', 'ring-lp-purple/20');
+            el.classList.add('border-slate-200');
+          }
+        }
+      });
+
+      inspector.innerHTML = `
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold uppercase ${node.color}">${node.tag}</span>
+            <span class="text-[11px] text-slate-400 font-mono">Arquitectura PIM Headless Liverpool</span>
+          </div>
+          <h4 class="text-base font-extrabold text-slate-900">${node.title}</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">${node.desc}</p>
+          <div class="pt-2 border-t border-slate-100">
+            <span class="text-[11px] font-bold text-slate-700 block mb-1">Impacto UX y Reglas Clave:</span>
+            <ul class="text-xs space-y-1 text-slate-600 list-disc list-inside">
+              ${node.points.map(p => `<li>${p}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+      `;
+    }
+
+    // 2. Simulator: Paso 0 & Matching
+    function setSimInput(val, label) {
+      const input = document.getElementById('simEanInput');
+      input.value = val;
+      runMatchingSim();
+    }
+
+    function runMatchingSim() {
+      const input = document.getElementById('simEanInput').value.trim();
+      const card = document.getElementById('simResultCard');
+
+      if (input.toUpperCase().includes('APPLE') || input.toUpperCase().includes('CHANEL') || input.toUpperCase().includes('DIOR')) {
+        // Blacklist Case
+        card.innerHTML = `
+          <div class="space-y-3">
+            <div class="p-3 rounded-lg bg-rose-50 border border-rose-300 text-xs">
+              <div class="flex items-center gap-2 text-rose-800 font-bold">
+                <svg class="w-4 h-4 text-rose-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                <span>Bloqueo Paso 0: Marca Protegida Detectada</span>
+              </div>
+              <p class="text-rose-700 mt-1">La marca asociada a <strong>"${input}"</strong> cuenta con restricción comercial. Se requiere carta de distribuidor autorizado para continuar.</p>
+              <button onclick="showToast('Abriendo modal Brand Request: Suba su carta membretada para validación')" class="mt-2 text-xs px-2.5 py-1 bg-rose-600 hover:bg-rose-700 text-white rounded font-bold">
+                &rarr; Solicitar Autorización (Brand Request)
+              </button>
+            </div>
+            <p class="text-[11px] text-slate-500">Se frena la navegación hacia Paso 1 para resguardar los acuerdos de distribución de El Puerto de Liverpool.</p>
+          </div>
+        `;
+      } else if (input === '7501000123456') {
+        // Multioffer Match
+        card.innerHTML = `
+          <div class="space-y-3">
+            <div class="p-3 rounded-lg bg-purple-50 border border-purple-200 text-xs">
+              <div class="flex items-center gap-2 text-lp-purple font-bold">
+                <svg class="w-4 h-4 text-lp-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span>Coincidencia Exacta: Redirección a Multioferta (Marketplace)</span>
+              </div>
+              <p class="text-slate-700 mt-1">El artículo <strong>"Tenis Running Liverpool Pro"</strong> ya existe en el catálogo maestro. La ficha editorial está bloqueada.</p>
+            </div>
+            <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 text-xs space-y-1 font-mono">
+              <span class="text-slate-500 block text-[10px]">CAMPOS HABILITADOS PARA EL SELLER:</span>
+              <div class="grid grid-cols-2 gap-2 pt-1 font-sans">
+                <input type="text" placeholder="Precio Vendedor: $ 1,499.00" class="border p-1.5 rounded text-xs bg-white">
+                <input type="number" placeholder="Inventario: 30 pzas" class="border p-1.5 rounded text-xs bg-white">
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (input === '7509999888822') {
+        // Stockout Match
+        card.innerHTML = `
+          <div class="space-y-3">
+            <div class="p-3 rounded-lg bg-orange-50 border border-orange-200 text-xs">
+              <div class="flex items-center gap-2 text-lp-orange font-bold">
+                <svg class="w-4 h-4 text-lp-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                <span>Coincidencia Liverpool / Suburbia: Redirección a Stockout</span>
+              </div>
+              <p class="text-slate-700 mt-1">El producto existe en la base central pero está marcado como inactivo por inventario cero.</p>
+              <button onclick="showToast('Reactivación inmediata: Stockout enlazado a la ficha maestra sin QA manual')" class="mt-2 text-xs px-2.5 py-1 bg-lp-orange hover:bg-lp-orange-dark text-white rounded font-bold">
+                Reactivar Oferta Inmediata (Sin crear nuevo SKU)
+              </button>
+            </div>
+          </div>
+        `;
+      } else if (input.includes('LIV_TO_SUB')) {
+        // Hermano
+        card.innerHTML = `
+          <div class="space-y-3">
+            <div class="p-3 rounded-lg bg-blue-50 border border-blue-200 text-xs">
+              <span class="font-bold text-blue-900 block">Coincidencia Comercial de Negocio Hermano (LIV &rarr; SUB)</span>
+              <p class="text-blue-800 mt-1">El producto está catalogado en Liverpool. Se ha precargado la plantilla técnica, fotos y descripciones para Suburbia.</p>
+              <span class="text-[11px] text-blue-700 font-semibold block mt-1">Acción requerida: Solo validación del comprador Suburbia.</span>
+            </div>
+          </div>
+        `;
+      } else {
+        // Clean
+        card.innerHTML = `
+          <div class="space-y-3">
+            <div class="p-3 rounded-lg bg-emerald-50 border border-emerald-200 text-xs">
+              <span class="font-bold text-emerald-800 block flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                Insumo Limpio: Sin coincidencias ni bloqueos
+              </span>
+              <p class="text-slate-600 mt-1">Aprobado Paso 0. Procediendo a <strong>Paso 1: Estructuración de Atributos (Capa 1 Requeridos)</strong>.</p>
+            </div>
+            <div class="text-[11px] text-slate-500">
+              Plantilla recomendada: <em>Calzado Deportivo Adulto (Favorita de los últimos 6 meses)</em>.
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // 3. Diff Highlighting Toggle Demo
+    let isDiffActive = true;
+    function toggleDiffDemo() {
+      isDiffActive = !isDiffActive;
+      const box = document.getElementById('diffFieldDemo');
+      const btn = document.getElementById('btnToggleDiff');
+
+      if (isDiffActive) {
+        box.style.backgroundColor = '#FFF4EB';
+        box.style.borderColor = '#FF6600';
+        box.innerHTML = `
+          <div class="flex items-center justify-between text-[11px] mb-1 font-sans">
+            <span class="font-bold text-lp-orange flex items-center gap-1">
+              &bull; Campo Modificado por Proveedor (Listo para re-evaluación)
+            </span>
+            <span class="text-[10px] bg-orange-100 text-lp-orange px-1.5 py-0.5 rounded font-bold">Delta Detectado</span>
+          </div>
+          <div class="text-slate-800 font-bold text-xs">Composición: 95% Algodón Peinado, 5% Elastano</div>
+          <span class="text-[10px] text-slate-500 font-sans block mt-1">Valor previo rechazado: "Algodón genérico"</span>
+        `;
+        btn.innerText = 'Simular Reingreso de QA';
+      } else {
+        box.style.backgroundColor = '#FFFFFF';
+        box.style.borderColor = '#E2E8F0';
+        box.innerHTML = `
+          <div class="flex items-center justify-between text-[11px] mb-1 font-sans">
+            <span class="font-bold text-emerald-700 flex items-center gap-1">
+              &check; Campo Aprobado Definitivo
+            </span>
+            <span class="text-[10px] bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded font-bold">Sin observaciones</span>
+          </div>
+          <div class="text-slate-800 font-bold text-xs">Composición: 95% Algodón Peinado, 5% Elastano</div>
+          <span class="text-[10px] text-slate-400 font-sans block mt-1">Validado por Gobierno de Datos en SAP</span>
+        `;
+        btn.innerText = 'Revertir a Vista Delta';
+      }
+    }
+
+    // 4. FotoIA Simulator
+    let fotoAttempt = 1;
+    function updateFotoIASim() {
+      const slider = document.getElementById('fotoScoreSlider');
+      const score = parseInt(slider.value);
+      document.getElementById('fotoScoreLabel').innerText = `${score} / 100`;
+
+      const resultBox = document.getElementById('fotoResultBox');
+
+      if (score >= 85) {
+        resultBox.className = 'p-5 rounded-xl border border-emerald-300 bg-emerald-50 text-xs space-y-2';
+        resultBox.innerHTML = `
+          <div class="flex items-center justify-between">
+            <strong class="text-emerald-800 text-sm flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+              Score Aceptable (${score}/100) &ge; 85 Pts
+            </strong>
+            <span class="px-2 py-0.5 rounded bg-emerald-200 text-emerald-900 font-mono text-[10px] font-bold">Aprobado</span>
+          </div>
+          <p class="text-emerald-900">La imagen generada por IA alcanza la verosimilitud requerida. Se autoriza la publicación sin forzar el envío físico a Foro 40.</p>
+        `;
+      } else {
+        if (fotoAttempt >= 4) {
+          resultBox.className = 'p-5 rounded-xl border-2 border-lp-orange bg-orange-50 text-xs space-y-2';
+          resultBox.innerHTML = `
+            <div class="flex items-center justify-between">
+              <strong class="text-lp-orange text-sm flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-lp-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                Límite Agotado (4 Intentos) & Score (${score} &lt; 85)
+              </strong>
+              <span class="px-2 py-0.5 rounded bg-lp-orange text-white font-mono text-[10px] font-bold">FALLBACK OBLIGATORIO</span>
+            </div>
+            <p class="text-slate-800">
+              El motor descarta las alteraciones sintéticas y <strong>publica de forma automática la fotografía original tomada con celular por el vendedor</strong>, previniendo cuellos de botella en la salida a venta.
+            </p>
+          `;
+        } else {
+          resultBox.className = 'p-5 rounded-xl border border-amber-300 bg-amber-50 text-xs space-y-2';
+          resultBox.innerHTML = `
+            <strong class="text-amber-900 text-sm flex items-center gap-1">
+              Score Insuficiente (${score}/100) &lt; 85 Pts
+            </strong>
+            <p class="text-amber-800">
+              La textura o ajuste presenta inconsistencias. Se habilita un nuevo reintento asistido (Intento ${fotoAttempt} de 4) antes de detonar el Fallback.
+            </p>
+          `;
+        }
+      }
+    }
+
+    function advanceFotoAttempt() {
+      if (fotoAttempt < 4) fotoAttempt++;
+      else fotoAttempt = 1;
+      renderAttemptPills();
+      updateFotoIASim();
+    }
+
+    function resetFotoDemo() {
+      fotoAttempt = 1;
+      document.getElementById('fotoScoreSlider').value = 74;
+      renderAttemptPills();
+      updateFotoIASim();
+    }
+
+    function renderAttemptPills() {
+      const container = document.getElementById('attemptPills');
+      let html = '';
+      for (let i = 1; i <= 4; i++) {
+        if (i === fotoAttempt) {
+          html += `<span class="w-6 h-6 rounded-full bg-lp-orange text-white flex items-center justify-center text-xs font-bold font-mono">${i}</span>`;
+        } else if (i < fotoAttempt) {
+          html += `<span class="w-6 h-6 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-xs font-bold font-mono">&check;</span>`;
+        } else {
+          html += `<span class="w-6 h-6 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center text-xs font-bold font-mono">${i}</span>`;
+        }
+      }
+      container.innerHTML = html;
+    }
+
+    // 5. Matrix Table Filtering & Search
+    function filterMatrix(category) {
+      // Toggle button styles
+      document.querySelectorAll('.matrix-btn').forEach(btn => {
+        if (btn.getAttribute('data-filter') === category) {
+          btn.className = 'matrix-btn px-2.5 py-1 text-xs font-bold rounded-md bg-lp-purple text-white shadow-sm';
+        } else {
+          btn.className = 'matrix-btn px-2.5 py-1 text-xs font-bold rounded-md bg-slate-100 text-slate-700 hover:bg-slate-200';
+        }
+      });
+
+      const rows = document.querySelectorAll('.matrix-row');
+      let visible = 0;
+
+      rows.forEach(row => {
+        const mod = row.getAttribute('data-module');
+        if (category === 'all' || mod === category) {
+          row.style.display = '';
+          visible++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      document.getElementById('matrixCount').innerText = `${visible} Requerimientos visibles`;
+    }
+
+    function searchMatrix() {
+      const q = document.getElementById('matrixSearch').value.toLowerCase();
+      const rows = document.querySelectorAll('.matrix-row');
+      let visible = 0;
+
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        if (text.includes(q)) {
+          row.style.display = '';
+          visible++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      document.getElementById('matrixCount').innerText = `${visible} Requerimientos encontrados`;
+    }
+
+    // 6. Generic Toast Notification
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'fixed bottom-5 right-5 z-50 p-4 rounded-xl bg-slate-900 text-white text-xs font-semibold shadow-2xl flex items-center gap-2 border border-slate-700 transition-all duration-300';
+      toast.innerHTML = `
+        <span class="w-2 h-2 rounded-full bg-lp-orange"></span>
+        <span>${message}</span>
+      `;
+      document.body.appendChild(toast);
+      setTimeout(() => { toast.remove(); }, 3500);
+    }
+
+    // On Load Initialization
+    window.addEventListener('load', () => {
+      inspectNode('fuentes');
+      runMatchingSim();
+      renderAttemptPills();
+      updateFotoIASim();
+    });
+  </script>
+</body>
+</html>
