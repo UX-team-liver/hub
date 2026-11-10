@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planeador de Rutas - Plan de Trabajo UX/UI</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Paleta Corporativa Liverpool */
+    --lp-purple: #731C77;
+    --lp-purple-light: #f5eaf7;
+    --lp-purple-hover: #5d1660;
+    --lp-orange: #FF5A00;
+    --lp-orange-light: #fff2eb;
+    --lp-pink: #E0004D;
+    --lp-pink-light: #fde8f0;
+    
+    /* Variables de UI / Entrada Única */
+    --bg-light: #f7f8fa;
+    --card-bg: #ffffff;
+    --text-main: #2a2e34;
+    --text-muted: #697386;
+    --border-color: #edf0f5;
+    --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.05);
+    --shadow-hover: 0 16px 36px rgba(115, 28, 119, 0.12);
+    --border-radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    margin: 0;
+    padding: 40px 20px;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  /* Encabezado */
+  .header-main {
+    text-align: center;
+    margin-bottom: 45px;
+  }
+  .header-main h1 {
+    color: var(--lp-purple);
+    font-size: 2.7rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.5px;
+  }
+  .header-main p {
+    color: var(--text-muted);
+    font-size: 1.15rem;
+    margin-top: 8px;
+    font-weight: 400;
+  }
+
+  /* Retículas y Tarjetas Base */
+  .grid-2-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+  }
+  
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 32px;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--border-color);
+  }
+
+  .card-title {
+    color: var(--lp-orange);
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 22px;
+    border-bottom: 3px solid var(--lp-pink);
+    display: inline-block;
+    padding-bottom: 6px;
+  }
+
+  /* Listas Personalizadas */
+  .branded-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+  .branded-list li {
+    position: relative;
+    padding-left: 28px;
+    margin-bottom: 14px;
+    font-weight: 400;
+  }
+  .branded-list li::before {
+    content: '•';
+    color: var(--lp-pink);
+    font-size: 1.8rem;
+    position: absolute;
+    left: 0;
+    top: -10px;
+  }
+
+  /* =========================================
+     SECCIÓN OPTIMIZADA: ENTORNOS A REDISEÑAR
+     ========================================= */
+  .env-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .env-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 14px 18px;
+    transition: all 0.25s ease;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+  }
+  .env-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--lp-purple);
+    transition: width 0.25s ease;
+  }
+  .env-card.fase-2::before {
+    background: var(--lp-orange);
+  }
+  .env-card:hover {
+    transform: translateX(4px);
+    box-shadow: 0 6px 18px rgba(115, 28, 119, 0.08);
+    border-color: #e2d2e5;
+  }
+  .env-card:hover::before {
+    width: 6px;
+  }
+
+  .env-content-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .env-icon-wrapper {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--lp-purple-light);
+    color: var(--lp-purple);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .env-card.fase-2 .env-icon-wrapper {
+    background: var(--lp-orange-light);
+    color: var(--lp-orange);
+  }
+
+  .env-meta {
+    display: flex;
+    flex-direction: column;
+  }
+  .env-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 2px;
+  }
+  .env-name {
+    font-weight: 700;
+    font-size: 0.98rem;
+    color: var(--text-main);
+  }
+  .env-badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.4px;
+  }
+  .badge-p1 {
+    background: var(--lp-purple-light);
+    color: var(--lp-purple);
+  }
+  .badge-p2 {
+    background: var(--lp-orange-light);
+    color: var(--lp-orange);
+  }
+  .env-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  .env-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 20px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: var(--lp-purple);
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+  .env-card:hover .env-action-btn {
+    background: var(--lp-purple);
+    border-color: var(--lp-purple);
+    color: #ffffff;
+  }
+  .env-card.fase-2:hover .env-action-btn {
+    background: var(--lp-orange);
+    border-color: var(--lp-orange);
+  }
+
+  /* =========================================
+     CRONOGRAMA GANTT MODULAR (MES 1 A MES 6)
+     ========================================= */
+  .gantt-card {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 32px;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--border-color);
+    margin-bottom: 30px;
+    overflow-x: auto;
+  }
+  
+  .gantt-wrapper {
+    min-width: 980px;
+    position: relative;
+  }
+
+  .gantt-header {
+    display: flex;
+    border-bottom: 2px solid var(--lp-purple-light);
+    padding-bottom: 12px;
+    margin-bottom: 8px;
+  }
+  .gantt-col-title {
+    width: 290px;
+    flex-shrink: 0;
+    font-weight: 700;
+    color: var(--lp-purple);
+    font-size: 1.05rem;
+    padding-left: 10px;
+  }
+  .gantt-months {
+    flex-grow: 1;
+    display: flex;
+  }
+  .gantt-month {
+    flex: 1;
+    text-align: center;
+    font-weight: 700;
+    color: var(--text-main);
+    font-size: 0.95rem;
+    position: relative;
+    letter-spacing: 0.2px;
+  }
+  .gantt-month::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 24px;
+    bottom: -620px;
+    width: 1px;
+    background-image: linear-gradient(to bottom, #edf0f5 50%, transparent 50%);
+    background-size: 1px 12px;
+    z-index: 0;
+  }
+  .gantt-month:first-child::before { display: none; }
+
+  /* Agrupadores de Fases */
+  .gantt-phase {
+    background: var(--lp-purple-light);
+    color: var(--lp-purple);
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 18px 0 8px 0;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Filas de Actividades */
+  .gantt-row {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    transition: background 0.2s;
+    position: relative;
+    z-index: 1;
+  }
+  .gantt-row:hover {
+    background: #fbfcfe;
+  }
+  .gantt-task-name {
+    width: 280px;
+    flex-shrink: 0;
+    padding-right: 20px;
+    font-size: 0.92rem;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+  }
+  .gantt-task-name::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--lp-orange);
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+
+  /* Pista y Barras */
+  .gantt-track {
+    flex-grow: 1;
+    position: relative;
+    height: 36px;
+    background: #f8fafc;
+    border-radius: 20px;
+    border: 1px solid #f1f4f8;
+  }
+
+  .gantt-bar {
+    position: absolute;
+    top: 2px;
+    bottom: 2px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    white-space: nowrap;
+    overflow: visible;
+  }
+  .gantt-bar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.22);
+    z-index: 10;
+  }
+  
+  .bg-pink { background: linear-gradient(135deg, var(--lp-pink), #ff2d75); }
+  .bg-orange { background: linear-gradient(135deg, var(--lp-orange), #ff7a33); }
+  .bg-purple { background: linear-gradient(135deg, var(--lp-purple), #96259c); }
+
+  /* Tooltips Rediseñados */
+  .tooltip-card {
+    position: absolute;
+    bottom: calc(100% + 14px);
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: #1e2430;
+    color: #ffffff;
+    padding: 16px;
+    border-radius: 12px;
+    width: max-content;
+    max-width: 310px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 16px 32px rgba(0,0,0,0.28);
+    text-align: left;
+    pointer-events: none;
+    z-index: 20;
+  }
+  .gantt-bar:hover .tooltip-card {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+  .tooltip-card::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -7px;
+    border-width: 7px;
+    border-style: solid;
+    border-color: #1e2430 transparent transparent transparent;
+  }
+  
+  .tt-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    padding-bottom: 6px;
+  }
+  .tt-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+  }
+  .tt-dot.pink { background: var(--lp-pink); }
+  .tt-dot.orange { background: var(--lp-orange); }
+  .tt-dot.purple { background: var(--lp-purple); }
+  
+  .tt-body {
+    font-size: 0.83rem;
+    font-weight: 300;
+    color: #e2e8f0;
+    line-height: 1.45;
+    white-space: normal;
+  }
+  .tt-date {
+    display: inline-block;
+    margin-top: 10px;
+    background: rgba(255,255,255,0.08);
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #cbd5e1;
+  }
+
+  /* Desglose de Presupuesto */
+  .budget-amount {
+    font-size: 2.3rem;
+    color: var(--lp-purple);
+    font-weight: 700;
+    margin: 8px 0;
+  }
+  .budget-detail {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #f1f4f8;
+    padding: 12px 0;
+    font-size: 1rem;
+  }
+  .budget-detail:last-child { border-bottom: none; }
+
+  @media (max-width: 900px) {
+    .grid-2-col { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  
+  <header class="header-main">
+    <h1>Planeador de Rutas</h1>
+    <p>Estrategia y Plan de Trabajo UX/UI (6 Meses)</p>
+  </header>
+
+  <!-- Módulo: Objetivos y Entornos -->
+  <section class="grid-2-col">
+    <div class="card">
+      <h2 class="card-title">Objetivo / Alcance</h2>
+      <p>Apoyo mediante personal externo especializado UX/UI (ISOL) para el reemplazo integral de la aplicación <strong>Simpli Route</strong>, estructurando una experiencia modular basada en el Hackathon.</p>
+      <ul class="branded-list">
+        <li>Aterrizar el <em>Look & Feel</em> a partir de la POC construida con <strong>Stitch de Google</strong>.</li>
+        <li>Elaborar flujos alternos y arquitectura de información para la <strong>Consola</strong> y el aplicativo del <strong>Driver</strong>.</li>
+        <li>Definir la experiencia de rastreo de cara al <strong>Cliente</strong> integrada en Pocket (Mis compras).</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2 class="card-title">Entornos a Rediseñar</h2>
+      <div class="env-grid">
+        
+        <!-- Consola -->
+        <a href="https://ruta-liverpool-console-dev-753564658506.us-east4.run.app" target="_blank" class="env-card">
+          <div class="env-content-left">
+            <div class="env-icon-wrapper">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+            </div>
+            <div class="env-meta">
+              <div class="env-title-row">
+                <span class="env-name">Consola Operativa</span>
+                <span class="env-badge badge-p1">Fase 1</span>
+              </div>
+              <span class="env-desc">Gestión, despacho y control de rutas logísticas</span>
+            </div>
+          </div>
+          <span class="env-action-btn">
+            Demo
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+          </span>
+        </a>
+
+        <!-- Driver -->
+        <a href="https://ruta-liverpool-driver-dev-753564658506.us-east4.run.app" target="_blank" class="env-card">
+          <div class="env-content-left">
+            <div class="env-icon-wrapper">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+            </div>
+            <div class="env-meta">
+              <div class="env-title-row">
+                <span class="env-name">App Driver</span>
+                <span class="env-badge badge-p1">Fase 1</span>
+              </div>
+              <span class="env-desc">Navegación, paradas y confirmación para repartidores</span>
+            </div>
+          </div>
+          <span class="env-action-btn">
+            Demo
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+          </span>
+        </a>
+
+        <!-- Stitch Monitor -->
+        <a href="https://stitch.withgoogle.com/projects/4063065975012641782" target="_blank" class="env-card">
+          <div class="env-content-left">
+            <div class="env-icon-wrapper">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+            </div>
+            <div class="env-meta">
+              <div class="env-title-row">
+                <span class="env-name">Stitch Monitor</span>
+                <span class="env-badge badge-p1">Fase 1</span>
+              </div>
+              <span class="env-desc">POC y monitoreo telemetría (Google Cloud)</span>
+            </div>
+          </div>
+          <span class="env-action-btn">
+            Ver POC
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+          </span>
+        </a>
+
+        <!-- Cliente / Pocket -->
+        <a href="https://ruta-liverpool-customer-dev-753564658506.us-east4.run.app" target="_blank" class="env-card fase-2">
+          <div class="env-content-left">
+            <div class="env-icon-wrapper">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </div>
+            <div class="env-meta">
+              <div class="env-title-row">
+                <span class="env-name">Cliente (Pocket)</span>
+                <span class="env-badge badge-p2">Fase 2</span>
+              </div>
+              <span class="env-desc">Seguimiento de compras y entrega final en app cliente</span>
+            </div>
+          </div>
+          <span class="env-action-btn">
+            Demo
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
+          </span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Módulo: Cronograma Modular Interactivo -->
+  <section class="gantt-card">
+    <h2 class="card-title" style="margin-left: 10px;">Cronograma de Actividades</h2>
+    
+    <div class="gantt-wrapper">
+      <div class="gantt-header">
+        <div class="gantt-col-title">Módulo de Trabajo</div>
+        <div class="gantt-months">
+          <div class="gantt-month">Mes 1</div>
+          <div class="gantt-month">Mes 2</div>
+          <div class="gantt-month">Mes 3</div>
+          <div class="gantt-month">Mes 4</div>
+          <div class="gantt-month">Mes 5</div>
+          <div class="gantt-month">Mes 6</div>
+        </div>
+      </div>
+
+      <!-- Fase 1: Discovery -->
+      <div class="gantt-phase">1. Discovery y Planificación</div>
+      
+      <div class="gantt-row">
+        <div class="gantt-task-name">Análisis y Planificación</div>
+        <div class="gantt-track">
+          <div class="gantt-bar bg-pink" style="left: 0%; width: 8.33%;">
+            S1 - S2
+            <div class="tooltip-card">
+              <div class="tt-header"><div class="tt-dot pink"></div> Discovery y Planificación</div>
+              <div class="tt-body">Análisis inicial de la prueba de concepto (POC), alineación tecnológica con desarrollo y definición de directrices de diseño.</div>
+              <div class="tt-date">Mes 1 (Semanas 1 y 2)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fase 2: Construcción UX -->
+      <div class="gantt-phase">2. Construcción de Solución UX</div>
+      
+      <div class="gantt-row">
+        <div class="gantt-task-name">Construcción y Librería UX</div>
+        <div class="gantt-track">
+          <div class="gantt-bar bg-orange" style="left: 8.33%; width: 25%;">
+            Librería Base
+            <div class="tooltip-card">
+              <div class="tt-header"><div class="tt-dot orange"></div> Sistema de Diseño</div>
+              <div class="tt-body">Estructuración de componentes, guías de estilo, tipografías y tokens basados en el ecosistema Liverpool.</div>
+              <div class="tt-date">Mes 1 - Mes 2</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gantt-row">
+        <div class="gantt-task-name">Flujos de Consola Operación</div>
+        <div class="gantt-track">
+          <div class="gantt-bar bg-orange" style="left: 33.33%; width: 16.66%;">
+            Consola
+            <div class="tooltip-card">
+              <div class="tt-header"><div class="tt-dot orange"></div> Consola Operativa</div>
+              <div class="tt-body">Diseño de pantallas, flujos de asignación de rutas y gestión de incidencias para supervisores.</div>
+              <div class="tt-date">Mes 3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gantt-row">
+        <div class="gantt-task-name">Flujos de App Driver</div>
+        <div class="gantt-track">
+          <div class="gantt-bar bg-orange" style="left: 50%; width: 16.66%;">
+            App Driver
+            <div class="tooltip-card">
+              <div class="tt-header"><div class="tt-dot orange"></div> Experiencia Driver</div>
+              <div class="tt-body">Diseño móvil para conductores: mapa de ruta, checklist de carga y confirmación de entrega en destino.</div>
+              <div class="tt-date">Mes 4</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gantt-row">
+        <div class="gantt-task-name">Home Monitor & Pruebas Demo</div>
+        <div class="gantt-track">
+          <div class="gantt-bar bg-orange" style="left: 66.66%; width: 16.66%;">
+            Monitor & Demo
+            <div class="tooltip-card">
+              <div class="tt-header"><div class="tt-dot orange"></div> Monitor y Validaciones</div>
+              <div class="tt-body">Vistas de monitoreo general y pruebas de usabilidad guiadas en entornos de prueba con usuarios clave.</div>
+              <div class="tt-date">Mes 5</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fase 3: Desarrollo y QA -->
+      <div class="gantt-phase">3. Desarrollo y QA</div>
+
+      <div class="gantt-row">
+        <div class="gantt-task-name">Validación de Desarrollo / Ajustes</div>
+        <div class="gantt-track">
+          <div class="gantt-bar bg-purple" style="left: 16.66%; width: 66.66%;">
+            Acompañamiento Técnico
+            <div class="tooltip-card">
+              <div class="tt-header"><div class="tt-dot purple"></div> Validación Técnica</div>
+              <div class="tt-body">Handoff continuo con ingeniería, supervisión de fidelidad visual y ajustes técnicos iterativos.</div>
+              <div class="tt-date">Mes 2 - Mes 5</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gantt-row">
+        <div class="gantt-task-name">Pruebas con Usuario QA</div>
+        <div class="gantt-track">
+          <div class="gantt-bar bg-purple" style="left: 83.33%; width: 16.66%;">
+            QA Testing
+            <div class="tooltip-card">
+              <div class="tt-header"><div class="tt-dot purple"></div> Pruebas QA</div>
+              <div class="tt-body">Validación de interacción en ambiente de calidad, pulido de detalles y cierre de observaciones previas al pase productivo.</div>
+              <div class="tt-date">Mes 6</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Módulo: Entregables Complementarios y Presupuesto -->
+  <section class="grid-2-col">
+    <div class="card">
+      <h2 class="card-title">Fuera de Cronograma / Next Steps</h2>
+      <ul class="branded-list">
+        <li><strong>A partir del Lanzamiento:</strong>
+          <ul style="list-style: none; padding-left: 18px; margin-top: 8px; color: var(--text-muted);">
+            <li style="margin-bottom: 6px;">- Definición detallada del Backlog Fase 2 (Cliente vía Pocket).</li>
+            <li>- Pruebas cualitativas con usuario productivo en campo.</li>
+          </ul>
+        </li>
+        <li style="margin-top: 18px;"><strong>Alineación Inter-equipos:</strong>
+          <ul style="list-style: none; padding-left: 18px; margin-top: 8px; color: var(--text-muted);">
+            <li style="margin-bottom: 6px;">- Planeación del Backlog Fase 2.</li>
+            <li>- Evaluación técnica conjunta con Leslie Meneses (Módulo <em>Mis compras</em>).</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2 class="card-title">Estructura de Presupuesto</h2>
+      <div class="budget-detail">
+        <span style="color: var(--text-muted);">Perfil Solicitado</span>
+        <strong>UX/UI Sr Designer</strong>
+      </div>
+      <div class="budget-detail">
+        <span style="color: var(--text-muted);">Periodo de Asignación</span>
+        <strong>6 Meses</strong>
+      </div>
+      <div class="budget-detail">
+        <span style="color: var(--text-muted);">Tarifa Mensual (ISOL)</span>
+        <strong>$96,228.00 MXN</strong>
+      </div>
+      
+      <div style="text-align: center; margin-top: 22px; border-top: 2px dashed var(--border-color); padding-top: 18px;">
+        <span style="color: var(--lp-orange); font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Inversión Total Estimada</span>
+        <div class="budget-amount">$577,368.00 <span style="font-size: 1.15rem; font-weight: 400;">MXN</span></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>
