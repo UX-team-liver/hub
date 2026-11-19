@@ -18,11 +18,11 @@
                         sans: ['Roboto', 'sans-serif'],
                     },
                     colors: {
-                        livPurple: '#7B1FA2', /* Púrpura Liverpool */
-                        livPink: '#E91E63',   /* Rosa Liverpool */
+                        livPurple: '#731C77', /* Púrpura corporativo */
+                        livPink: '#E0004D',   /* Rosa corporativo */
                         livOrange: '#F57C00', /* Naranja Liverpool */
-                        bgPortal: '#F3F4F6',  /* Gris claro portal */
-                        devGreen: '#10B981',  /* Verde para Devs */
+                        bgPortal: '#F5F7FA',  /* Gris claro portal */
+                        devGreen: '#28A745',  /* Verde para Devs */
                     }
                 }
             }
@@ -30,7 +30,7 @@
     </script>
     <style>
         body {
-            background-color: #F3F4F6;
+            background-color: #F5F7FA;
             color: #333333;
         }
         
@@ -45,7 +45,7 @@
         /* Estilos del Cronograma (CSS Grid) */
         .timeline-grid {
             display: grid;
-            grid-template-columns: 150px repeat(16, 1fr); /* Etiqueta + 16 semanas (4 meses) */
+            grid-template-columns: 150px repeat(12, 1fr); /* Etiqueta + 12 semanas (3 meses) */
             gap: 8px;
             align-items: center;
         }
@@ -78,16 +78,16 @@
 
         /* Colores de barras */
         .bg-mix {
-            background: linear-gradient(90deg, #E91E63 0%, #7B1FA2 100%);
+            background: linear-gradient(90deg, #E0004D 0%, #731C77 100%);
         }
         .bg-pink {
-            background-color: #E91E63;
+            background-color: #E0004D;
         }
         .bg-purple {
-            background-color: #7B1FA2;
+            background-color: #731C77;
         }
         .bg-green {
-            background-color: #10B981;
+            background-color: #28A745;
         }
 
         /* Tooltip personalizado */
@@ -129,7 +129,7 @@
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-image: linear-gradient(90deg, #7B1FA2, #E91E63, #F57C00);
+            background-image: linear-gradient(90deg, #731C77, #E0004D, #F57C00);
         }
     </style>
 </head>
@@ -210,12 +210,10 @@
                     <div class="timeline-header" style="grid-column: span 4">Mes 1</div>
                     <div class="timeline-header" style="grid-column: span 4">Mes 2</div>
                     <div class="timeline-header" style="grid-column: span 4">Mes 3</div>
-                    <div class="timeline-header" style="grid-column: span 4">Mes 4</div>
                 </div>
                 <!-- Header Semanas -->
                 <div class="timeline-grid mb-4 text-[10px] text-gray-400 text-center uppercase tracking-wider font-bold">
                     <div class="text-left">Fases del Proyecto</div>
-                    <div>S1</div><div>S2</div><div>S3</div><div>S4</div>
                     <div>S1</div><div>S2</div><div>S3</div><div>S4</div>
                     <div>S1</div><div>S2</div><div>S3</div><div>S4</div>
                     <div>S1</div><div>S2</div><div>S3</div><div>S4</div>
@@ -224,9 +222,9 @@
                 <!-- Pista 1: Discovery -->
                 <div class="timeline-grid mb-2">
                     <div class="text-xs font-semibold text-gray-700">Discovery</div>
-                    <div class="bar bg-mix" style="grid-column: 2 / span 1;">
+                    <div class="bar bg-mix" style="grid-column: 2 / span 1;" title="3 Días">
                         <span class="truncate">Discovery</span>
-                        <div class="tooltip">1 Semana (UX Int + UX Ext)</div>
+                        <div class="tooltip">3 Días</div>
                     </div>
                 </div>
 
@@ -235,66 +233,66 @@
                     <div class="text-xs font-semibold text-livPurple pl-2">Solución por módulo</div>
                     
                     <!-- Reporte general -->
-                    <div class="bar bg-mix" style="grid-column: 3 / span 2;">
+                    <div class="bar bg-mix" style="grid-column: 2 / span 2;" title="1 Semana 2 Días">
                         <span class="truncate">Gral.</span>
-                        <div class="tooltip">Reporte General: 2 Semanas</div>
+                        <div class="tooltip">1 Sem 2 Días</div>
                     </div>
                     
                     <!-- Compradores -->
-                    <div class="bar bg-mix mt-1" style="grid-column: 5 / span 4;">
+                    <div class="bar bg-mix mt-1" style="grid-column: 3 / span 3;" title="3 Semanas">
                         <span class="truncate">Compradores (Nivel SKU)</span>
-                        <div class="tooltip">Compradores: 1 Mes</div>
+                        <div class="tooltip">3 Semanas</div>
                     </div>
 
                     <!-- Uso en Tienda -->
-                    <div class="bar bg-mix mt-1" style="grid-column: 9 / span 4;">
+                    <div class="bar bg-mix mt-1" style="grid-column: 6 / span 3;" title="3 Semanas">
                         <span class="truncate">Uso en Tienda</span>
-                        <div class="tooltip">Operaciones/Tienda: 1 Mes</div>
+                        <div class="tooltip">3 Semanas</div>
                     </div>
                 </div>
 
                 <!-- Pista 3: Pruebas UX -->
                 <div class="timeline-grid mb-2">
                     <div class="text-xs font-semibold text-gray-700">Pruebas UX</div>
-                    <div class="bar bg-mix" style="grid-column: 13 / span 1;">
-                        <span class="truncate">Tests</span>
-                        <div class="tooltip">Pruebas UX: 1 Semana (Conjunto)</div>
+                    <div class="bar bg-mix" style="grid-column: 3 / span 7;" title="Semana 2 a 8">
+                        <span class="truncate">Pruebas UX (Continuas)</span>
+                        <div class="tooltip">Sem 2 a la 8</div>
                     </div>
                 </div>
 
                 <!-- Pista 4: Presentación a Negocio -->
                 <div class="timeline-grid mb-2">
                     <div class="text-xs font-semibold text-gray-700">Presentación a negocio</div>
-                    <div class="bar bg-pink" style="grid-column: 14 / span 1;">
+                    <div class="bar bg-pink" style="grid-column: 9 / span 1;" title="1 Semana">
                         <span class="truncate">Present.</span>
-                        <div class="tooltip">Presentación: 1 Semana (UX Interno)</div>
+                        <div class="tooltip">1 Semana</div>
                     </div>
                 </div>
 
                 <!-- Pista 5: Desarrollo / Ajustes (Fluye continuo) -->
                 <div class="timeline-grid mb-2 mt-4 pt-4 border-t border-gray-100">
                     <div class="text-xs font-semibold text-gray-700">Desarrollo e Iteración</div>
-                    <div class="bar bg-green" style="grid-column: 5 / span 10;">
+                    <div class="bar bg-green" style="grid-column: 3 / span 11;" title="Continuo: Sem 2 al final">
                         <span class="truncate">Desarrollo paralelo / Ajustes UX Continuos</span>
-                        <div class="tooltip">Flujo continuo desde el primer módulo definido</div>
+                        <div class="tooltip">Semana 2 al final</div>
                     </div>
                 </div>
 
                 <!-- Pista 6: Validaciones QA -->
                 <div class="timeline-grid mb-2">
                     <div class="text-xs font-semibold text-gray-700">Validaciones QA</div>
-                    <div class="bar bg-pink" style="grid-column: 15 / span 2;">
+                    <div class="bar bg-pink" style="grid-column: 10 / span 2;" title="2 Semanas">
                         <span class="truncate">Validaciones QA</span>
-                        <div class="tooltip">QA: 2 Semanas (UX Interno)</div>
+                        <div class="tooltip">2 Semanas</div>
                     </div>
                 </div>
 
                 <!-- Pista 7: Pruebas Post-lanzamiento -->
                 <div class="timeline-grid mb-2">
                     <div class="text-xs font-semibold text-gray-700">Post-lanzamiento</div>
-                    <div class="bar bg-pink" style="grid-column: 16 / span 2;">
+                    <div class="bar bg-pink" style="grid-column: 12 / span 2;" title="2 Semanas">
                         <span class="truncate">Estudios</span>
-                        <div class="tooltip">Estudios Post: 2 Semanas (UX Interno)</div>
+                        <div class="tooltip">2 Semanas</div>
                     </div>
                 </div>
 
@@ -309,7 +307,7 @@
                 <ul class="space-y-3">
                     <li class="flex justify-between items-center text-sm border-b border-gray-100 pb-2">
                         <span class="text-gray-600">Total de tiempo UX Externo:</span>
-                        <span class="font-bold text-livPurple">3 Meses</span>
+                        <span class="font-bold text-livPurple">2 Meses</span>
                     </li>
                     <li class="flex justify-between items-center text-sm border-b border-gray-100 pb-2">
                         <span class="text-gray-600">UX Interno:</span>
@@ -332,13 +330,13 @@
                 </div>
                 
                 <div class="mb-4">
-                    <p class="text-gray-500 text-sm">UX Externo (3 Meses)</p>
+                    <p class="text-gray-500 text-sm">UX Externo (2 Meses)</p>
                     <p class="text-xl font-medium text-gray-800">$96,228.00 MXN <span class="text-sm text-gray-500 font-normal">/ mes</span></p>
                 </div>
                 
                 <div class="pt-4 border-t border-purple-200">
                     <p class="text-gray-500 text-sm mb-1">Inversión Total Estimada</p>
-                    <p class="text-3xl font-black text-livPurple">$288,684.00 <span class="text-lg font-bold">MXN</span></p>
+                    <p class="text-3xl font-black text-livPurple">$192,456.00 <span class="text-lg font-bold">MXN</span></p>
                 </div>
             </div>
 
